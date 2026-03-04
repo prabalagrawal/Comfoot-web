@@ -17,8 +17,6 @@ import {
   Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import logo from './assets/logo.png';
-
 // --- Types ---
 
 interface Product {
@@ -137,40 +135,34 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Orthotic Arch Support Insoles',
-        description: 'Semi-rigid inserts that provide a structural foundation for collapsed arches.',
-        bestFor: 'Daily wear in formal or casual shoes.',
-        link: '#'
+        name: 'Frido Rigid Arch Support Insole for Flat Feet',
+        description: 'Rigid orthotic insoles designed to provide maximum support for collapsed arches and improve foot alignment.',
+        bestFor: 'Daily wear in sports or formal shoes for structural support.',
+        link: 'https://amzn.in/d/066diPwp'
       },
       {
-        name: 'Stability Running Shoes',
-        description: 'Specially designed footwear that prevents overpronation (rolling inward).',
-        bestFor: 'Active individuals and long walks.',
-        link: '#'
+        name: 'Boldfit Arch Support For Flat Feet',
+        description: 'Comfortable and durable arch support inserts that help reduce foot fatigue and pain associated with flat feet.',
+        bestFor: 'Active lifestyles and long hours of standing.',
+        link: 'https://amzn.in/d/0bgzXhjD'
       },
       {
-        name: 'Arch Support Sleeves',
-        description: 'Elastic bands with built-in gel pads that hug the arch for immediate lift.',
-        bestFor: 'Wearing with sandals or while barefoot at home.',
-        link: '#'
+        name: 'Flat Foot Arch Support',
+        description: 'Targeted support for the medial arch to redistribute pressure and reduce strain on the foot ligaments.',
+        bestFor: 'Correcting overpronation and arch fatigue.',
+        link: 'https://amzn.in/d/01TLGUJ3'
       },
       {
-        name: 'Foot Alignment Roller',
-        description: 'A textured roller to stimulate the arch muscles and improve foot posture.',
-        bestFor: 'Strengthening the intrinsic foot muscles.',
-        link: '#'
+        name: 'Professional Moisturizing Silicone Gel Socks with Arch Support',
+        description: 'Dual-purpose gel socks that provide arch support while moisturizing the skin to prevent cracked heels.',
+        bestFor: 'At-home recovery and overnight foot care.',
+        link: 'https://amzn.in/d/01Vyzq1i'
       },
       {
-        name: 'Gel Toe Spacers',
-        description: 'Helps realign the big toe which often drifts in people with flat feet.',
-        bestFor: 'Preventing bunions and improving balance.',
-        link: '#'
-      },
-      {
-        name: 'Supportive House Slippers',
-        description: 'Slippers with built-in orthotic contours to prevent flattening on hard floors.',
-        bestFor: 'Indoor support for all-day comfort.',
-        link: '#'
+        name: 'Fixderma Foobetik Foot Scrub Spray',
+        description: 'A specialized foot scrub spray that helps maintain foot hygiene and skin health for those with foot conditions.',
+        bestFor: 'Daily foot hygiene and skin rejuvenation.',
+        link: 'https://amzn.in/d/0gh0wRDf'
       }
     ]
   }
@@ -201,10 +193,9 @@ const Navbar: React.FC = () => {
         <a href="#home" className="flex items-center group">
           <div className={`relative transition-all duration-500 ${isScrolled ? 'h-16 md:h-20' : 'h-20 md:h-28'} flex items-center justify-center`}>
             <img 
-              src={logo} 
+              src="/logo.png" 
               alt="Comfoot Logo" 
               className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-              referrerPolicy="no-referrer"
             />
           </div>
         </a>
@@ -858,10 +849,9 @@ export default function App() {
             <div className="md:col-span-5">
               <div className="flex items-center gap-2 mb-12">
                 <img 
-                  src={logo} 
+                  src="/logo.png" 
                   alt="Comfoot Logo" 
                   className="h-24 w-auto object-contain"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <p className="text-lg max-w-sm leading-relaxed text-brand-taupe/80 font-light mb-10">
