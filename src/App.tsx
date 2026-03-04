@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.png';
+import { FootProblemQuiz } from './components/FootProblemQuiz';
 
 // --- Types ---
 
@@ -184,6 +185,7 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', href: '#home' },
+    { name: 'Quiz', href: '#quiz' },
     { name: 'Conditions', href: '#explore' },
     { name: 'Compare', href: '#compare' },
     { name: 'About', href: '#about' },
@@ -193,7 +195,7 @@ const Navbar: React.FC = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-beige/90 backdrop-blur-xl shadow-sm py-2' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         <a href="#home" className="flex items-center group">
-          <div className={`relative transition-all duration-500 ${isScrolled ? 'h-16 md:h-20' : 'h-20 md:h-28'} flex items-center justify-center`}>
+          <div className={`relative transition-all duration-500 ${isScrolled ? 'h-28 md:h-40' : 'h-40 md:h-64'} flex items-center justify-center`}>
             <img 
               src={logo} 
               alt="Comfoot Logo" 
@@ -667,6 +669,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <FootProblemQuiz />
 
       {/* Problem Selection */}
       <section id="explore" className="py-32 bg-white relative overflow-hidden">
