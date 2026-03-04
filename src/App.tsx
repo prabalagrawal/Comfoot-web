@@ -17,6 +17,8 @@ import {
   Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import logo from './assets/logo.png';
+
 // --- Types ---
 
 interface Product {
@@ -193,9 +195,10 @@ const Navbar: React.FC = () => {
         <a href="#home" className="flex items-center group">
           <div className={`relative transition-all duration-500 ${isScrolled ? 'h-16 md:h-20' : 'h-20 md:h-28'} flex items-center justify-center`}>
             <img 
-              src="/logo.png" 
+              src={logo} 
               alt="Comfoot Logo" 
               className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+              referrerPolicy="no-referrer"
             />
           </div>
         </a>
@@ -849,9 +852,10 @@ export default function App() {
             <div className="md:col-span-5">
               <div className="flex items-center gap-2 mb-12">
                 <img 
-                  src="/logo.png" 
+                  src={logo} 
                   alt="Comfoot Logo" 
                   className="h-24 w-auto object-contain"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <p className="text-lg max-w-sm leading-relaxed text-brand-taupe/80 font-light mb-10">
