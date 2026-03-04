@@ -127,16 +127,16 @@ const RESULTS: Record<string, Result> = {
     ],
     products: [
       {
-        name: "Comfoot Arch Support Insoles",
-        description: "Medical-grade support designed to realign the foot and provide lasting arch relief.",
+        name: "Frido Rigid Arch Support Insole",
+        description: "Rigid orthotic insoles designed to provide maximum support for collapsed arches.",
         bestFor: "Flat Feet & Overpronation",
-        link: "#"
+        link: "https://amzn.in/d/066diPwp"
       },
       {
-        name: "Stability Compression Sleeves",
-        description: "Lightweight compression that lifts the arch and reduces swelling during activity.",
+        name: "Boldfit Arch Support",
+        description: "Comfortable and durable arch support inserts that help reduce foot fatigue.",
         bestFor: "Arch Strain & Ankle Support",
-        link: "#"
+        link: "https://amzn.in/d/0bgzXhjD"
       }
     ]
   },
@@ -158,16 +158,16 @@ const RESULTS: Record<string, Result> = {
     ],
     products: [
       {
-        name: "Premium Heel Cushion Cups",
-        description: "Shock-absorbing gel inserts that cradle the heel and reduce impact pressure.",
+        name: "Frido Plantar Insole",
+        description: "Premium orthotic insoles designed specifically for plantar fasciitis relief.",
         bestFor: "Heel Spurs & Plantar Fasciitis",
-        link: "#"
+        link: "https://amzn.to/4rZCbsz"
       },
       {
-        name: "Night Splint Support",
-        description: "Gently stretches the plantar fascia while you sleep to reduce morning pain.",
+        name: "Plantar Fasciitis Night Splint",
+        description: "Soft, comfortable compression sock that keeps the foot in a gentle stretch.",
         bestFor: "Chronic Heel Pain",
-        link: "#"
+        link: "https://amzn.to/4b0AXHN"
       }
     ]
   },
@@ -192,13 +192,13 @@ const RESULTS: Record<string, Result> = {
         name: "Anti-Fatigue Comfort Insoles",
         description: "Dual-layer foam technology that returns energy and reduces muscle vibration.",
         bestFor: "Long Work Shifts",
-        link: "#"
+        link: "https://amzn.to/4rZCbsz"
       },
       {
         name: "Graduated Compression Socks",
         description: "Improves blood flow and prevents swelling during long hours of standing.",
         bestFor: "Circulation & Fatigue",
-        link: "#"
+        link: "https://amzn.to/4b0AXHN"
       }
     ]
   },
@@ -223,13 +223,13 @@ const RESULTS: Record<string, Result> = {
         name: "Daily Wellness Insoles",
         description: "Lightweight cushioning to maintain comfort and prevent future issues.",
         bestFor: "General Comfort",
-        link: "#"
+        link: "https://amzn.in/d/0gh0wRDf"
       },
       {
         name: "Foot Massage Roller",
         description: "A simple tool to release tension and maintain flexibility in the foot muscles.",
         bestFor: "Recovery & Maintenance",
-        link: "#"
+        link: "https://amzn.to/4aFri8e"
       }
     ]
   },
@@ -254,13 +254,13 @@ const RESULTS: Record<string, Result> = {
         name: "All-Day Performance Insoles",
         description: "A hybrid design combining high-impact heel cushioning with adaptive arch support.",
         bestFor: "Mixed Symptoms & Versatile Use",
-        link: "#"
+        link: "https://amzn.to/4rZCbsz"
       },
       {
         name: "Foot Recovery Kit",
         description: "Includes a massage ball, resistance band, and compression sleeves for total foot care.",
         bestFor: "Comprehensive Recovery",
-        link: "#"
+        link: "https://amzn.to/4aFri8e"
       }
     ]
   }
@@ -485,13 +485,16 @@ export const FootProblemQuiz: React.FC = () => {
                       <p className="text-brand-taupe mb-8 flex-grow">
                         {product.description}
                       </p>
-                      <button 
+                      <a 
+                        href={product.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         aria-label={`Check support options for ${product.name}`}
                         className="w-full inline-flex items-center justify-center gap-2 bg-brand-beige text-brand-brown py-4 rounded-xl font-bold hover:bg-brand-orange hover:text-white transition-all duration-300"
                       >
                         Check Support Options
                         <ArrowRight className="w-4 h-4" />
-                      </button>
+                      </a>
                     </div>
                   ))}
                 </div>

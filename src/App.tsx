@@ -17,7 +17,8 @@ import {
   Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import logo from './assets/logo.png';
+// Using the provided brand logo
+const LOGO_URL = "https://comfoot.in/cdn/shop/files/Comfoot_Logo_Transparent_700x.png?v=1733306869";
 import { FootProblemQuiz } from './components/FootProblemQuiz';
 
 // --- Types ---
@@ -195,9 +196,9 @@ const Navbar: React.FC = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-beige/90 backdrop-blur-xl shadow-sm py-2' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         <a href="#home" className="flex items-center group">
-          <div className={`relative transition-all duration-500 ${isScrolled ? 'h-28 md:h-40' : 'h-40 md:h-64'} flex items-center justify-center`}>
+          <div className={`relative transition-all duration-500 ${isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'} flex items-center justify-center`}>
             <img 
-              src={logo} 
+              src={LOGO_URL} 
               alt="Comfoot Logo" 
               className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-500"
               referrerPolicy="no-referrer"
@@ -856,9 +857,9 @@ export default function App() {
             <div className="md:col-span-5">
               <div className="flex items-center gap-2 mb-12">
                 <img 
-                  src={logo} 
+                  src={LOGO_URL} 
                   alt="Comfoot Logo" 
-                  className="h-24 w-auto object-contain"
+                  className="h-16 w-auto object-contain"
                   referrerPolicy="no-referrer"
                 />
               </div>
