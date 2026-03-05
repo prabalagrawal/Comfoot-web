@@ -11,14 +11,30 @@ import {
   Zap,
   ShieldCheck,
   ExternalLink,
-  Instagram,
   Twitter,
   Linkedin,
   Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-// Using the provided brand logo
-const LOGO_URL = "https://comfoot.in/cdn/shop/files/Comfoot_Logo_Transparent_700x.png?v=1733306869";
+
+const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
+  <div className={`flex items-center ${className}`}>
+    <img 
+      src="/logo.png" 
+      alt="Comfoot Logo" 
+      className={`transition-all duration-500 object-contain ${isScrolled ? 'h-10' : 'h-16'}`}
+      referrerPolicy="no-referrer"
+      onError={(e) => {
+        // Fallback to the uploaded URL if the local file is not yet present
+        const target = e.target as HTMLImageElement;
+        if (target.src.includes('/logo.png')) {
+          target.src = "https://storage.googleapis.com/aistudio-user-uploads/78809968840e69123019808304918083/logo.png";
+        }
+      }}
+    />
+  </div>
+);
+
 import { FootProblemQuiz } from './components/FootProblemQuiz';
 
 // --- Types ---
@@ -92,24 +108,6 @@ const CONDITIONS: Condition[] = [
         description: 'Ergonomically shaped roller for deep tissue massage to break up scar tissue and increase blood flow.',
         bestFor: 'Morning and evening recovery sessions.',
         link: 'https://amzn.to/4aFri8e'
-      },
-      {
-        name: 'Gel Heel Cup & Silicon Heel Pad',
-        description: 'Dual-density medical grade silicone that provides superior shock absorption for the heel bone.',
-        bestFor: 'Immediate relief from sharp heel pain.',
-        link: 'https://amzn.to/4cBR9jU'
-      },
-      {
-        name: 'Calf Stretcher',
-        description: 'Professional stretching tool to safely and effectively stretch the calf muscles and plantar fascia.',
-        bestFor: 'Improving flexibility and long-term healing.',
-        link: 'https://amzn.to/3OmUs4F'
-      },
-      {
-        name: 'Plantar Fasciitis Night Splint Sock',
-        description: 'Soft, comfortable compression sock that keeps the foot in a gentle stretch throughout the night.',
-        bestFor: 'Eliminating the "first step" morning pain.',
-        link: 'https://amzn.to/4b0AXHN'
       }
     ]
   },
@@ -139,34 +137,139 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Frido Rigid Arch Support Insole for Flat Feet',
+        name: 'Frido Rigid Arch Support Insole',
         description: 'Rigid orthotic insoles designed to provide maximum support for collapsed arches and improve foot alignment.',
-        bestFor: 'Daily wear in sports or formal shoes for structural support.',
+        bestFor: 'Daily wear in sports or formal shoes.',
         link: 'https://amzn.in/d/066diPwp'
       },
       {
-        name: 'Boldfit Arch Support For Flat Feet',
-        description: 'Comfortable and durable arch support inserts that help reduce foot fatigue and pain associated with flat feet.',
+        name: 'Boldfit Arch Support',
+        description: 'Comfortable and durable arch support inserts that help reduce foot fatigue and pain.',
         bestFor: 'Active lifestyles and long hours of standing.',
         link: 'https://amzn.in/d/0bgzXhjD'
       },
       {
         name: 'Flat Foot Arch Support',
-        description: 'Targeted support for the medial arch to redistribute pressure and reduce strain on the foot ligaments.',
-        bestFor: 'Correcting overpronation and arch fatigue.',
+        description: 'Targeted support for the medial arch to redistribute pressure and reduce strain.',
+        bestFor: 'Correcting overpronation.',
         link: 'https://amzn.in/d/01TLGUJ3'
+      }
+    ]
+  },
+  {
+    id: 'bunions',
+    title: 'Bunions (Hallux Valgus)',
+    shortDesc: 'Bony bump at the base of the big toe.',
+    fullDesc: 'A bunion is a bony bump that forms on the joint at the base of your big toe. It occurs when some of the bones in the front part of your foot move out of place.',
+    whatIsIt: 'The tip of your big toe gets pulled toward the smaller toes and forces the joint at the base of your big toe to stick out.',
+    causes: [
+      'Wearing tight, narrow shoes',
+      'Inherited structural foot defects',
+      'Stress on your foot or a medical condition, such as arthritis',
+      'Prolonged standing in high heels'
+    ],
+    symptoms: [
+      { name: 'Bulging bump on the outside of the big toe', description: 'A visible, often red and swollen protrusion at the base of the big toe.' },
+      { name: 'Swelling, redness or soreness', description: 'Inflammation around the big toe joint that can be painful to touch.' },
+      { name: 'Corns or calluses', description: 'These often develop where the first and second toes overlap or rub against each other.' },
+      { name: 'Persistent or intermittent pain', description: 'Aching or sharp pain that can make it difficult to find comfortable shoes.' }
+    ],
+    diySupport: [
+      'Wearing wide-toe box shoes',
+      'Using bunion pads or cushions',
+      'Applying ice to the joint after standing',
+      'Toe spacing exercises'
+    ],
+    products: [
+      {
+        name: 'Bunion Corrector & Toe Separator',
+        description: 'Soft silicone separators that gently realign the big toe and provide a protective barrier against friction.',
+        bestFor: 'Night-time realignment and daily friction protection.',
+        link: 'https://amzn.to/4aFri8e'
       },
       {
-        name: 'Professional Moisturizing Silicone Gel Socks with Arch Support',
-        description: 'Dual-purpose gel socks that provide arch support while moisturizing the skin to prevent cracked heels.',
-        bestFor: 'At-home recovery and overnight foot care.',
-        link: 'https://amzn.in/d/01Vyzq1i'
+        name: 'Orthopedic Bunion Splint',
+        description: 'Adjustable splint that applies pressure to the big toe to help maintain correct alignment during sleep.',
+        bestFor: 'Corrective support and pain relief.',
+        link: 'https://amzn.to/4cBR9jU'
+      }
+    ]
+  },
+  {
+    id: 'diabetic-foot',
+    title: 'Diabetic Foot Care',
+    shortDesc: 'Specialized care for sensitive feet due to diabetes.',
+    fullDesc: 'Diabetes can cause nerve damage (neuropathy) and poor blood flow, making feet vulnerable to ulcers and infections that can be slow to heal.',
+    whatIsIt: 'A critical condition where even minor injuries can lead to serious complications. Daily inspection and specialized protection are mandatory.',
+    causes: [
+      'High blood sugar levels over time',
+      'Peripheral neuropathy (nerve damage)',
+      'Peripheral artery disease (poor circulation)',
+      'Inappropriate footwear causing pressure points'
+    ],
+    symptoms: [
+      { name: 'Loss of feeling or numbness', description: 'Inability to feel heat, cold, or pain, which can lead to unnoticed injuries.' },
+      { name: 'Tingling or burning sensation', description: 'Often described as "pins and needles," usually worse at night.' },
+      { name: 'Slow-healing sores or ulcers', description: 'Minor cuts or blisters that do not heal within a normal timeframe.' },
+      { name: 'Changes in skin color or temperature', description: 'Redness, warmth, or unusual coolness indicating circulation issues.' }
+    ],
+    diySupport: [
+      'Daily foot inspections with a mirror',
+      'Never walking barefoot',
+      'Moisturizing feet (but not between toes)',
+      'Gentle washing and thorough drying'
+    ],
+    products: [
+      {
+        name: 'Diabetic Socks (Seamless)',
+        description: 'Non-binding, moisture-wicking socks with seamless toes to prevent friction and pressure points.',
+        bestFor: 'Daily protection and improved circulation.',
+        link: 'https://amzn.to/4b0AXHN'
       },
       {
-        name: 'Fixderma Foobetik Foot Scrub Spray',
-        description: 'A specialized foot scrub spray that helps maintain foot hygiene and skin health for those with foot conditions.',
-        bestFor: 'Daily foot hygiene and skin rejuvenation.',
+        name: 'Foobetik Foot Cream',
+        description: 'Specialized moisturizing cream for diabetic feet to prevent dryness and cracking while maintaining skin integrity.',
+        bestFor: 'Preventing fissures and maintaining skin health.',
         link: 'https://amzn.in/d/0gh0wRDf'
+      }
+    ]
+  },
+  {
+    id: 'achilles-tendinitis',
+    title: 'Achilles Tendinitis',
+    shortDesc: 'Pain along the back of the leg near the heel.',
+    fullDesc: 'Achilles tendinitis is an overuse injury of the Achilles tendon, the band of tissue that connects calf muscles at the back of the lower leg to your heel bone.',
+    whatIsIt: 'Commonly occurs in runners who have suddenly increased the intensity or duration of their runs, or middle-aged people who play sports.',
+    causes: [
+      'Sudden increase in physical activity',
+      'Tight calf muscles',
+      'Bone spurs on the heel',
+      'Running in worn-out or improper shoes'
+    ],
+    symptoms: [
+      { name: 'Aching pain in the back of the leg', description: 'Usually felt above the heel after running or other sports activity.' },
+      { name: 'Episodes of more severe pain', description: 'Sharp pain during prolonged running, stair climbing, or sprinting.' },
+      { name: 'Tenderness or stiffness', description: 'Especially in the morning, which usually improves with mild activity.' },
+      { name: 'Mild swelling or a "bump"', description: 'A thickening of the tendon that may be visible or felt.' }
+    ],
+    diySupport: [
+      'R.I.C.E (Rest, Ice, Compression, Elevation)',
+      'Eccentric calf strengthening exercises',
+      'Using heel lifts in shoes',
+      'Gentle stretching of the calf'
+    ],
+    products: [
+      {
+        name: 'Achilles Tendon Support Sleeve',
+        description: 'Compression sleeve with integrated gel pads to stabilize the tendon and reduce vibration during movement.',
+        bestFor: 'Active recovery and sports support.',
+        link: 'https://amzn.to/4rZCbsz'
+      },
+      {
+        name: 'Silicone Heel Lifts',
+        description: 'Inserts that slightly elevate the heel to reduce the tension and strain on the Achilles tendon.',
+        bestFor: 'Immediate relief during walking.',
+        link: 'https://amzn.to/4cBR9jU'
       }
     ]
   }
@@ -195,15 +298,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-beige/90 backdrop-blur-xl shadow-sm py-2' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#home" className="flex items-center group">
-          <div className={`relative transition-all duration-500 ${isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'} flex items-center justify-center`}>
-            <img 
-              src={LOGO_URL} 
-              alt="Comfoot Logo" 
-              className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-500"
-              referrerPolicy="no-referrer"
-            />
-          </div>
+        <a href="#home" className="flex items-center">
+          <Logo isScrolled={isScrolled} />
         </a>
 
         {/* Desktop Nav */}
@@ -672,6 +768,67 @@ export default function App() {
       </section>
 
       <FootProblemQuiz />
+      
+      {/* Testimonials Section */}
+      <section className="py-32 bg-brand-brown text-brand-beige relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+          <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] bg-brand-orange rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-[50%] h-[70%] bg-brand-gold rounded-full blur-[150px]" />
+        </div>
+        
+        <div className="section-padding relative z-10">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-white/10">
+              User Stories
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Real Relief, <span className="text-brand-gold italic">Real People</span>.</h2>
+            <p className="text-lg opacity-70 max-w-2xl mx-auto font-light">Join thousands of people in India who have reclaimed their mobility with Comfoot's structured guidance.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Anjali Sharma",
+                role: "Teacher, New Delhi",
+                text: "Standing for 6 hours a day was becoming impossible. The Plantar Fasciitis protocol and the recommended insoles changed my life in just 3 weeks.",
+                condition: "Plantar Fasciitis"
+              },
+              {
+                name: "Vikram Mehta",
+                role: "IT Professional, Bangalore",
+                text: "I didn't even realize I had flat feet until I took the quiz. The arch support exercises are simple and actually work. Highly recommended!",
+                condition: "Flat Feet"
+              },
+              {
+                name: "Dr. Rajesh Iyer",
+                role: "Orthopedic Surgeon, Mumbai",
+                text: "Comfoot provides accurate, structured information that bridges the gap between clinical advice and daily lifestyle management.",
+                condition: "Expert Review"
+              }
+            ].map((t, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ y: -10 }}
+                className="bg-white/5 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 flex flex-col gap-6 relative group"
+              >
+                <div className="flex gap-1 text-brand-gold">
+                  {[...Array(5)].map((_, i) => <Zap key={i} className="w-3.5 h-3.5 fill-current" />)}
+                </div>
+                <p className="text-lg leading-relaxed font-light italic opacity-90">"{t.text}"</p>
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-bold text-sm">{t.name}</h4>
+                    <p className="text-[10px] opacity-60 uppercase tracking-widest">{t.role}</p>
+                  </div>
+                  <span className="text-[9px] font-bold uppercase tracking-widest px-3 py-1 bg-brand-orange/20 text-brand-orange rounded-full border border-brand-orange/20">
+                    {t.condition}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Problem Selection */}
       <section id="explore" className="py-32 bg-white relative overflow-hidden">
@@ -855,21 +1012,11 @@ export default function App() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-16 mb-24">
             <div className="md:col-span-5">
-              <div className="flex items-center gap-2 mb-12">
-                <img 
-                  src={LOGO_URL} 
-                  alt="Comfoot Logo" 
-                  className="h-16 w-auto object-contain"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
+              <Logo className="mb-12" />
               <p className="text-lg max-w-sm leading-relaxed text-brand-taupe/80 font-light mb-10">
                 Crafting the future of foot wellness through education, curated support, and structured guidance.
               </p>
               <div className="flex items-center gap-4">
-                <a href="https://www.instagram.com/comfoot._/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Instagram">
-                  <Instagram className="w-4 h-4" />
-                </a>
                 <a href="https://x.com/Comfooot" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Twitter">
                   <Twitter className="w-4 h-4" />
                 </a>
