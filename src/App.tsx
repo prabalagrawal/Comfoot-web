@@ -36,6 +36,7 @@ const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?
 );
 
 import { FootProblemQuiz } from './components/FootProblemQuiz';
+import { AdminDashboard } from './components/AdminDashboard';
 
 // --- Types ---
 
@@ -629,6 +630,7 @@ const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = 
 };
 
 export default function App() {
+  const [showAdmin, setShowAdmin] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -670,6 +672,10 @@ export default function App() {
       document.body.style.overflow = 'unset';
     }
   }, [selectedCondition]);
+
+  if (showAdmin) {
+    return <AdminDashboard onBack={() => setShowAdmin(false)} />;
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-brand-beige/50">
@@ -1114,6 +1120,7 @@ export default function App() {
               <span>&copy; {new Date().getFullYear()} Comfoot</span>
               <a href="#" className="hover:text-brand-brown transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-brand-brown transition-colors">Terms of Service</a>
+              <button onClick={() => setShowAdmin(true)} className="hover:text-brand-brown transition-colors">Admin</button>
             </div>
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">
               <span>Made with</span>

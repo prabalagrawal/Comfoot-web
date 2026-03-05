@@ -34,8 +34,13 @@ async function startServer() {
   app.use(express.json());
 
   // API Routes
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", database: !!db });
+  });
+
   app.post("/api/emails", (req, res) => {
     const { email } = req.body;
+    console.log(`Received email submission: ${email}`);
 
     if (!email || !email.includes("@")) {
       return res.status(400).json({ error: "Invalid email address" });
@@ -73,19 +78,25 @@ async function startServer() {
 
   // Admin Data Access Routes
   app.get("/api/admin/emails", (req, res) => {
+    console.log("Admin request: GET /api/admin/emails");
     try {
       const emails = db.prepare("SELECT * FROM emails ORDER BY created_at DESC").all();
+      console.log(`Found ${emails.length} emails`);
       res.json(emails);
     } catch (error) {
+      console.error("Error fetching emails:", error);
       res.status(500).json({ error: "Failed to fetch emails" });
     }
   });
 
   app.get("/api/admin/leads", (req, res) => {
+    console.log("Admin request: GET /api/admin/leads");
     try {
       const leads = db.prepare("SELECT * FROM leads ORDER BY created_at DESC").all();
+      console.log(`Found ${leads.length} leads`);
       res.json(leads);
     } catch (error) {
+      console.error("Error fetching leads:", error);
       res.status(500).json({ error: "Failed to fetch leads" });
     }
   });
