@@ -709,7 +709,19 @@ export const FootProblemQuiz: React.FC = () => {
                     <p className="text-brand-taupe font-light">A structured PDF guide to help you manage your foot wellness at home.</p>
                     {!formSubmitted.email ? (
                       <form 
-                        onSubmit={(e) => { e.preventDefault(); setFormSubmitted(prev => ({ ...prev, email: true })); }}
+                        onSubmit={async (e) => { 
+                          e.preventDefault(); 
+                          try {
+                            await fetch('/api/leads', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ type: 'email_guide', value: email, resultId: getResult().id }),
+                            });
+                            setFormSubmitted(prev => ({ ...prev, email: true })); 
+                          } catch (err) {
+                            console.error('Failed to submit lead', err);
+                          }
+                        }}
                         className="flex flex-col gap-3"
                       >
                         <input 
@@ -738,7 +750,19 @@ export const FootProblemQuiz: React.FC = () => {
                     <p className="text-brand-taupe font-light">Receive direct links to recommended gear on WhatsApp.</p>
                     {!formSubmitted.contact ? (
                       <form 
-                        onSubmit={(e) => { e.preventDefault(); setFormSubmitted(prev => ({ ...prev, contact: true })); }}
+                        onSubmit={async (e) => { 
+                          e.preventDefault(); 
+                          try {
+                            await fetch('/api/leads', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ type: 'product_links', value: contactInfo, resultId: getResult().id }),
+                            });
+                            setFormSubmitted(prev => ({ ...prev, contact: true })); 
+                          } catch (err) {
+                            console.error('Failed to submit lead', err);
+                          }
+                        }}
                         className="flex flex-col gap-3"
                       >
                         <input 

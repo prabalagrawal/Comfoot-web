@@ -630,6 +630,37 @@ const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = 
 
 export default function App() {
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+
+    setNewsletterStatus('loading');
+    try {
+      const response = await fetch('/api/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setNewsletterStatus('success');
+        setNewsletterMessage('Welcome to the community!');
+        setNewsletterEmail('');
+      } else {
+        setNewsletterStatus('error');
+        setNewsletterMessage(data.error || 'Something went wrong.');
+      }
+    } catch (error) {
+      setNewsletterStatus('error');
+      setNewsletterMessage('Failed to connect to server.');
+    }
+  };
 
   // Prevent scroll when modal is open
   useEffect(() => {
@@ -1052,16 +1083,29 @@ export default function App() {
             <div className="md:col-span-3">
               <h4 className="text-brand-brown font-bold mb-8 uppercase tracking-[0.2em] text-[10px]">Newsletter</h4>
               <p className="text-xs text-brand-taupe/70 mb-6 leading-relaxed">Join our community for weekly foot health insights and curated gear updates.</p>
-              <form className="relative" onSubmit={(e) => e.preventDefault()}>
+              <form className="relative" onSubmit={handleNewsletterSubmit}>
                 <input 
                   type="email" 
                   placeholder="Email Address" 
-                  className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-brand-orange transition-colors"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  disabled={newsletterStatus === 'loading'}
+                  className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50"
+                  required
                 />
-                <button className="absolute right-2 top-2 bottom-2 bg-brand-brown text-brand-beige px-6 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-brand-orange transition-all">
-                  Join
+                <button 
+                  type="submit"
+                  disabled={newsletterStatus === 'loading'}
+                  className="absolute right-2 top-2 bottom-2 bg-brand-brown text-brand-beige px-6 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-brand-orange transition-all disabled:opacity-50"
+                >
+                  {newsletterStatus === 'loading' ? '...' : 'Join'}
                 </button>
               </form>
+              {newsletterStatus !== 'idle' && (
+                <p className={`mt-3 text-[10px] font-bold uppercase tracking-widest ${newsletterStatus === 'success' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  {newsletterMessage}
+                </p>
+              )}
             </div>
           </div>
           
