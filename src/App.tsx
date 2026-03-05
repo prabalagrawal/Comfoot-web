@@ -18,20 +18,20 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
-  <div className={`flex items-center ${className}`}>
-    <img 
-      src="/logo.png" 
-      alt="Comfoot Logo" 
-      className={`transition-all duration-500 object-contain ${isScrolled ? 'h-10' : 'h-16'}`}
-      referrerPolicy="no-referrer"
-      onError={(e) => {
-        // Fallback to the uploaded URL if the local file is not yet present
-        const target = e.target as HTMLImageElement;
-        if (target.src.includes('/logo.png')) {
-          target.src = "https://storage.googleapis.com/aistudio-user-uploads/78809968840e69123019808304918083/logo.png";
-        }
-      }}
-    />
+  <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`bg-brand-orange rounded-xl flex items-center justify-center shadow-lg transition-all duration-500 ${isScrolled ? 'w-10 h-10' : 'w-14 h-14'}`}>
+      <Footprints className="text-white w-3/5 h-3/5" />
+    </div>
+    <div className="flex flex-col leading-none">
+      <span className={`font-display font-bold text-brand-brown transition-all duration-500 ${isScrolled ? 'text-xl' : 'text-3xl'}`}>
+        Com<span className="text-brand-orange">foot</span>
+      </span>
+      {!isScrolled && (
+        <span className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-taupe/60 mt-1">
+          Sole Support
+        </span>
+      )}
+    </div>
   </div>
 );
 
