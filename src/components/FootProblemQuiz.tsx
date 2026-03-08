@@ -356,6 +356,37 @@ const RESULTS: Record<string, Result> = {
         link: "https://amzn.to/4cBR9jU"
       }
     ]
+  },
+  complex: {
+    id: 'complex',
+    title: "Complex Foot Patterns Detected",
+    explanation: "Your assessment shows significant indicators for multiple foot conditions. When symptoms overlap this strongly, it often indicates complex biomechanical factors that require a professional evaluation.",
+    causes: [
+      "Interconnected structural issues",
+      "Advanced compensatory strain",
+      "Chronic inflammation in multiple areas",
+      "Complex gait abnormalities"
+    ],
+    tips: [
+      "Schedule a consultation with a Podiatrist",
+      "Bring your most-worn shoes to your appointment",
+      "Avoid self-diagnosing complex overlaps",
+      "Limit high-impact activities until evaluated"
+    ],
+    products: [
+      {
+        name: "Custom Orthotic Consultation",
+        description: "Professional gait analysis and custom-molded inserts tailored to your unique foot structure.",
+        bestFor: "Complex & Multiple Conditions",
+        link: "https://www.apma.org/findapodiatrist"
+      },
+      {
+        name: "Frido Ultimate Support Bundle",
+        description: "A comprehensive set including high-stability insoles and recovery tools for multi-zone relief.",
+        bestFor: "Total Foot Support",
+        link: "https://amzn.to/4rZCbsz"
+      }
+    ]
   }
 };
 
@@ -400,7 +431,15 @@ export const FootProblemQuiz: React.FC = () => {
 
   const handleRestart = () => {
     setStep(0);
-    setScores({ heel: 0, flat: 0, fatigue: 0, neutral: 0 });
+    setScores({
+      heel: 0,
+      flat: 0,
+      fatigue: 0,
+      neutral: 0,
+      bunion: 0,
+      diabetic: 0,
+      achilles: 0
+    });
     setShowEmailForm(false);
     setShowContactForm(false);
     setFormSubmitted({ email: false, contact: false });
@@ -409,7 +448,18 @@ export const FootProblemQuiz: React.FC = () => {
   const getResult = (): Result => {
     const sortedScores = (Object.entries(scores) as [string, number][]).sort(([, a], [, b]) => b - a);
     const [topCategory, topScore] = sortedScores[0];
-    const [, secondScore] = sortedScores[1];
+    const [secondCategory, secondScore] = sortedScores[1];
+
+    // Threshold for "High Score" - if two categories score 7 or more, it's complex
+    const HIGH_SCORE_THRESHOLD = 7;
+
+    if (topScore >= HIGH_SCORE_THRESHOLD && secondScore >= HIGH_SCORE_THRESHOLD && topCategory !== 'neutral' && secondCategory !== 'neutral') {
+      const complexResult = { ...RESULTS.complex };
+      const topTitle = RESULTS[topCategory]?.title.split(' / ')[0] || topCategory;
+      const secondTitle = RESULTS[secondCategory]?.title.split(' / ')[0] || secondCategory;
+      complexResult.explanation = `Your assessment shows significant indicators for both ${topTitle} and ${secondTitle}. When symptoms overlap this strongly, it often indicates complex biomechanical factors that require a professional evaluation by a podiatrist.`;
+      return complexResult;
+    }
 
     if (topScore > 0 && (topScore - secondScore) <= 2 && topCategory !== 'neutral') {
       return RESULTS.mixed;

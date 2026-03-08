@@ -13,7 +13,10 @@ import {
   ExternalLink,
   Twitter,
   Linkedin,
-  Mail
+  Instagram,
+  Mail,
+  Share2,
+  Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -36,6 +39,7 @@ const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?
 );
 
 import { FootProblemQuiz } from './components/FootProblemQuiz';
+import { MythBusters } from './components/MythBusters';
 import { AdminDashboard } from './components/AdminDashboard';
 
 // --- Types ---
@@ -291,6 +295,7 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Quiz', href: '#quiz' },
+    { name: 'Myths', href: '#myth-busters' },
     { name: 'Conditions', href: '#explore' },
     { name: 'Compare', href: '#compare' },
     { name: 'About', href: '#about' },
@@ -386,6 +391,16 @@ const ConditionCard: React.FC<{ condition: Condition; onClick: () => void }> = (
 };
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(product.link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <motion.div 
       whileHover={{ y: -8 }}
@@ -399,7 +414,9 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       </div>
       
       <div className="flex-1 overflow-hidden">
-        <h4 className="font-display font-bold text-2xl mb-3 text-brand-brown group-hover:text-brand-orange transition-colors">{product.name}</h4>
+        <h4 className="font-display font-bold text-2xl mb-3 text-brand-brown group-hover:text-brand-orange transition-colors flex items-center gap-2">
+          <Zap className="w-5 h-5 shrink-0 text-brand-orange" /> {product.name}
+        </h4>
         <p className="text-base leading-relaxed text-brand-taupe/90 font-light line-clamp-4">{product.description}</p>
       </div>
       
@@ -407,12 +424,31 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         Best For: {product.bestFor}
       </div>
       
-      <a 
-        href={product.link}
-        className="mt-auto bg-brand-brown text-brand-beige text-center py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
-      >
-        View Details <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-      </a>
+      <div className="mt-auto flex gap-3">
+        <a 
+          href={product.link}
+          className="flex-1 bg-brand-brown text-brand-beige text-center py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
+        >
+          View Details <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
+        <button
+          onClick={handleShare}
+          className="px-6 bg-brand-beige text-brand-brown rounded-2xl hover:bg-brand-brown hover:text-brand-beige transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+          title="Share Product"
+        >
+          {copied ? (
+            <>
+              <Check className="w-5 h-5 text-emerald-600" />
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">Copied</span>
+            </>
+          ) : (
+            <>
+              <Share2 className="w-5 h-5" />
+              <span className="text-xs font-bold uppercase tracking-widest">Share</span>
+            </>
+          )}
+        </button>
+      </div>
     </motion.div>
   );
 };
@@ -577,40 +613,70 @@ const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = 
           </div>
  
           <div className="space-y-6">
-            {condition.products.map((product, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white p-6 rounded-3xl border border-brand-brown/5 shadow-sm hover:shadow-md transition-all group hover:border-brand-orange/20"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="h-10 w-10 bg-brand-orange/10 rounded-xl flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand-orange bg-brand-orange/5 px-3 py-1 rounded-full border border-brand-orange/10">
-                    Recommended
-                  </span>
-                </div>
-                
-                <h4 className="font-display font-bold text-lg text-brand-brown mb-2 group-hover:text-brand-orange transition-colors">
-                  {product.name}
-                </h4>
-                <p className="text-sm text-brand-taupe/80 leading-relaxed mb-4">
-                  {product.description}
-                </p>
-                
-                <a 
-                  href={product.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-brand-brown text-brand-beige py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-sm"
+            {condition.products.map((product, i) => {
+              const [copied, setCopied] = useState(false);
+              
+              const handleShare = (e: React.MouseEvent) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(product.link);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              };
+
+              return (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-white p-6 rounded-3xl border border-brand-brown/5 shadow-sm hover:shadow-md transition-all group hover:border-brand-orange/20"
                 >
-                  View on Amazon <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </motion.div>
-            ))}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="h-10 w-10 bg-brand-orange/10 rounded-xl flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">
+                      <Zap className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-orange bg-brand-orange/5 px-3 py-1 rounded-full border border-brand-orange/10">
+                      Recommended
+                    </span>
+                  </div>
+                  
+                  <h4 className="font-display font-bold text-lg text-brand-brown mb-2 group-hover:text-brand-orange transition-colors flex items-center gap-2">
+                    <Zap className="w-4 h-4 shrink-0 text-brand-orange" /> {product.name}
+                  </h4>
+                  <p className="text-sm text-brand-taupe/80 leading-relaxed mb-4">
+                    {product.description}
+                  </p>
+                  
+                  <div className="flex gap-2">
+                    <a 
+                      href={product.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 bg-brand-brown text-brand-beige py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      View on Amazon <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                    <button
+                      onClick={handleShare}
+                      className="px-4 bg-brand-beige text-brand-brown rounded-xl hover:bg-brand-brown hover:text-brand-beige transition-all shadow-sm flex items-center justify-center gap-2"
+                      title="Share Product"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-600" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600">Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="w-4 h-4" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest">Share</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
  
           {/* Transparency Disclosure */}
@@ -803,6 +869,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <MythBusters />
 
       <FootProblemQuiz />
       
@@ -1059,6 +1127,9 @@ export default function App() {
                 </a>
                 <a href="https://www.linkedin.com/company/comfoot/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="LinkedIn">
                   <Linkedin className="w-4 h-4" />
+                </a>
+                <a href="https://www.instagram.com/comfoot._/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Instagram">
+                  <Instagram className="w-4 h-4" />
                 </a>
                 <a href="mailto:hello@comfoot.in" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Email">
                   <Mail className="w-4 h-4" />
