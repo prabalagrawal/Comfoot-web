@@ -19,7 +19,7 @@ import {
   Check,
   ChevronLeft
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
   <div className={`flex items-center gap-3 ${className}`}>
@@ -67,6 +67,8 @@ interface Condition {
   symptoms: Symptom[];
   diySupport: string[];
   products: Product[];
+  painType: string[];
+  affectedArea: string[];
 }
 
 // --- Data ---
@@ -115,7 +117,9 @@ const CONDITIONS: Condition[] = [
         bestFor: 'Morning and evening recovery sessions.',
         link: 'https://amzn.to/4aFri8e'
       }
-    ]
+    ],
+    painType: ['Heel Pain', 'Arch Pain'],
+    affectedArea: ['Heel', 'Arch']
   },
   {
     id: 'flat-feet',
@@ -160,7 +164,9 @@ const CONDITIONS: Condition[] = [
         bestFor: 'Correcting overpronation.',
         link: 'https://amzn.in/d/01TLGUJ3'
       }
-    ]
+    ],
+    painType: ['Arch Pain', 'Aching'],
+    affectedArea: ['Arch']
   },
   {
     id: 'bunions',
@@ -199,7 +205,9 @@ const CONDITIONS: Condition[] = [
         bestFor: 'Corrective support and pain relief.',
         link: 'https://amzn.to/4cBR9jU'
       }
-    ]
+    ],
+    painType: ['Toe Pain', 'Aching'],
+    affectedArea: ['Toes']
   },
   {
     id: 'diabetic-foot',
@@ -238,7 +246,9 @@ const CONDITIONS: Condition[] = [
         bestFor: 'Preventing fissures and maintaining skin health.',
         link: 'https://amzn.in/d/0gh0wRDf'
       }
-    ]
+    ],
+    painType: ['Numbness', 'Tingling'],
+    affectedArea: ['Whole Foot']
   },
   {
     id: 'achilles-tendinitis',
@@ -277,7 +287,9 @@ const CONDITIONS: Condition[] = [
         bestFor: 'Immediate relief during walking.',
         link: 'https://amzn.to/4cBR9jU'
       }
-    ]
+    ],
+    painType: ['Heel Pain', 'Aching'],
+    affectedArea: ['Heel', 'Ankle']
   }
 ];
 
@@ -606,6 +618,8 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       <div className="mt-auto flex gap-3">
         <a 
           href={product.link}
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex-1 bg-brand-brown text-brand-beige text-center py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
         >
           View Details <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -986,68 +1000,88 @@ const ScrollProgressFootprints = () => {
   );
 };
 
+interface FootprintProps {
+  step: {
+    id: number;
+    isLeft: boolean;
+    y: number;
+    xOffset: number;
+    rotate: number;
+  };
+  scrollY: any;
+}
+
+const Footprint: React.FC<FootprintProps> = ({ step, scrollY }) => {
+  const targetY = step.y;
+  const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 1000;
+  
+  // Fade in as it approaches the center of the viewport, then fade out
+  const opacity = useTransform(
+    scrollY,
+    [targetY - viewportHeight * 0.8, targetY - viewportHeight * 0.4, targetY + viewportHeight * 0.2, targetY + viewportHeight * 0.6],
+    [0, 0.15, 0.15, 0]
+  );
+  
+  // Scale up as it appears
+  const scale = useTransform(
+    scrollY,
+    [targetY - viewportHeight * 0.8, targetY - viewportHeight * 0.4],
+    [0.7, 1]
+  );
+
+  // Parallax effect: shift the footprint vertically relative to scroll
+  const yOffset = useTransform(
+    scrollY,
+    [targetY - viewportHeight, targetY + viewportHeight],
+    [40, -40]
+  );
+
+  return (
+    <motion.div
+      style={{
+        opacity,
+        scale,
+        y: yOffset,
+        left: step.isLeft ? `calc(6% + ${step.xOffset}px)` : `calc(94% + ${step.xOffset}px)`,
+        top: step.y,
+        position: 'absolute',
+        rotate: step.rotate,
+        x: '-50%',
+        transformOrigin: 'center',
+      }}
+      className="text-brand-brown"
+    >
+      <div style={{ transform: step.isLeft ? 'scaleX(-1)' : 'none' }}>
+        <Footprints className="w-16 h-16" />
+      </div>
+      {/* Subtle glow */}
+      <motion.div 
+        animate={{ opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 bg-brand-orange/5 rounded-full blur-2xl -z-10"
+      />
+    </motion.div>
+  );
+};
+
 const WalkingTrail = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Generate a series of steps down the page
-  // We'll create enough steps to cover a typical long page
-  const stepInterval = 400; // pixels between steps
-  const steps = Array.from({ length: 30 }, (_, i) => ({
+  const { scrollY } = useScroll();
+  const smoothScrollY = useSpring(scrollY, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  // Generate steps with more organic placement
+  const steps = Array.from({ length: 45 }, (_, i) => ({
     id: i,
     isLeft: i % 2 === 0,
-    y: i * stepInterval + 600, // Start after hero
-    rotate: i % 2 === 0 ? -20 : 20
+    y: i * 320 + 700, // Spacing
+    xOffset: Math.sin(i * 0.4) * 25, // Organic path wobble
+    rotate: (i % 2 === 0 ? -15 : 15) + (Math.sin(i) * 8)
   }));
 
   return (
     <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden hidden lg:block">
-      {steps.map((step) => {
-        // Calculate distance from current viewport center to this step
-        const viewportCenter = scrollY + (typeof window !== 'undefined' ? window.innerHeight / 2 : 500);
-        const distance = Math.abs(step.y - viewportCenter);
-        
-        // Only show steps within a certain range of the current scroll position
-        const isNear = distance < 800;
-        
-        if (!isNear) return null;
-
-        return (
-          <motion.div
-            key={step.id}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ 
-              opacity: [0, 0.15, 0.05, 0.15, 0],
-              scale: [0.9, 1, 0.95, 1, 0.9],
-            }}
-            transition={{ 
-              duration: 4, 
-              repeat: Infinity, 
-              delay: step.id * 0.5,
-              ease: "easeInOut"
-            }}
-            className="absolute text-brand-brown"
-            style={{ 
-              left: step.isLeft ? '6%' : '94%', 
-              top: `${step.y}px`,
-              transform: `translate(-50%, -50%) rotate(${step.rotate}deg) ${step.isLeft ? 'scaleX(-1)' : ''}`
-            }}
-          >
-            <Footprints className="w-20 h-20 opacity-20" />
-            {/* Subtle glow effect for the "looping" feel */}
-            <motion.div 
-              animate={{ opacity: [0, 0.2, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: step.id * 0.5 }}
-              className="absolute inset-0 bg-brand-orange/10 rounded-full blur-xl"
-            />
-          </motion.div>
-        );
-      })}
+      {steps.map((step) => (
+        <Footprint key={step.id} step={step} scrollY={smoothScrollY} />
+      ))}
     </div>
   );
 };
@@ -1059,6 +1093,20 @@ export default function App() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterMessage, setNewsletterMessage] = useState('');
+  
+  // Filter States
+  const [painFilter, setPainFilter] = useState<string>('All');
+  const [areaFilter, setAreaFilter] = useState<string>('All');
+
+  // Derive unique filter options
+  const allPainTypes = ['All', ...Array.from(new Set(CONDITIONS.flatMap(c => c.painType)))];
+  const allAreas = ['All', ...Array.from(new Set(CONDITIONS.flatMap(c => c.affectedArea)))];
+
+  const filteredConditions = CONDITIONS.filter(condition => {
+    const matchesPain = painFilter === 'All' || condition.painType.includes(painFilter);
+    const matchesArea = areaFilter === 'All' || condition.affectedArea.includes(areaFilter);
+    return matchesPain && matchesArea;
+  });
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1363,6 +1411,50 @@ export default function App() {
                 Select a profile below to unlock structured guidance, DIY protocols, and curated product recommendations tailored for your specific foot health needs.
               </p>
             </div>
+            
+            {/* Filter UI */}
+            <div className="flex flex-col gap-6 md:items-end">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60 ml-2">Type of Pain</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allPainTypes.map(type => (
+                      <button
+                        key={type}
+                        onClick={() => setPainFilter(type)}
+                        className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all border ${
+                          painFilter === type 
+                            ? 'bg-brand-orange text-white border-brand-orange shadow-md' 
+                            : 'bg-white text-brand-taupe border-brand-brown/10 hover:border-brand-orange/40'
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60 ml-2">Affected Area</label>
+                <div className="flex flex-wrap gap-2">
+                  {allAreas.map(area => (
+                    <button
+                      key={area}
+                      onClick={() => setAreaFilter(area)}
+                      className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all border ${
+                        areaFilter === area 
+                          ? 'bg-brand-brown text-brand-beige border-brand-brown shadow-md' 
+                          : 'bg-white text-brand-taupe border-brand-brown/10 hover:border-brand-orange/40'
+                      }`}
+                    >
+                      {area}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <div className="hidden md:block">
               <div className="w-24 h-24 rounded-full border border-brand-brown/10 flex items-center justify-center text-brand-brown/20 animate-spin-slow">
                 <Activity className="w-8 h-8" />
@@ -1371,24 +1463,47 @@ export default function App() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {CONDITIONS.map((condition, idx) => (
-              <motion.div
-                key={condition.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <ConditionCard 
-                  condition={condition} 
-                  onQuickView={() => setSelectedCondition(condition)}
-                  onLearnMore={() => {
-                    setSelectedCondition(condition);
-                    setView('detail');
-                  }}
-                />
-              </motion.div>
-            ))}
+            <AnimatePresence mode="popLayout">
+              {filteredConditions.length > 0 ? (
+                filteredConditions.map((condition, idx) => (
+                  <motion.div
+                    key={condition.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ConditionCard 
+                      condition={condition} 
+                      onQuickView={() => setSelectedCondition(condition)}
+                      onLearnMore={() => {
+                        setSelectedCondition(condition);
+                        setView('detail');
+                      }}
+                    />
+                  </motion.div>
+                ))
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="col-span-full py-20 text-center"
+                >
+                  <div className="w-20 h-20 bg-brand-beige rounded-full flex items-center justify-center mx-auto mb-6">
+                    <HelpCircle className="w-10 h-10 text-brand-taupe/20" />
+                  </div>
+                  <h3 className="text-2xl font-display font-bold text-brand-brown mb-2">No conditions found</h3>
+                  <p className="text-brand-taupe/60">Try adjusting your filters to find what you're looking for.</p>
+                  <button 
+                    onClick={() => { setPainFilter('All'); setAreaFilter('All'); }}
+                    className="mt-8 text-brand-orange font-bold uppercase tracking-widest text-[10px] hover:underline"
+                  >
+                    Reset all filters
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </section>

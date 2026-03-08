@@ -197,12 +197,29 @@ export const FootPainMap: React.FC = () => {
                 style={{ top: zone.position.top, left: zone.position.left }}
               >
                 <div className="relative flex items-center justify-center">
-                  {/* Pulse Rings */}
+                  {/* Constant Subtle Pulse for Inactive Zones */}
+                  {!isSelected && (
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.4, 1],
+                        opacity: [0.1, 0.3, 0.1]
+                      }}
+                      transition={{ 
+                        duration: 3, 
+                        repeat: Infinity, 
+                        ease: "easeInOut",
+                        delay: Math.random() * 2 // Stagger the pulses
+                      }}
+                      className="absolute w-12 h-12 rounded-full bg-brand-orange/40 pointer-events-none"
+                    />
+                  )}
+
+                  {/* Active/Hover Pulse Rings */}
                   <div className={`absolute w-16 h-16 rounded-full bg-brand-orange/20 animate-ping ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                   <div className={`absolute w-10 h-10 rounded-full border border-brand-orange/30 animate-pulse ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                   
                   {/* Main Marker */}
-                  <div className={`w-10 h-10 rounded-2xl border-2 border-white shadow-2xl transition-all duration-500 flex items-center justify-center ${isSelected ? 'bg-brand-orange scale-110 rotate-12' : 'bg-brand-brown group-hover:bg-brand-orange group-hover:rotate-6'}`}>
+                  <div className={`w-10 h-10 rounded-2xl border-2 border-white shadow-2xl transition-all duration-500 flex items-center justify-center ${isSelected ? 'bg-brand-orange scale-110 rotate-12 shadow-[0_0_20px_rgba(242,125,38,0.4)]' : 'bg-brand-brown group-hover:bg-brand-orange group-hover:rotate-6 shadow-lg'}`}>
                     <Icon className={`w-5 h-5 text-white`} />
                   </div>
                   

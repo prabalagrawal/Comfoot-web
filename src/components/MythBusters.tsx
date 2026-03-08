@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { 
   AlertCircle, 
   CheckCircle2, 
@@ -20,10 +20,14 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.1,
+        ease: [0.21, 0.47, 0.32, 0.98] 
+      }}
       className="perspective-1000 h-[450px] w-full group cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -107,6 +111,15 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
 };
 
 export const MythBusters: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+
   const myths = [
     {
       myth: "Flat feet are always unhealthy and must be treated.",
@@ -147,10 +160,16 @@ export const MythBusters: React.FC = () => {
   ];
 
   return (
-    <section id="myth-busters" className="py-24 md:py-32 bg-brand-beige/30 relative overflow-hidden">
+    <section id="myth-busters" ref={sectionRef} className="py-24 md:py-32 bg-brand-beige/30 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-[100px] -ml-48 -mb-48" />
+      <motion.div 
+        style={{ y: y1 }}
+        className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] -mr-48 -mt-48" 
+      />
+      <motion.div 
+        style={{ y: y2 }}
+        className="absolute bottom-0 left-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-[100px] -ml-48 -mb-48" 
+      />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center mb-16 md:mb-24">
