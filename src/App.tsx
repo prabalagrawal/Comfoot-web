@@ -420,6 +420,18 @@ const ConditionCard: React.FC<{
 };
 
 const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }> = ({ condition, onBack }) => {
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: contentRef,
+    offset: ["start center", "end center"]
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -443,7 +455,7 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
         </button>
 
         <div className="grid lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8" ref={contentRef}>
             <div className="flex items-center gap-3 mb-6">
               <span className="h-px w-12 bg-brand-orange" />
               <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">In-Depth Analysis</span>
@@ -523,8 +535,27 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
           </div>
 
           <div className="lg:col-span-4">
-            <div className="sticky top-32 space-y-8">
-              <div className="bg-white p-10 rounded-[3rem] border border-brand-brown/5 shadow-xl relative overflow-hidden">
+            <div className="sticky top-32 flex gap-8 items-start">
+              {/* Vertical Scroll Progress Indicator */}
+              <div className="hidden lg:flex flex-col items-center gap-4 py-8 h-[450px] shrink-0">
+                <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-brand-taupe/40 [writing-mode:vertical-lr] rotate-180">Reading Progress</span>
+                <div className="w-1 flex-1 bg-brand-brown/5 rounded-full overflow-hidden relative">
+                  <motion.div 
+                    className="absolute top-0 left-0 right-0 bg-brand-orange origin-top rounded-full"
+                    style={{ height: '100%', scaleY }}
+                  />
+                </div>
+                <div className="w-2 h-2 rounded-full border-2 border-brand-orange/20 flex items-center justify-center">
+                  <motion.div 
+                    className="w-1 h-1 rounded-full bg-brand-orange"
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-8">
+                <div className="bg-white p-10 rounded-[3rem] border border-brand-brown/5 shadow-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full -mr-16 -mt-16 blur-2xl" />
                 
                 <div className="flex items-center gap-3 mb-8">
@@ -576,6 +607,7 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
             </div>
           </div>
         </div>
+      </div>
       </div>
     </motion.div>
   );
@@ -1634,9 +1666,20 @@ export default function App() {
                   </div>
                   <h3 className="text-3xl font-display font-bold text-brand-beige">Have Questions?</h3>
                   <p className="text-lg opacity-70 font-light leading-relaxed">Our team is here to help you navigate your foot wellness journey with care and guidance.</p>
-                  <button className="bg-brand-gold text-brand-brown px-12 py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-beige hover:text-brand-brown transition-all shadow-xl active:scale-95">
-                    Contact Us
-                  </button>
+                  <div className="flex flex-col items-center gap-6">
+                    <a href="mailto:hello@comfoot.in" className="bg-brand-gold text-brand-brown px-12 py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-beige hover:text-brand-brown transition-all shadow-xl active:scale-95">
+                      Contact Us
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/comfoot._/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-brand-gold hover:text-brand-beige transition-all group/insta px-6 py-2 rounded-full border border-brand-gold/20 hover:border-brand-beige/40"
+                    >
+                      <Instagram className="w-4 h-4 group-hover/insta:rotate-12 transition-transform" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em]">@comfoot._</span>
+                    </a>
+                  </div>
                 </div>
               </div>
               
