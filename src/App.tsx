@@ -16,7 +16,8 @@ import {
   Instagram,
   Mail,
   Share2,
-  Check
+  Check,
+  ChevronLeft
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -371,22 +372,200 @@ const Navbar: React.FC = () => {
   );
 };
 
-const ConditionCard: React.FC<{ condition: Condition; onClick: () => void }> = ({ condition, onClick }) => {
+const ConditionCard: React.FC<{ 
+  condition: Condition; 
+  onQuickView: () => void;
+  onLearnMore: () => void;
+}> = ({ condition, onQuickView, onLearnMore }) => {
   return (
-    <motion.button
-      onClick={onClick}
+    <motion.div
       whileHover={{ y: -8 }}
-      className="bg-white p-8 rounded-[2rem] shadow-soft border border-brand-brown/5 flex flex-col items-start gap-4 transition-all group text-left w-full hover:border-brand-orange/20"
+      className="bg-white p-8 rounded-[2rem] shadow-soft border border-brand-brown/5 flex flex-col items-start gap-4 transition-all group text-left w-full hover:border-brand-orange/20 h-full"
     >
       <div className="bg-brand-orange/10 p-4 rounded-2xl group-hover:bg-brand-orange group-hover:text-brand-beige transition-all duration-500 text-brand-orange">
         <Activity className="w-6 h-6" />
       </div>
       <h3 className="text-2xl font-display font-bold text-brand-brown group-hover:text-brand-orange transition-colors">{condition.title}</h3>
-      <p className="text-sm text-brand-taupe/80 leading-relaxed font-light">{condition.shortDesc}</p>
-      <div className="mt-auto pt-6 flex items-center gap-2 text-brand-orange font-bold text-xs uppercase tracking-widest">
-        View Profile <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      <p className="text-sm text-brand-taupe/80 leading-relaxed font-light flex-1">{condition.shortDesc}</p>
+      
+      <div className="mt-auto pt-6 flex flex-col gap-3 w-full">
+        <button 
+          onClick={onQuickView}
+          className="flex items-center justify-between w-full text-brand-orange font-bold text-[10px] uppercase tracking-widest group/btn"
+        >
+          Quick View <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+        </button>
+        
+        <button 
+          onClick={onLearnMore}
+          className="w-full bg-brand-brown text-brand-beige py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-brand-orange transition-all shadow-sm active:scale-95 text-center"
+        >
+          Learn More
+        </button>
       </div>
-    </motion.button>
+    </motion.div>
+  );
+};
+
+const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }> = ({ condition, onBack }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      className="min-h-screen bg-brand-beige/30 pt-32 pb-20"
+    >
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 text-brand-brown hover:text-brand-orange transition-colors mb-12 group"
+        >
+          <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/20">
+            <ChevronLeft className="w-5 h-5" />
+          </div>
+          <span className="text-xs font-bold uppercase tracking-widest">Back to Explore</span>
+        </button>
+
+        <div className="grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-8">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-12 bg-brand-orange" />
+              <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">In-Depth Analysis</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-brand-brown mb-8 leading-tight">
+              {condition.title}
+            </h1>
+            
+            <p className="text-2xl leading-relaxed text-brand-taupe mb-16 font-light">
+              {condition.fullDesc}
+            </p>
+
+            <div className="space-y-20">
+              <section>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                    <Info className="w-6 h-6" />
+                  </div>
+                  <h2 className="text-2xl font-display font-bold text-brand-brown">Understanding the Condition</h2>
+                </div>
+                <div className="prose prose-brand max-w-none text-lg text-brand-taupe/90 leading-relaxed bg-white p-10 rounded-[2.5rem] border border-brand-brown/5 shadow-soft">
+                  <p>{condition.whatIsIt}</p>
+                </div>
+              </section>
+
+              <div className="grid md:grid-cols-2 gap-12">
+                <section>
+                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-6 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-orange" /> Common Causes
+                  </h3>
+                  <div className="bg-white p-8 rounded-[2rem] border border-brand-brown/5 shadow-soft">
+                    <ul className="space-y-4">
+                      {condition.causes.map((cause, i) => (
+                        <li key={i} className="text-sm flex items-start gap-4 text-brand-taupe group">
+                          <div className="w-8 h-8 rounded-lg bg-brand-beige flex items-center justify-center shrink-0 text-brand-brown font-bold text-[10px] group-hover:bg-brand-orange group-hover:text-white transition-colors">
+                            0{i + 1}
+                          </div>
+                          <span className="pt-1.5">{cause}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-6 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold" /> Key Symptoms
+                  </h3>
+                  <div className="bg-white p-8 rounded-[2rem] border border-brand-brown/5 shadow-soft">
+                    <ul className="space-y-6">
+                      {condition.symptoms.map((symptom, i) => (
+                        <li key={i} className="group">
+                          <h4 className="text-sm font-bold text-brand-brown mb-1 group-hover:text-brand-orange transition-colors">{symptom.name}</h4>
+                          <p className="text-xs text-brand-taupe/70 leading-relaxed">{symptom.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+              </div>
+
+              <section>
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-8">Self-Care & DIY Protocols</h3>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {condition.diySupport.map((tip, i) => (
+                    <div key={i} className="bg-brand-brown text-brand-beige p-8 rounded-[2rem] flex items-center gap-5 group hover:bg-brand-orange transition-colors duration-500">
+                      <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10 group-hover:rotate-12 transition-transform">
+                        <CheckCircle2 className="w-6 h-6" />
+                      </div>
+                      <span className="text-sm font-bold uppercase tracking-widest leading-relaxed">{tip}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div className="lg:col-span-4">
+            <div className="sticky top-32 space-y-8">
+              <div className="bg-white p-10 rounded-[3rem] border border-brand-brown/5 shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+                
+                <div className="flex items-center gap-3 mb-8">
+                  <ShieldCheck className="text-brand-orange w-6 h-6" />
+                  <h3 className="text-2xl font-display font-bold text-brand-brown">Curated Gear</h3>
+                </div>
+                
+                <p className="text-sm text-brand-taupe/70 mb-10 leading-relaxed">
+                  We've handpicked these specific solutions to help manage {condition.title} effectively.
+                </p>
+
+                <div className="space-y-6">
+                  {condition.products.map((product, i) => (
+                    <div key={i} className="p-6 rounded-2xl bg-brand-beige/50 border border-brand-brown/5 hover:border-brand-orange/20 transition-all group">
+                      <h4 className="font-bold text-brand-brown mb-2 group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                      <p className="text-xs text-brand-taupe/70 mb-4 line-clamp-2">{product.description}</p>
+                      <a 
+                        href={product.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] font-bold uppercase tracking-widest text-brand-orange flex items-center gap-2 hover:gap-3 transition-all"
+                      >
+                        View on Amazon <ArrowRight className="w-3 h-3" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-10 pt-10 border-t border-brand-brown/5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Info className="w-3.5 h-3.5 text-brand-taupe/40" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">Affiliate Disclosure</span>
+                  </div>
+                  <p className="text-[10px] text-brand-taupe/40 leading-relaxed italic">
+                    Comfoot earns a small commission from qualifying purchases at no extra cost to you.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-brand-orange p-10 rounded-[3rem] text-white shadow-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <HelpCircle className="w-12 h-12 mb-6 opacity-50" />
+                <h3 className="text-2xl font-display font-bold mb-4">Still in Pain?</h3>
+                <p className="text-sm opacity-90 mb-8 leading-relaxed">If symptoms persist for more than 2 weeks, we strongly recommend consulting a podiatrist.</p>
+                <a href="#about" className="inline-block bg-white text-brand-orange px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-brown hover:text-white transition-all">
+                  Contact Support
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -695,8 +874,187 @@ const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = 
   );
 };
 
+const FloatingParticles = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            x: Math.random() * 100 + "%", 
+            y: Math.random() * 100 + "%",
+            opacity: Math.random() * 0.5 + 0.1
+          }}
+          animate={{ 
+            y: [null, (Math.random() - 0.5) * 100 + "px"],
+            x: [null, (Math.random() - 0.5) * 100 + "px"],
+          }}
+          transition={{ 
+            duration: Math.random() * 10 + 10, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          className="absolute w-1 h-1 bg-brand-orange rounded-full"
+          style={{ 
+            width: Math.random() * 4 + 2 + "px",
+            height: Math.random() * 4 + 2 + "px",
+            filter: "blur(1px)"
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const ScrollProgressFootprints = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Number of footprints to show in the side track
+  const footprintCount = 12;
+
+  return (
+    <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[60] hidden lg:flex flex-col items-center gap-6 pointer-events-none">
+      <div className="relative h-64 w-8 flex flex-col items-center justify-between">
+        {/* Track Line */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-brand-brown/10" />
+        
+        {/* Footprints */}
+        {[...Array(footprintCount)].map((_, i) => {
+          const stepProgress = (i / (footprintCount - 1)) * 100;
+          const isActive = scrollProgress >= stepProgress;
+          const isLeft = i % 2 === 0;
+
+          return (
+            <motion.div
+              key={i}
+              initial={false}
+              animate={{ 
+                opacity: isActive ? 1 : 0.1,
+                scale: isActive ? 1.1 : 0.8,
+                color: isActive ? "#F27D26" : "#2D241E",
+                x: isLeft ? -6 : 6
+              }}
+              transition={{ duration: 0.3 }}
+              className="relative z-10"
+            >
+              <Footprints 
+                className={`w-4 h-4 transition-colors duration-500 ${isLeft ? '-scale-x-100' : ''}`} 
+                style={{ transform: `rotate(${isLeft ? -15 : 15}deg) ${isLeft ? 'scaleX(-1)' : ''}` }}
+              />
+            </motion.div>
+          );
+        })}
+
+        {/* Moving Indicator Footprint */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 z-20 text-brand-orange"
+          animate={{ 
+            top: `${scrollProgress}%`,
+            x: (scrollProgress % 10 > 5) ? 8 : -8,
+            rotate: (scrollProgress % 10 > 5) ? 15 : -15,
+            scaleX: (scrollProgress % 10 > 5) ? 1 : -1
+          }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        >
+          <div className="relative">
+            <Footprints className="w-6 h-6 drop-shadow-lg" />
+            <motion.div 
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="absolute inset-0 bg-brand-orange/20 rounded-full blur-md"
+            />
+          </div>
+        </motion.div>
+      </div>
+      
+      <div className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-taupe/40 [writing-mode:vertical-rl] rotate-180">
+        Progress
+      </div>
+    </div>
+  );
+};
+
+const WalkingTrail = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Generate a series of steps down the page
+  // We'll create enough steps to cover a typical long page
+  const stepInterval = 400; // pixels between steps
+  const steps = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    isLeft: i % 2 === 0,
+    y: i * stepInterval + 600, // Start after hero
+    rotate: i % 2 === 0 ? -20 : 20
+  }));
+
+  return (
+    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden hidden lg:block">
+      {steps.map((step) => {
+        // Calculate distance from current viewport center to this step
+        const viewportCenter = scrollY + (typeof window !== 'undefined' ? window.innerHeight / 2 : 500);
+        const distance = Math.abs(step.y - viewportCenter);
+        
+        // Only show steps within a certain range of the current scroll position
+        const isNear = distance < 800;
+        
+        if (!isNear) return null;
+
+        return (
+          <motion.div
+            key={step.id}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: [0, 0.15, 0.05, 0.15, 0],
+              scale: [0.9, 1, 0.95, 1, 0.9],
+            }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              delay: step.id * 0.5,
+              ease: "easeInOut"
+            }}
+            className="absolute text-brand-brown"
+            style={{ 
+              left: step.isLeft ? '6%' : '94%', 
+              top: `${step.y}px`,
+              transform: `translate(-50%, -50%) rotate(${step.rotate}deg) ${step.isLeft ? 'scaleX(-1)' : ''}`
+            }}
+          >
+            <Footprints className="w-20 h-20 opacity-20" />
+            {/* Subtle glow effect for the "looping" feel */}
+            <motion.div 
+              animate={{ opacity: [0, 0.2, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: step.id * 0.5 }}
+              className="absolute inset-0 bg-brand-orange/10 rounded-full blur-xl"
+            />
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+};
+
 export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
+  const [view, setView] = useState<'home' | 'detail'>('home');
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -743,6 +1101,40 @@ export default function App() {
     return <AdminDashboard onBack={() => setShowAdmin(false)} />;
   }
 
+  if (view === 'detail' && selectedCondition) {
+    return (
+      <div className="min-h-screen bg-brand-beige/50">
+        <Navbar />
+        <ConditionDetailView 
+          condition={selectedCondition} 
+          onBack={() => {
+            setView('home');
+            setSelectedCondition(null);
+          }} 
+        />
+        <footer className="bg-brand-beige text-brand-taupe pt-32 pb-12 px-6 border-t border-brand-brown/5 relative overflow-hidden">
+          {/* Subtle Background Texture */}
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2D241E 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="pt-12 border-t border-brand-brown/5 flex flex-col md:flex-row justify-between items-center gap-8">
+              <div className="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">
+                <span>&copy; {new Date().getFullYear()} Comfoot</span>
+                <a href="#" className="hover:text-brand-brown transition-colors">Privacy Policy</a>
+                <a href="#" className="hover:text-brand-brown transition-colors">Terms of Service</a>
+              </div>
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">
+                <span>Made with</span>
+                <Activity className="w-3 h-3 text-brand-orange" />
+                <span>for your soles</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-brand-beige/50">
       {/* Global Floating Decorative Elements */}
@@ -753,6 +1145,8 @@ export default function App() {
       </div>
 
       <Navbar />
+      <ScrollProgressFootprints />
+      <WalkingTrail />
 
       <AnimatePresence>
         {selectedCondition && (
@@ -806,8 +1200,24 @@ export default function App() {
                 Our Philosophy
               </a>
             </div>
+
+            {/* Scroll Indicator */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+              className="mt-20 flex flex-col items-center gap-3"
+            >
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-taupe/40">Scroll to Explore</span>
+              <motion.div 
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="w-px h-12 bg-gradient-to-b from-brand-orange to-transparent"
+              />
+            </motion.div>
           </motion.div>
         </div>
+        <FloatingParticles />
       </header>
 
       {/* Why Comfoot - Bento Grid Section */}
@@ -971,7 +1381,11 @@ export default function App() {
               >
                 <ConditionCard 
                   condition={condition} 
-                  onClick={() => setSelectedCondition(condition)}
+                  onQuickView={() => setSelectedCondition(condition)}
+                  onLearnMore={() => {
+                    setSelectedCondition(condition);
+                    setView('detail');
+                  }}
                 />
               </motion.div>
             ))}
@@ -1024,12 +1438,23 @@ export default function App() {
                       <span className="text-sm text-brand-taupe font-light italic leading-relaxed">"{c.products[0].bestFor}"</span>
                     </td>
                     <td className="p-8 text-right">
-                      <button 
-                        onClick={() => setSelectedCondition(c)}
-                        className="text-[10px] font-bold uppercase tracking-widest text-brand-orange hover:text-brand-orange transition-colors flex items-center gap-2 ml-auto"
-                      >
-                        View Profile <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center justify-end gap-4">
+                        <button 
+                          onClick={() => setSelectedCondition(c)}
+                          className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe hover:text-brand-orange transition-colors"
+                        >
+                          Quick View
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setSelectedCondition(c);
+                            setView('detail');
+                          }}
+                          className="text-[10px] font-bold uppercase tracking-widest text-brand-orange hover:text-brand-orange transition-colors flex items-center gap-2"
+                        >
+                          Learn More <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

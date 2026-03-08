@@ -50,8 +50,18 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 backface-hidden bg-brand-brown rounded-[2rem] p-8 md:p-10 flex flex-col justify-center gap-6 text-brand-beige rotate-y-180">
-          <div className="space-y-6">
+        <div className="absolute inset-0 backface-hidden bg-brand-brown rounded-[2rem] p-8 md:p-10 flex flex-col justify-center gap-6 text-brand-beige rotate-y-180 relative overflow-hidden">
+          {/* Animated Glow Effect */}
+          <motion.div 
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-brand-orange/20 rounded-full blur-[80px] pointer-events-none"
+          />
+          
+          <div className="relative z-10 space-y-6">
             {/* Myth Section */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">

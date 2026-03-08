@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, Info, X } from 'lucide-react';
+import { ChevronRight, Info, X, Target, Activity, Zap, ShieldCheck, Search, ArrowRight } from 'lucide-react';
 
 interface PainZone {
   id: string;
@@ -9,6 +9,8 @@ interface PainZone {
   description: string;
   tips: string[];
   position: { top: string; left: string };
+  icon: React.ElementType;
+  color: string;
 }
 
 const painZones: PainZone[] = [
@@ -23,7 +25,9 @@ const painZones: PainZone[] = [
       'Avoid walking barefoot on hard surfaces',
       'Look for shoes with superior shock absorption'
     ],
-    position: { top: '75%', left: '48%' }
+    position: { top: '75%', left: '48%' },
+    icon: Target,
+    color: 'text-rose-500'
   },
   {
     id: 'arch',
@@ -36,7 +40,9 @@ const painZones: PainZone[] = [
       'Strengthen foot muscles with "towel curls"',
       'Ensure proper shoe width to prevent compression'
     ],
-    position: { top: '55%', left: '42%' }
+    position: { top: '55%', left: '42%' },
+    icon: Activity,
+    color: 'text-emerald-500'
   },
   {
     id: 'ball',
@@ -49,7 +55,9 @@ const painZones: PainZone[] = [
       'Avoid high heels or narrow-pointed shoes',
       'Opt for maximum forefoot cushioning'
     ],
-    position: { top: '30%', left: '50%' }
+    position: { top: '30%', left: '50%' },
+    icon: Zap,
+    color: 'text-amber-500'
   },
   {
     id: 'ankle',
@@ -62,30 +70,51 @@ const painZones: PainZone[] = [
       'Balance training to improve proprioception',
       'Compression sleeves for mild swelling'
     ],
-    position: { top: '85%', left: '65%' }
+    position: { top: '85%', left: '65%' },
+    icon: ShieldCheck,
+    color: 'text-sky-500'
   }
 ];
 
+const ScanningLine = () => (
+  <motion.div
+    animate={{ top: ['0%', '100%', '0%'] }}
+    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+    className="absolute left-0 right-0 h-0.5 bg-brand-orange/30 z-20 pointer-events-none shadow-[0_0_15px_rgba(242,125,38,0.5)]"
+  />
+);
+
 export const FootPainMap: React.FC = () => {
   const [selectedZone, setSelectedZone] = useState<PainZone | null>(null);
+  const [isScanning, setIsScanning] = useState(true);
 
   return (
-    <section id="pain-map" className="section-padding bg-white/50 rounded-3xl my-12">
-      <div className="text-center mb-16">
-        <motion.span 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+    <section id="pain-map" className="section-padding bg-brand-beige/20 rounded-[3rem] my-24 relative overflow-hidden border border-brand-brown/5">
+      {/* HUD Decorative Elements */}
+      <div className="absolute top-8 left-8 flex flex-col gap-1 opacity-40">
+        <div className="text-[8px] font-mono text-brand-brown uppercase tracking-widest">Diagnostic HUD v2.4</div>
+        <div className="text-[8px] font-mono text-brand-brown uppercase tracking-widest">Status: {isScanning ? 'Scanning...' : 'Analysis Ready'}</div>
+      </div>
+      <div className="absolute bottom-8 right-8 flex flex-col gap-1 opacity-40 text-right">
+        <div className="text-[8px] font-mono text-brand-brown uppercase tracking-widest">Coordinates: [34.05, -118.24]</div>
+        <div className="text-[8px] font-mono text-brand-brown uppercase tracking-widest">Sensor: Active</div>
+      </div>
+
+      <div className="text-center mb-16 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="text-brand-orange font-semibold tracking-widest uppercase text-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/10 text-brand-orange rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-brand-orange/20"
         >
-          Interactive Diagnostic
-        </motion.span>
+          <Search className="w-3 h-3" /> Interactive Diagnostic
+        </motion.div>
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl mt-4 mb-6"
+          className="text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6"
         >
           Where does it <span className="text-brand-orange italic">hurt?</span>
         </motion.h2>
@@ -94,106 +123,151 @@ export const FootPainMap: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-brand-taupe max-w-2xl mx-auto text-lg"
+          className="text-brand-taupe max-w-2xl mx-auto text-lg font-light leading-relaxed"
         >
           Click on the areas of the foot below to discover tailored advice and the right support for your specific needs.
         </motion.p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
         {/* Interactive Foot Diagram */}
-        <div className="relative aspect-[4/5] max-w-md mx-auto w-full bg-brand-beige/30 rounded-full p-8 flex items-center justify-center overflow-hidden border border-brand-brown/5">
-          <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="relative aspect-[4/5] max-w-md mx-auto w-full bg-white rounded-[3rem] p-12 flex items-center justify-center overflow-hidden border border-brand-brown/5 shadow-xl group">
+          <ScanningLine />
+          
+          <div className="absolute inset-0 opacity-5 pointer-events-none">
             <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
               <defs>
-                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <pattern id="grid-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
                   <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5"/>
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
+              <rect width="100%" height="100%" fill="url(#grid-pattern)" />
             </svg>
           </div>
 
           {/* Simple Stylized Foot SVG */}
-          <svg viewBox="0 0 200 300" className="w-full h-full drop-shadow-2xl">
-            <path 
-              d="M100,280 C60,280 40,250 40,200 C40,150 60,120 80,100 C90,90 95,70 95,50 C95,30 110,20 120,20 C135,20 150,40 150,70 C150,100 140,130 140,160 C140,200 150,230 150,260 C150,280 130,280 100,280 Z" 
-              fill="white" 
-              stroke="#5B4A3A" 
-              strokeWidth="2"
-              className="transition-colors duration-500"
-            />
-            {/* Toes (Simplified) */}
-            <circle cx="120" cy="35" r="15" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
-            <circle cx="145" cy="55" r="10" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
-            <circle cx="155" cy="85" r="8" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
-            <circle cx="158" cy="115" r="7" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
-            <circle cx="155" cy="145" r="6" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
-          </svg>
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Heatmap Glow */}
+            <AnimatePresence>
+              {selectedZone && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="absolute inset-0 blur-[40px] opacity-30 pointer-events-none"
+                  style={{ 
+                    background: `radial-gradient(circle at ${selectedZone.position.left} ${selectedZone.position.top}, var(--brand-orange), transparent 50%)`
+                  }}
+                />
+              )}
+            </AnimatePresence>
+
+            <svg viewBox="0 0 200 300" className="w-full h-full drop-shadow-2xl relative z-10">
+              <motion.path 
+                animate={{ 
+                  stroke: selectedZone ? '#F27D26' : '#5B4A3A',
+                  strokeWidth: selectedZone ? 3 : 2
+                }}
+                d="M100,280 C60,280 40,250 40,200 C40,150 60,120 80,100 C90,90 95,70 95,50 C95,30 110,20 120,20 C135,20 150,40 150,70 C150,100 140,130 140,160 C140,200 150,230 150,260 C150,280 130,280 100,280 Z" 
+                fill="white" 
+                className="transition-colors duration-500"
+              />
+              {/* Toes (Simplified) */}
+              <circle cx="120" cy="35" r="15" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
+              <circle cx="145" cy="55" r="10" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
+              <circle cx="155" cy="85" r="8" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
+              <circle cx="158" cy="115" r="7" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
+              <circle cx="155" cy="145" r="6" fill="white" stroke="#5B4A3A" strokeWidth="1.5" />
+            </svg>
+          </div>
 
           {/* Interaction Points */}
-          {painZones.map((zone) => (
-            <button
-              key={zone.id}
-              onClick={() => setSelectedZone(zone)}
-              className={`absolute group z-10 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300`}
-              style={{ top: zone.position.top, left: zone.position.left }}
-            >
-              <div className={`relative flex items-center justify-center`}>
-                <div className={`absolute w-12 h-12 rounded-full bg-brand-orange/20 animate-ping ${selectedZone?.id === zone.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-                <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg transition-all duration-300 flex items-center justify-center ${selectedZone?.id === zone.id ? 'bg-brand-orange scale-125' : 'bg-brand-brown group-hover:bg-brand-orange'}`}>
-                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+          {painZones.map((zone) => {
+            const Icon = zone.icon;
+            const isSelected = selectedZone?.id === zone.id;
+            
+            return (
+              <button
+                key={zone.id}
+                onClick={() => {
+                  setSelectedZone(zone);
+                  setIsScanning(false);
+                }}
+                className={`absolute group z-30 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500`}
+                style={{ top: zone.position.top, left: zone.position.left }}
+              >
+                <div className="relative flex items-center justify-center">
+                  {/* Pulse Rings */}
+                  <div className={`absolute w-16 h-16 rounded-full bg-brand-orange/20 animate-ping ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+                  <div className={`absolute w-10 h-10 rounded-full border border-brand-orange/30 animate-pulse ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+                  
+                  {/* Main Marker */}
+                  <div className={`w-10 h-10 rounded-2xl border-2 border-white shadow-2xl transition-all duration-500 flex items-center justify-center ${isSelected ? 'bg-brand-orange scale-110 rotate-12' : 'bg-brand-brown group-hover:bg-brand-orange group-hover:rotate-6'}`}>
+                    <Icon className={`w-5 h-5 text-white`} />
+                  </div>
+                  
+                  {/* Label */}
+                  <div className={`absolute left-full ml-4 px-4 py-2 bg-brand-brown text-white text-[10px] font-bold uppercase tracking-widest rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 pointer-events-none shadow-2xl z-40`}>
+                    {zone.name}
+                  </div>
                 </div>
-                <span className={`absolute left-full ml-3 px-3 py-1 bg-brand-brown text-white text-xs rounded-full whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl`}>
-                  {zone.name}
-                </span>
-              </div>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
 
         {/* Guide Content */}
-        <div className="min-h-[400px] flex flex-col justify-center">
+        <div className="min-h-[450px] flex flex-col justify-center">
           <AnimatePresence mode="wait">
             {selectedZone ? (
               <motion.div
                 key={selectedZone.id}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="bg-white p-8 md:p-10 rounded-3xl shadow-soft border border-brand-brown/5 relative"
+                exit={{ opacity: 0, x: -30 }}
+                className="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-2xl border border-brand-brown/5 relative overflow-hidden"
               >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+                
                 <button 
-                  onClick={() => setSelectedZone(null)}
-                  className="absolute top-6 right-6 p-2 hover:bg-brand-beige rounded-full transition-colors"
+                  onClick={() => {
+                    setSelectedZone(null);
+                    setIsScanning(true);
+                  }}
+                  className="absolute top-8 right-8 p-3 bg-brand-beige/50 hover:bg-brand-orange hover:text-white rounded-full transition-all z-20"
                 >
-                  <X className="w-5 h-5 text-brand-taupe" />
+                  <X className="w-5 h-5" />
                 </button>
 
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
-                    <Info className="w-6 h-6 text-brand-orange" />
+                <div className="flex items-center gap-5 mb-10">
+                  <div className={`w-16 h-16 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange`}>
+                    <selectedZone.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-display">{selectedZone.title}</h3>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-brand-orange mb-1 block">Diagnostic Result</span>
+                    <h3 className="text-3xl font-display font-bold text-brand-brown">{selectedZone.title}</h3>
+                  </div>
                 </div>
 
-                <p className="text-brand-taupe text-lg leading-relaxed mb-8">
+                <p className="text-brand-taupe text-lg leading-relaxed mb-10 font-light">
                   {selectedZone.description}
                 </p>
 
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-brand-brown uppercase tracking-wider text-sm">Recommended Care:</h4>
-                  <ul className="grid gap-3">
+                <div className="space-y-6">
+                  <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-brown border-b border-brand-brown/10 pb-3">Recommended Care Protocol:</h4>
+                  <ul className="grid gap-4">
                     {selectedZone.tips.map((tip, i) => (
                       <motion.li 
                         key={i}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="flex items-start gap-3 text-brand-taupe"
+                        className="flex items-start gap-4 text-brand-taupe group"
                       >
-                        <ChevronRight className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-                        <span>{tip}</span>
+                        <div className="w-6 h-6 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-brand-orange group-hover:text-white transition-colors">
+                          <ChevronRight className="w-4 h-4" />
+                        </div>
+                        <span className="text-sm leading-relaxed">{tip}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -202,28 +276,34 @@ export const FootPainMap: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-10 w-full py-4 bg-brand-brown text-white rounded-2xl font-semibold hover:bg-brand-orange transition-colors flex items-center justify-center gap-2"
+                  className="mt-12 w-full py-5 bg-brand-brown text-brand-beige rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-3 shadow-xl"
                 >
                   Shop Targeted Solutions
-                  <ChevronRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </motion.button>
               </motion.div>
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-center p-12 border-2 border-dashed border-brand-brown/10 rounded-3xl flex flex-col items-center justify-center bg-brand-beige/10"
+                className="text-center p-16 border-2 border-dashed border-brand-brown/10 rounded-[3rem] flex flex-col items-center justify-center bg-white/40 backdrop-blur-sm"
               >
-                <div className="w-20 h-20 rounded-full bg-brand-beige flex items-center justify-center mb-6">
+                <div className="w-24 h-24 rounded-full bg-brand-beige flex items-center justify-center mb-8 relative">
                   <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                  >
-                    <Info className="w-10 h-10 text-brand-orange/40" />
-                  </motion.div>
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ repeat: Infinity, duration: 3 }}
+                    className="absolute inset-0 bg-brand-orange/10 rounded-full"
+                  />
+                  <Target className="w-10 h-10 text-brand-orange/40 relative z-10" />
                 </div>
-                <h3 className="text-xl font-display text-brand-brown mb-2">Select a pain point</h3>
-                <p className="text-brand-taupe">Click the markers on the foot diagram to explore targeted relief guides.</p>
+                <h3 className="text-2xl font-display font-bold text-brand-brown mb-4">Select a Pain Point</h3>
+                <p className="text-brand-taupe/70 max-w-xs mx-auto font-light leading-relaxed">
+                  Click the interactive markers on the foot diagram to begin your diagnostic analysis.
+                </p>
+                <div className="mt-8 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-orange animate-pulse">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brand-orange" />
+                  System Ready
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
