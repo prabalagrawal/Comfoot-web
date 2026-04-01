@@ -27,18 +27,18 @@
       },
       "required": ["userId", "date", "painLevel"]
     },
-    "QuizResult": {
-      "title": "Quiz Result",
-      "description": "The result of a foot problem quiz.",
+    "ProductFeedback": {
+      "title": "Product Feedback",
+      "description": "User feedback on product recommendations.",
       "type": "object",
       "properties": {
-        "scores": { "type": "object", "description": "The scores for each category." },
-        "answers": { "type": "object", "description": "The answers provided by the user." },
-        "resultId": { "type": "string", "description": "The ID of the determined result." },
-        "resultTitle": { "type": "string", "description": "The title of the determined result." },
-        "timestamp": { "type": "string", "format": "date-time", "description": "When the quiz was completed." }
+        "userId": { "type": "string", "description": "The ID of the user who provided feedback." },
+        "productId": { "type": "string", "description": "The name or ID of the product." },
+        "conditionId": { "type": "string", "description": "The ID of the condition the product was recommended for." },
+        "rating": { "type": "integer", "description": "Rating from 1 to 5." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the feedback was created." }
       },
-      "required": ["scores", "resultId", "resultTitle"]
+      "required": ["userId", "productId", "rating", "createdAt"]
     }
   },
   "firestore": {
@@ -50,9 +50,9 @@
       "schema": "JournalEntry",
       "description": "User's foot health journal entries."
     },
-    "/users/{userId}/quizResults": {
-      "schema": "QuizResult",
-      "description": "User's past quiz results."
+    "/productFeedback/{feedbackId}": {
+      "schema": "ProductFeedback",
+      "description": "Global product feedback collection."
     }
   }
 }

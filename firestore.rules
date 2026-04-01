@@ -46,12 +46,13 @@ service cloud.firestore {
              (data.activityLevel == null || data.activityLevel in ['low', 'moderate', 'high']);
     }
 
-    function isValidQuizResult(data) {
-      return hasOnlyAllowedFields(['scores', 'answers', 'resultId', 'resultTitle', 'timestamp']) &&
-             data.scores is map &&
-             data.resultId is string && data.resultId.size() > 0 &&
-             data.resultTitle is string && data.resultTitle.size() > 0 &&
-             (data.answers == null || data.answers is map);
+    function isValidProductFeedback(data) {
+      return hasOnlyAllowedFields(['userId', 'productId', 'conditionId', 'rating', 'createdAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.productId is string && data.productId.size() > 0 &&
+             data.conditionId is string && data.conditionId.size() > 0 &&
+             data.rating is int && data.rating >= 1 && data.rating <= 5 &&
+             data.createdAt is string;
     }
 
     // ===============================================================
@@ -68,12 +69,11 @@ service cloud.firestore {
         allow update: if isOwner(userId) && isValidJournalEntry(request.resource.data);
         allow delete: if isOwner(userId) || isAdmin();
       }
+    }
 
-      match /quizResults/{resultId} {
-        allow read: if isOwner(userId) || isAdmin();
-        allow create: if isOwner(userId) && isValidQuizResult(request.resource.data);
-        allow delete: if isOwner(userId) || isAdmin();
-      }
+    match /productFeedback/{feedbackId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated() && isValidProductFeedback(request.resource.data);
     }
   }
 }

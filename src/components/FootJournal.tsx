@@ -15,7 +15,9 @@ import {
   Sparkles,
   ChevronRight,
   ChevronLeft,
-  ArrowRight
+  ArrowRight,
+  Search,
+  Check
 } from 'lucide-react';
 import { db, auth } from '../firebase';
 import { collection, addDoc, query, where, orderBy, onSnapshot, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
@@ -44,6 +46,8 @@ export const FootJournal: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [insight, setInsight] = useState<string | null>(null);
   const [isGeneratingInsight, setIsGeneratingInsight] = useState(false);
+  const [symptomSearch, setSymptomSearch] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Form State
   const [newEntry, setNewEntry] = useState({
@@ -53,6 +57,22 @@ export const FootJournal: React.FC = () => {
     notes: '',
     activityLevel: 'moderate' as 'low' | 'moderate' | 'high'
   });
+
+  // Derive unique previous symptoms
+  const previousSymptoms = React.useMemo(() => {
+    const allSymptoms = entries.flatMap(e => e.symptoms);
+    return Array.from(new Set(allSymptoms));
+  }, [entries]);
+
+  // Filtered suggestions
+  const suggestions = React.useMemo(() => {
+    const combined = Array.from(new Set([...SYMPTOMS_LIST, ...previousSymptoms]));
+    if (!symptomSearch.trim()) return [];
+    return combined.filter(s => 
+      s.toLowerCase().includes(symptomSearch.toLowerCase()) && 
+      !newEntry.symptoms.includes(s)
+    ).slice(0, 5);
+  }, [symptomSearch, previousSymptoms, newEntry.symptoms]);
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -79,25 +99,14 @@ export const FootJournal: React.FC = () => {
     if (!auth.currentUser) return;
 
     try {
-      const entryData = {
+      await addDoc(collection(db, 'users', auth.currentUser.uid, 'journal'), {
         ...newEntry,
         userId: auth.currentUser.uid,
-      };
-
-      // Save to Firebase
-      await addDoc(collection(db, 'users', auth.currentUser.uid, 'journal'), {
-        ...entryData,
         createdAt: serverTimestamp()
       });
-
-      // Save to Postgres for model training
-      await fetch('/api/journal-entries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(entryData)
-      });
-
       setShowAddModal(false);
+      setSymptomSearch('');
+      setShowSuggestions(false);
       setNewEntry({
         date: new Date().toISOString().split('T')[0],
         painLevel: 5,
@@ -262,18 +271,7 @@ export const FootJournal: React.FC = () => {
 
                   {entry.symptoms.length > 0 && (
                     <div className="mb-6">
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-brand-taupe/60 block">Symptoms</span>
-                        <button 
-                          onClick={() => {
-                            const query = `${entry.symptoms.join(', ')} foot pain relief`;
-                            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-                          }}
-                          className="text-[8px] font-bold uppercase tracking-widest text-brand-orange hover:underline flex items-center gap-1"
-                        >
-                          <Info className="w-2.5 h-2.5" /> Search Relief
-                        </button>
-                      </div>
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-brand-taupe/60 block mb-3">Symptoms</span>
                       <div className="flex flex-wrap gap-2">
                         {entry.symptoms.map((s, i) => (
                           <span key={i} className="text-[9px] font-bold uppercase tracking-widest bg-brand-orange/10 text-brand-orange px-3 py-1 rounded-full border border-brand-orange/10">
@@ -323,7 +321,11 @@ export const FootJournal: React.FC = () => {
                 <div className="flex justify-between items-center mb-10">
                   <h3 className="text-3xl font-display font-bold text-brand-brown">New Journal Entry</h3>
                   <button 
-                    onClick={() => setShowAddModal(false)}
+                    onClick={() => {
+                      setShowAddModal(false);
+                      setSymptomSearch('');
+                      setShowSuggestions(false);
+                    }}
                     className="p-2 hover:bg-brand-brown/5 rounded-full transition-all"
                   >
                     <Plus className="w-6 h-6 rotate-45" />
@@ -377,30 +379,100 @@ export const FootJournal: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60">Symptoms Experienced</label>
-                    <div className="flex flex-wrap gap-3">
-                      {SYMPTOMS_LIST.map((s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          onClick={() => {
-                            const current = newEntry.symptoms;
-                            if (current.includes(s)) {
-                              setNewEntry({...newEntry, symptoms: current.filter(item => item !== s)});
-                            } else {
-                              setNewEntry({...newEntry, symptoms: [...current, s]});
+                  <div className="space-y-4 relative">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60">Symptoms Experienced</label>
+                      <span className="text-[9px] text-brand-taupe/40 italic">Type to search or add new</span>
+                    </div>
+                    
+                    <div className="relative">
+                      <div className="absolute left-5 top-1/2 -translate-y-1/2 text-brand-taupe/40">
+                        <Search className="w-4 h-4" />
+                      </div>
+                      <input 
+                        type="text"
+                        placeholder="Search symptoms (e.g. 'Cramping', 'Cold feet')..."
+                        value={symptomSearch}
+                        onChange={(e) => {
+                          setSymptomSearch(e.target.value);
+                          setShowSuggestions(true);
+                        }}
+                        onFocus={() => setShowSuggestions(true)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && symptomSearch.trim()) {
+                            e.preventDefault();
+                            const val = symptomSearch.trim();
+                            if (!newEntry.symptoms.includes(val)) {
+                              setNewEntry({...newEntry, symptoms: [...newEntry.symptoms, val]});
                             }
-                          }}
-                          className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                            newEntry.symptoms.includes(s) 
-                              ? 'bg-brand-orange text-white border-brand-orange' 
-                              : 'bg-white text-brand-taupe border-brand-brown/10 hover:border-brand-orange/40'
-                          }`}
-                        >
-                          {s}
-                        </button>
-                      ))}
+                            setSymptomSearch('');
+                            setShowSuggestions(false);
+                          }
+                        }}
+                        className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 pl-12 pr-6 text-sm focus:outline-none focus:border-brand-orange transition-colors"
+                      />
+
+                      <AnimatePresence>
+                        {showSuggestions && suggestions.length > 0 && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute z-50 left-0 right-0 top-full mt-2 bg-white border border-brand-brown/10 rounded-2xl shadow-xl overflow-hidden"
+                          >
+                            {suggestions.map((s) => (
+                              <button
+                                key={s}
+                                type="button"
+                                onClick={() => {
+                                  setNewEntry({...newEntry, symptoms: [...newEntry.symptoms, s]});
+                                  setSymptomSearch('');
+                                  setShowSuggestions(false);
+                                }}
+                                className="w-full text-left px-6 py-3 text-sm text-brand-taupe hover:bg-brand-orange/5 hover:text-brand-orange transition-colors flex items-center justify-between group"
+                              >
+                                {s}
+                                <Plus className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Selected Symptoms Tags */}
+                    {newEntry.symptoms.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        {newEntry.symptoms.map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => setNewEntry({...newEntry, symptoms: newEntry.symptoms.filter(item => item !== s)})}
+                            className="px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-brand-orange text-white flex items-center gap-2 group hover:bg-brand-orange/90 transition-all"
+                          >
+                            {s}
+                            <Plus className="w-3 h-3 rotate-45" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="pt-2">
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-brand-taupe/40 block mb-3">Common Suggestions</span>
+                      <div className="flex flex-wrap gap-2">
+                        {SYMPTOMS_LIST.filter(s => !newEntry.symptoms.includes(s)).slice(0, 6).map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => {
+                              setNewEntry({...newEntry, symptoms: [...newEntry.symptoms, s]});
+                            }}
+                            className="px-3 py-1.5 rounded-xl text-[9px] font-bold uppercase tracking-widest bg-white text-brand-taupe border border-brand-brown/10 hover:border-brand-orange/40 transition-all"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -418,7 +490,11 @@ export const FootJournal: React.FC = () => {
                   <div className="flex gap-4 pt-4">
                     <button 
                       type="button"
-                      onClick={() => setShowAddModal(false)}
+                      onClick={() => {
+                        setShowAddModal(false);
+                        setSymptomSearch('');
+                        setShowSuggestions(false);
+                      }}
                       className="flex-1 bg-white text-brand-brown py-5 rounded-2xl font-bold uppercase tracking-widest text-xs border border-brand-brown/10 hover:bg-brand-beige transition-all"
                     >
                       Cancel

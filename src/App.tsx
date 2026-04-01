@@ -21,11 +21,12 @@ import {
   LogOut,
   User as UserIcon,
   BookOpen,
-  Search
+  Star
 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
-import { auth, googleProvider, FirebaseUser } from './firebase';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent } from 'motion/react';
+import { auth, googleProvider, FirebaseUser, db } from './firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
   <div className={`flex items-center gap-3 ${className}`}>
@@ -49,34 +50,8 @@ import { FootProblemQuiz } from './components/FootProblemQuiz';
 import { MythBusters } from './components/MythBusters';
 import { AdminDashboard } from './components/AdminDashboard';
 import { FootJournal } from './components/FootJournal';
-
-// --- Types ---
-
-interface Product {
-  name: string;
-  description: string;
-  bestFor: string;
-  link: string;
-}
-
-interface Symptom {
-  name: string;
-  description: string;
-}
-
-interface Condition {
-  id: string;
-  title: string;
-  shortDesc: string;
-  fullDesc: string;
-  whatIsIt: string;
-  causes: string[];
-  symptoms: Symptom[];
-  diySupport: string[];
-  products: Product[];
-  painType: string[];
-  affectedArea: string[];
-}
+import { ConditionComparison } from './components/ConditionComparison';
+import { Condition, Product, Symptom } from './types';
 
 // --- Data ---
 
@@ -302,6 +277,108 @@ const CONDITIONS: Condition[] = [
 
 // --- Components ---
 
+const SymptomItem: React.FC<{ symptom: Symptom }> = ({ symptom }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <li 
+      className="text-sm flex items-start gap-3 text-brand-taupe group relative cursor-help"
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      onClick={() => setShowTooltip(!showTooltip)}
+    >
+      <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-1.5 shrink-0 group-hover:scale-125 transition-transform" />
+      <span className="border-b border-dotted border-brand-gold/40 group-hover:border-brand-gold transition-colors flex items-center gap-1.5">
+        {symptom.name}
+        <HelpCircle className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
+      </span>
+      
+      <AnimatePresence>
+        {showTooltip && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute z-50 bottom-full left-0 mb-4 w-72 bg-brand-brown/95 backdrop-blur-md text-brand-beige p-5 rounded-[1.5rem] shadow-2xl text-[11px] leading-relaxed pointer-events-none border border-white/10"
+          >
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 p-1 bg-brand-gold/20 rounded-lg text-brand-gold">
+                <Info className="w-3 h-3" />
+              </div>
+              <p>{symptom.description}</p>
+            </div>
+            <div className="absolute bottom-[-6px] left-6 w-3 h-3 bg-brand-brown/95 rotate-45 border-r border-b border-white/10" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
+  );
+};
+
+const ProductRating: React.FC<{ productId: string; conditionId: string; user: FirebaseUser | null }> = ({ productId, conditionId, user }) => {
+  const [rating, setRating] = useState<number | null>(null);
+  const [hover, setHover] = useState<number | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleRate = async (value: number) => {
+    if (!user) return;
+    setRating(value);
+    try {
+      await addDoc(collection(db, 'productFeedback'), {
+        userId: user.uid,
+        productId,
+        conditionId,
+        rating: value,
+        createdAt: new Date().toISOString()
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-600 mt-4 bg-emerald-50 px-3 py-2 rounded-lg border border-emerald-100"
+      >
+        <CheckCircle2 className="w-3 h-3" /> Thanks for your feedback!
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className="mt-4 pt-4 border-t border-brand-brown/5">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60 mb-2">Was this recommendation helpful?</p>
+      <div className="flex items-center gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            disabled={!user}
+            onMouseEnter={() => setHover(star)}
+            onMouseLeave={() => setHover(null)}
+            onClick={() => handleRate(star)}
+            className={`transition-all ${!user ? 'cursor-not-allowed opacity-50' : 'hover:scale-110 active:scale-95'}`}
+          >
+            <Star 
+              className={`w-4 h-4 transition-colors ${
+                (hover || rating || 0) >= star 
+                  ? 'fill-brand-orange text-brand-orange' 
+                  : 'text-brand-taupe/30'
+              }`} 
+            />
+          </button>
+        ))}
+        {!user && (
+          <span className="text-[9px] text-brand-taupe/40 ml-2 italic">Login to rate</span>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -461,25 +538,60 @@ const ConditionCard: React.FC<{
   condition: Condition; 
   onQuickView: () => void;
   onLearnMore: () => void;
-}> = ({ condition, onQuickView, onLearnMore }) => {
+  isComparing: boolean;
+  onToggleCompare: () => void;
+}> = ({ condition, onQuickView, onLearnMore, isComparing, onToggleCompare }) => {
   return (
     <motion.div
       whileHover={{ y: -8 }}
-      className="bg-white p-8 rounded-[2rem] shadow-soft border border-brand-brown/5 flex flex-col items-start gap-4 transition-all group text-left w-full hover:border-brand-orange/20 h-full"
+      className={`bg-white p-8 rounded-[2rem] shadow-soft border transition-all group text-left w-full h-full relative overflow-hidden ${
+        isComparing ? 'border-brand-orange ring-1 ring-brand-orange/20' : 'border-brand-brown/5 hover:border-brand-orange/20'
+      }`}
     >
-      <div className="bg-brand-orange/10 p-4 rounded-2xl group-hover:bg-brand-orange group-hover:text-brand-beige transition-all duration-500 text-brand-orange">
+      {/* Comparison Badge */}
+      <AnimatePresence>
+        {isComparing && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="absolute top-6 right-6 bg-brand-orange text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-10 shadow-lg"
+          >
+            Comparing
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className={`p-4 rounded-2xl transition-all duration-500 ${
+        isComparing ? 'bg-brand-orange text-brand-beige' : 'bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-beige'
+      }`}>
         <Activity className="w-6 h-6" />
       </div>
-      <h3 className="text-2xl font-display font-bold text-brand-brown group-hover:text-brand-orange transition-colors">{condition.title}</h3>
+      <h3 className="text-2xl font-display font-bold text-brand-brown group-hover:text-brand-orange transition-colors mt-4">{condition.title}</h3>
       <p className="text-sm text-brand-taupe/80 leading-relaxed font-light flex-1">{condition.shortDesc}</p>
       
       <div className="mt-auto pt-6 flex flex-col gap-3 w-full">
-        <button 
-          onClick={onQuickView}
-          className="flex items-center justify-between w-full text-brand-orange font-bold text-[10px] uppercase tracking-widest group/btn"
-        >
-          Quick View <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={onToggleCompare}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all border ${
+              isComparing 
+                ? 'bg-brand-orange/10 text-brand-orange border-brand-orange/20' 
+                : 'bg-brand-beige text-brand-taupe border-brand-brown/5 hover:border-brand-orange/20'
+            }`}
+          >
+            {isComparing ? <Check className="w-3 h-3" /> : <Share2 className="w-3 h-3 rotate-90" />}
+            {isComparing ? 'Selected' : 'Compare'}
+          </button>
+          
+          <button 
+            onClick={onQuickView}
+            className="p-2.5 bg-brand-beige text-brand-taupe rounded-xl border border-brand-brown/5 hover:border-brand-orange/20 transition-all"
+            title="Quick View"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+          </button>
+        </div>
         
         <button 
           onClick={onLearnMore}
@@ -492,17 +604,36 @@ const ConditionCard: React.FC<{
   );
 };
 
-const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }> = ({ condition, onBack }) => {
+const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser | null; onBack: () => void }> = ({ condition, user, onBack }) => {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: contentRef,
-    offset: ["start center", "end center"]
+    offset: ["start start", "end end"]
   });
 
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
+  });
+
+  const sectionLabel = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    ["Intro", "Science", "Causes", "Symptoms", "Care"]
+  );
+
+  const progressPercent = useTransform(scrollYProgress, (v) => Math.round(v * 100));
+
+  const [percent, setPercent] = useState(0);
+  const [currentSection, setCurrentSection] = useState("Intro");
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setPercent(Math.round(latest * 100));
+  });
+
+  useMotionValueEvent(sectionLabel, "change", (latest) => {
+    setCurrentSection(latest);
   });
 
   useEffect(() => {
@@ -576,15 +707,12 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
 
                 <section>
                   <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-6 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold" /> Key Symptoms
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold" /> Key Symptoms <HelpCircle className="w-3 h-3 opacity-50" />
                   </h3>
                   <div className="bg-white p-8 rounded-[2rem] border border-brand-brown/5 shadow-soft">
-                    <ul className="space-y-6">
+                    <ul className="space-y-4">
                       {condition.symptoms.map((symptom, i) => (
-                        <li key={i} className="group">
-                          <h4 className="text-sm font-bold text-brand-brown mb-1 group-hover:text-brand-orange transition-colors">{symptom.name}</h4>
-                          <p className="text-xs text-brand-taupe/70 leading-relaxed">{symptom.description}</p>
-                        </li>
+                        <SymptomItem key={i} symptom={symptom} />
                       ))}
                     </ul>
                   </div>
@@ -611,10 +739,22 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
             <div className="sticky top-32 flex gap-8 items-start">
               {/* Vertical Scroll Progress Indicator */}
               <div className="hidden lg:flex flex-col items-center gap-4 py-8 h-[450px] shrink-0">
-                <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-brand-taupe/40 [writing-mode:vertical-lr] rotate-180">Reading Progress</span>
+                <div className="flex flex-col items-center gap-2 mb-2">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-brand-taupe/40 [writing-mode:vertical-lr] rotate-180">Reading Progress</span>
+                  <motion.span className="text-[8px] font-bold text-brand-orange uppercase tracking-widest [writing-mode:vertical-lr] rotate-180">
+                    {currentSection}
+                  </motion.span>
+                </div>
                 <div className="w-1 flex-1 bg-brand-brown/5 rounded-full overflow-hidden relative">
+                  {/* Milestone Dots */}
+                  <div className="absolute inset-y-0 left-0 right-0 flex flex-col justify-between py-2 pointer-events-none z-0">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="w-full h-px bg-brand-brown/10" />
+                    ))}
+                  </div>
+                  
                   <motion.div 
-                    className="absolute top-0 left-0 right-0 bg-brand-orange origin-top rounded-full"
+                    className="absolute top-0 left-0 right-0 bg-brand-orange origin-top rounded-full z-10"
                     style={{ height: '100%', scaleY }}
                   />
                 </div>
@@ -625,6 +765,9 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 </div>
+                <motion.span className="text-[8px] font-bold text-brand-orange mt-1">
+                  {percent}%
+                </motion.span>
               </div>
 
               <div className="flex-1 space-y-8">
@@ -653,6 +796,7 @@ const ConditionDetailView: React.FC<{ condition: Condition; onBack: () => void }
                       >
                         View on Amazon <ArrowRight className="w-3 h-3" />
                       </a>
+                      <ProductRating productId={product.name} conditionId={condition.id} user={user} />
                     </div>
                   ))}
                 </div>
@@ -751,44 +895,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   );
 };
 
-const SymptomItem: React.FC<{ symptom: Symptom }> = ({ symptom }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  return (
-    <li 
-      className="text-sm flex items-start gap-3 text-brand-taupe group relative cursor-help"
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
-      onClick={() => setShowTooltip(!showTooltip)}
-    >
-      <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-1.5 shrink-0 group-hover:scale-125 transition-transform" />
-      <span className="border-b border-dotted border-brand-gold/40 group-hover:border-brand-gold transition-colors">
-        {symptom.name}
-      </span>
-      
-      <AnimatePresence>
-        {showTooltip && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute z-50 bottom-full left-0 mb-4 w-72 bg-brand-brown/95 backdrop-blur-md text-brand-beige p-5 rounded-[1.5rem] shadow-2xl text-[11px] leading-relaxed pointer-events-none border border-white/10"
-          >
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 p-1 bg-brand-gold/20 rounded-lg text-brand-gold">
-                <Info className="w-3 h-3" />
-              </div>
-              <p>{symptom.description}</p>
-            </div>
-            <div className="absolute bottom-[-6px] left-6 w-3 h-3 bg-brand-brown/95 rotate-45 border-r border-b border-white/10" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </li>
-  );
-};
-
-const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = ({ condition, onClose }) => {
+const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null; onClose: () => void }> = ({ condition, user, onClose }) => {
   const modalRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -972,6 +1079,7 @@ const ConditionModal: React.FC<{ condition: Condition; onClose: () => void }> = 
                       )}
                     </button>
                   </div>
+                  <ProductRating productId={product.name} conditionId={condition.id} user={user} />
                 </motion.div>
               );
             })}
@@ -1196,6 +1304,8 @@ export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [view, setView] = useState<'home' | 'detail'>('home');
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
+  const [compareList, setCompareList] = useState<string[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterMessage, setNewsletterMessage] = useState('');
@@ -1210,7 +1320,6 @@ export default function App() {
   // Filter States
   const [painFilter, setPainFilter] = useState<string>('All');
   const [areaFilter, setAreaFilter] = useState<string>('All');
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Derive unique filter options
   const allPainTypes = ['All', ...Array.from(new Set(CONDITIONS.flatMap(c => c.painType)))];
@@ -1219,10 +1328,7 @@ export default function App() {
   const filteredConditions = CONDITIONS.filter(condition => {
     const matchesPain = painFilter === 'All' || condition.painType.includes(painFilter);
     const matchesArea = areaFilter === 'All' || condition.affectedArea.includes(areaFilter);
-    const matchesSearch = condition.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          condition.shortDesc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          condition.fullDesc.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesPain && matchesArea && matchesSearch;
+    return matchesPain && matchesArea;
   });
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -1253,14 +1359,28 @@ export default function App() {
     }
   };
 
+  const toggleCompare = (id: string) => {
+    setCompareList(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      }
+      if (prev.length >= 3) {
+        return [...prev.slice(1), id];
+      }
+      return [...prev, id];
+    });
+  };
+
+  const compareConditions = CONDITIONS.filter(c => compareList.includes(c.id));
+
   // Prevent scroll when modal is open
   useEffect(() => {
-    if (selectedCondition) {
+    if (selectedCondition || showComparison) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedCondition]);
+  }, [selectedCondition, showComparison]);
 
   if (showAdmin) {
     return <AdminDashboard onBack={() => setShowAdmin(false)} />;
@@ -1272,6 +1392,7 @@ export default function App() {
         <Navbar user={user} />
         <ConditionDetailView 
           condition={selectedCondition} 
+          user={user}
           onBack={() => {
             setView('home');
             setSelectedCondition(null);
@@ -1317,6 +1438,7 @@ export default function App() {
         {selectedCondition && (
           <ConditionModal 
             condition={selectedCondition} 
+            user={user}
             onClose={() => setSelectedCondition(null)} 
           />
         )}
@@ -1533,17 +1655,6 @@ export default function App() {
             
             {/* Filter UI */}
             <div className="flex flex-col gap-6 md:items-end">
-              <div className="relative w-full max-w-md">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-taupe/40" />
-                <input
-                  type="text"
-                  placeholder="Search conditions (e.g. 'heel', 'arch')..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-brand-beige/50 border border-brand-brown/10 rounded-full py-3 pl-12 pr-6 text-sm focus:outline-none focus:border-brand-orange/40 transition-all placeholder:text-brand-taupe/40"
-                />
-              </div>
-
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60 ml-2">Type of Pain</label>
@@ -1611,6 +1722,8 @@ export default function App() {
                         setSelectedCondition(condition);
                         setView('detail');
                       }}
+                      isComparing={compareList.includes(condition.id)}
+                      onToggleCompare={() => toggleCompare(condition.id)}
                     />
                   </motion.div>
                 ))
@@ -1638,8 +1751,75 @@ export default function App() {
         </div>
       </section>
 
+      {/* Comparison Floating Bar */}
+      <AnimatePresence>
+        {compareList.length > 0 && !showComparison && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-2xl"
+          >
+            <div className="bg-brand-brown text-brand-beige p-4 rounded-3xl shadow-2xl border border-white/10 backdrop-blur-xl flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {compareConditions.map((c, i) => (
+                    <motion.div 
+                      key={c.id}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-10 h-10 rounded-full bg-brand-orange border-2 border-brand-brown flex items-center justify-center text-[10px] font-bold shadow-lg"
+                      title={c.title}
+                    >
+                      {c.title.charAt(0)}
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="hidden sm:block">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-gold mb-0.5">Comparison List</p>
+                  <p className="text-xs opacity-70">{compareList.length} condition{compareList.length > 1 ? 's' : ''} selected</p>
+                </div>
+              </div>
 
-      {/* Comparison Table */}
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => setCompareList([])}
+                  className="text-[10px] font-bold uppercase tracking-widest px-4 py-2 hover:text-brand-orange transition-colors"
+                >
+                  Clear
+                </button>
+                <button 
+                  onClick={() => setShowComparison(true)}
+                  disabled={compareList.length < 2}
+                  className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${
+                    compareList.length >= 2 
+                      ? 'bg-brand-orange text-white hover:bg-brand-orange/90 shadow-lg active:scale-95' 
+                      : 'bg-white/10 text-white/40 cursor-not-allowed'
+                  }`}
+                >
+                  Compare Now <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Comparison Modal */}
+      <AnimatePresence>
+        {showComparison && (
+          <ConditionComparison 
+            conditions={compareConditions}
+            onClose={() => setShowComparison(false)}
+            onSelectCondition={(condition) => {
+              setSelectedCondition(condition);
+              setView('detail');
+              setShowComparison(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       <section id="compare" className="py-32 bg-brand-beige/50 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-brand-orange/10 rounded-full blur-[150px] -z-10" />
         
