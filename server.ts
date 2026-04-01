@@ -11,17 +11,30 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Database Client
-const client = createClient({
-  connectionString: process.env.POSTGRES_URL,
-});
+// Lazy initialization for Database Client
+let client: any = null;
 
-// Connect to the database
-client.connect().catch(err => console.error("Database connection error:", err));
+const getClient = () => {
+  if (!client) {
+    const connectionString = process.env.POSTGRES_URL;
+    if (!connectionString) {
+      console.warn("POSTGRES_URL not found. Database features will be disabled.");
+      return null;
+    }
+    client = createClient({ connectionString });
+    client.connect().catch((err: any) => console.error("Database connection error:", err));
+  }
+  return client;
+};
 
 // Use a wrapper for sql to maintain compatibility with existing code
 const sql = async (strings: TemplateStringsArray, ...values: any[]) => {
-  return client.sql(strings, ...values);
+  const dbClient = getClient();
+  if (!dbClient) {
+    console.warn("Database client not initialized. Skipping query.");
+    return { rows: [] };
+  }
+  return dbClient.sql(strings, ...values);
 };
 
 // Initialize Database Tables
