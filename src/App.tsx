@@ -17,9 +17,15 @@ import {
   Mail,
   Share2,
   Check,
-  ChevronLeft
+  ChevronLeft,
+  LogOut,
+  User as UserIcon,
+  BookOpen,
+  Search
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
+import { auth, googleProvider, FirebaseUser } from './firebase';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
   <div className={`flex items-center gap-3 ${className}`}>
@@ -42,6 +48,7 @@ const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?
 import { FootProblemQuiz } from './components/FootProblemQuiz';
 import { MythBusters } from './components/MythBusters';
 import { AdminDashboard } from './components/AdminDashboard';
+import { FootJournal } from './components/FootJournal';
 
 // --- Types ---
 
@@ -295,7 +302,7 @@ const CONDITIONS: Condition[] = [
 
 // --- Components ---
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -305,12 +312,29 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogin = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Quiz', href: '#quiz' },
     { name: 'Myths', href: '#myth-busters' },
     { name: 'Conditions', href: '#explore' },
     { name: 'Compare', href: '#compare' },
+    ...(user ? [{ name: 'Journal', href: '#journal' }] : []),
     { name: 'About', href: '#about' },
   ];
 
@@ -333,6 +357,35 @@ const Navbar: React.FC = () => {
                 {link.name}
               </a>
             ))}
+            <div className="w-px h-4 bg-brand-brown/10 mx-2" />
+            
+            {user ? (
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 px-4 py-2 bg-brand-beige rounded-full border border-brand-brown/10">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt={user.displayName || ''} className="w-6 h-6 rounded-full" referrerPolicy="no-referrer" />
+                  ) : (
+                    <UserIcon className="w-4 h-4 text-brand-brown" />
+                  )}
+                  <span className="text-[10px] font-bold text-brand-brown truncate max-w-[80px]">{user.displayName?.split(' ')[0]}</span>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  className="p-2.5 text-brand-taupe hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={handleLogin}
+                className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-brand-brown px-5 py-2.5 rounded-full hover:bg-brand-brown hover:text-brand-beige transition-all duration-300"
+              >
+                <UserIcon className="w-4 h-4" /> Login
+              </button>
+            )}
+
             <div className="w-px h-4 bg-brand-brown/10 mx-2" />
             <a 
               href="#explore" 
@@ -369,6 +422,26 @@ const Navbar: React.FC = () => {
                   {link.name}
                 </a>
               ))}
+              {user ? (
+                <div className="flex items-center justify-between p-4 bg-brand-brown/5 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
+                    ) : (
+                      <UserIcon className="w-5 h-5 text-brand-brown" />
+                    )}
+                    <span className="font-bold text-brand-brown">{user.displayName}</span>
+                  </div>
+                  <button onClick={handleLogout} className="text-rose-500 font-bold text-xs uppercase tracking-widest">Logout</button>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => { handleLogin(); setMobileMenuOpen(false); }}
+                  className="flex items-center justify-center gap-2 bg-brand-brown text-brand-beige py-3 rounded-xl font-bold uppercase tracking-widest text-xs"
+                >
+                  <UserIcon className="w-4 h-4" /> Login with Google
+                </button>
+              )}
               <a 
                 href="#explore" 
                 onClick={() => setMobileMenuOpen(false)}
@@ -1119,6 +1192,7 @@ const WalkingTrail = () => {
 };
 
 export default function App() {
+  const [user, setUser] = useState<FirebaseUser | null>(null);
   const [showAdmin, setShowAdmin] = useState(false);
   const [view, setView] = useState<'home' | 'detail'>('home');
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
@@ -1126,9 +1200,17 @@ export default function App() {
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterMessage, setNewsletterMessage] = useState('');
   
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+  
   // Filter States
   const [painFilter, setPainFilter] = useState<string>('All');
   const [areaFilter, setAreaFilter] = useState<string>('All');
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Derive unique filter options
   const allPainTypes = ['All', ...Array.from(new Set(CONDITIONS.flatMap(c => c.painType)))];
@@ -1137,7 +1219,10 @@ export default function App() {
   const filteredConditions = CONDITIONS.filter(condition => {
     const matchesPain = painFilter === 'All' || condition.painType.includes(painFilter);
     const matchesArea = areaFilter === 'All' || condition.affectedArea.includes(areaFilter);
-    return matchesPain && matchesArea;
+    const matchesSearch = condition.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          condition.shortDesc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          condition.fullDesc.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesPain && matchesArea && matchesSearch;
   });
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -1184,7 +1269,7 @@ export default function App() {
   if (view === 'detail' && selectedCondition) {
     return (
       <div className="min-h-screen bg-brand-beige/50">
-        <Navbar />
+        <Navbar user={user} />
         <ConditionDetailView 
           condition={selectedCondition} 
           onBack={() => {
@@ -1224,7 +1309,7 @@ export default function App() {
         <div className="absolute bottom-[10%] left-[10%] w-[20%] h-[20%] bg-brand-brown/10 rounded-full blur-[80px] animate-bounce-slow" />
       </div>
 
-      <Navbar />
+      <Navbar user={user} />
       <ScrollProgressFootprints />
       <WalkingTrail />
 
@@ -1363,6 +1448,8 @@ export default function App() {
       <MythBusters />
 
       <FootProblemQuiz />
+
+      {user && <FootJournal />}
       
       {/* Testimonials Section */}
       <section className="py-32 bg-brand-brown text-brand-beige relative overflow-hidden">
@@ -1446,6 +1533,17 @@ export default function App() {
             
             {/* Filter UI */}
             <div className="flex flex-col gap-6 md:items-end">
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-taupe/40" />
+                <input
+                  type="text"
+                  placeholder="Search conditions (e.g. 'heel', 'arch')..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-brand-beige/50 border border-brand-brown/10 rounded-full py-3 pl-12 pr-6 text-sm focus:outline-none focus:border-brand-orange/40 transition-all placeholder:text-brand-taupe/40"
+                />
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60 ml-2">Type of Pain</label>

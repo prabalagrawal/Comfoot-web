@@ -1,0 +1,58 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the Comfoot app.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "email": { "type": "string", "format": "email", "description": "The email of the user." },
+        "displayName": { "type": "string", "description": "The display name of the user." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user was created." }
+      },
+      "required": ["uid", "email"]
+    },
+    "JournalEntry": {
+      "title": "Journal Entry",
+      "description": "A daily log of foot health and symptoms.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The ID of the user who created this entry." },
+        "date": { "type": "string", "format": "date", "description": "The date of the entry." },
+        "painLevel": { "type": "integer", "description": "Pain level from 0 to 10." },
+        "symptoms": { "type": "array", "items": { "type": "string" }, "description": "List of symptoms experienced." },
+        "notes": { "type": "string", "description": "Additional notes or observations." },
+        "activityLevel": { "type": "string", "enum": ["low", "moderate", "high"], "description": "Activity level for the day." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the entry was created." }
+      },
+      "required": ["userId", "date", "painLevel"]
+    },
+    "QuizResult": {
+      "title": "Quiz Result",
+      "description": "The result of a foot problem quiz.",
+      "type": "object",
+      "properties": {
+        "scores": { "type": "object", "description": "The scores for each category." },
+        "answers": { "type": "object", "description": "The answers provided by the user." },
+        "resultId": { "type": "string", "description": "The ID of the determined result." },
+        "resultTitle": { "type": "string", "description": "The title of the determined result." },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the quiz was completed." }
+      },
+      "required": ["scores", "resultId", "resultTitle"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/users/{userId}/journal": {
+      "schema": "JournalEntry",
+      "description": "User's foot health journal entries."
+    },
+    "/users/{userId}/quizResults": {
+      "schema": "QuizResult",
+      "description": "User's past quiz results."
+    }
+  }
+}

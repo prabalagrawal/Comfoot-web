@@ -3,16 +3,32 @@ import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import { sql } from "@vercel/postgres";
+import { createClient } from "@vercel/postgres";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Initialize Database Client
+const client = createClient({
+  connectionString: process.env.POSTGRES_URL,
+});
+
+// Connect to the database
+client.connect().catch(err => console.error("Database connection error:", err));
+
+// Use a wrapper for sql to maintain compatibility with existing code
+const sql = async (strings: TemplateStringsArray, ...values: any[]) => {
+  return client.sql(strings, ...values);
+};
+
 // Initialize Database Tables
 async function initDb() {
   try {
+    console.log("Initializing database tables...");
+    // Ensure client is connected before running queries
     await sql`
       CREATE TABLE IF NOT EXISTS emails (
         id SERIAL PRIMARY KEY,
@@ -26,6 +42,39 @@ async function initDb() {
         type TEXT NOT NULL,
         value TEXT NOT NULL,
         result_id TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS quiz_results (
+        id SERIAL PRIMARY KEY,
+        user_id TEXT,
+        scores JSONB NOT NULL,
+        result_id TEXT NOT NULL,
+        result_title TEXT NOT NULL,
+        answers JSONB,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS journal_entries (
+        id SERIAL PRIMARY KEY,
+        user_id TEXT,
+        date TEXT,
+        pain_level INTEGER,
+        symptoms TEXT[],
+        notes TEXT,
+        activity_level TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS feedback (
+        id SERIAL PRIMARY KEY,
+        user_id TEXT,
+        result_id TEXT,
+        rating INTEGER,
+        comment TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
@@ -84,6 +133,118 @@ async function startServer() {
     } catch (error: any) {
       console.error("Database error:", error);
       res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/journal-entries", async (req, res) => {
+    const { userId, date, painLevel, symptoms, notes, activityLevel } = req.body;
+    try {
+      await sql`
+        INSERT INTO journal_entries (user_id, date, pain_level, symptoms, notes, activity_level)
+        VALUES (${userId}, ${date}, ${painLevel}, ${symptoms}, ${notes}, ${activityLevel})
+      `;
+      res.status(201).json({ message: "Journal entry saved" });
+    } catch (error) {
+      console.error("Error saving journal entry:", error);
+      res.status(500).json({ error: "Failed to save journal entry" });
+    }
+  });
+
+  app.post("/api/quiz-results", async (req, res) => {
+    const { userId, scores, resultId, resultTitle, answers } = req.body;
+
+    try {
+      await sql`
+        INSERT INTO quiz_results (user_id, scores, result_id, result_title, answers)
+        VALUES (${userId || null}, ${JSON.stringify(scores)}, ${resultId}, ${resultTitle}, ${JSON.stringify(answers)})
+      `;
+      res.status(201).json({ message: "Quiz result stored successfully" });
+    } catch (error) {
+      console.error("Error storing quiz result:", error);
+      res.status(500).json({ error: "Failed to store quiz result" });
+    }
+  });
+
+  app.post("/api/feedback", async (req, res) => {
+    const { userId, resultId, rating, comment } = req.body;
+    try {
+      await sql`
+        INSERT INTO feedback (user_id, result_id, rating, comment)
+        VALUES (${userId || null}, ${resultId}, ${rating}, ${comment})
+      `;
+      res.json({ message: "Feedback saved successfully" });
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      res.status(500).json({ error: "Failed to save feedback" });
+    }
+  });
+
+  app.post("/api/feedback", async (req, res) => {
+    const { userId, resultId, rating, comment } = req.body;
+    try {
+      await sql`
+        INSERT INTO feedback (user_id, result_id, rating, comment)
+        VALUES (${userId || null}, ${resultId}, ${rating}, ${comment})
+      `;
+      res.json({ message: "Feedback saved successfully" });
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      res.status(500).json({ error: "Failed to save feedback" });
+    }
+  });
+
+  app.post("/api/send-results", async (req, res) => {
+    const { email, resultTitle, explanation, tips, products } = req.body;
+
+    if (!email || !resultTitle) {
+      return res.status(400).json({ error: "Email and result title are required" });
+    }
+
+    // Configure transporter (User needs to provide these in .env)
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: parseInt(process.env.SMTP_PORT || "587"),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Comfoot Analysis" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: `Your Foot Health Analysis: ${resultTitle}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #2D241E;">
+          <h1 style="color: #FF6321;">Comfoot Analysis</h1>
+          <h2>Your Result: ${resultTitle}</h2>
+          <p>${explanation}</p>
+          <h3>Recommended Tips:</h3>
+          <ul>
+            ${tips.map((tip: string) => `<li>${tip}</li>`).join("")}
+          </ul>
+          <h3>Suggested Products:</h3>
+          <ul>
+            ${products.map((p: any) => `<li><strong>${p.name}</strong>: ${p.description}</li>`).join("")}
+          </ul>
+          <p style="font-size: 12px; color: #8E8279; margin-top: 40px;">
+            This is an automated report. For professional medical advice, please consult a podiatrist.
+          </p>
+        </div>
+      `,
+    };
+
+    try {
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        console.warn("SMTP credentials not configured. Skipping email send.");
+        return res.status(200).json({ message: "Email simulation successful (SMTP not configured)" });
+      }
+      await transporter.sendMail(mailOptions);
+      res.json({ message: "Results sent successfully" });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ error: "Failed to send email" });
     }
   });
 
