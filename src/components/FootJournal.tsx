@@ -19,7 +19,7 @@ import {
   Search,
   Check
 } from 'lucide-react';
-import { db, auth } from '../firebase';
+import { db, auth, handleFirestoreError } from '../firebase';
 import { collection, addDoc, query, where, orderBy, onSnapshot, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { getJournalInsight } from '../services/geminiService';
 import Markdown from 'react-markdown';
@@ -89,6 +89,8 @@ export const FootJournal: React.FC = () => {
       })) as JournalEntry[];
       setEntries(entryData);
       setLoading(false);
+    }, (error) => {
+      console.error("Snapshot error:", error);
     });
 
     return () => unsubscribe();
@@ -98,8 +100,9 @@ export const FootJournal: React.FC = () => {
     e.preventDefault();
     if (!auth.currentUser) return;
 
+    const path = `users/${auth.currentUser.uid}/journal`;
     try {
-      await addDoc(collection(db, 'users', auth.currentUser.uid, 'journal'), {
+      await addDoc(collection(db, path), {
         ...newEntry,
         userId: auth.currentUser.uid,
         createdAt: serverTimestamp()
@@ -115,16 +118,17 @@ export const FootJournal: React.FC = () => {
         activityLevel: 'moderate'
       });
     } catch (error) {
-      console.error("Error adding journal entry:", error);
+      handleFirestoreError(error, 'create', path);
     }
   };
 
   const handleDeleteEntry = async (id: string) => {
     if (!auth.currentUser) return;
+    const path = `users/${auth.currentUser.uid}/journal/${id}`;
     try {
-      await deleteDoc(doc(db, 'users', auth.currentUser.uid, 'journal', id));
+      await deleteDoc(doc(db, path));
     } catch (error) {
-      console.error("Error deleting journal entry:", error);
+      handleFirestoreError(error, 'delete', path);
     }
   };
 

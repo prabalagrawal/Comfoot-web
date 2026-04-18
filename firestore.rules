@@ -18,8 +18,9 @@ service cloud.firestore {
     function hasRequiredFields(fields) {
       return request.resource.data.keys().hasAll(fields);
     }
-    function hasOnlyAllowedFields(fields) {
-      return request.resource.data.keys().hasOnly(fields);
+    function hasOnlyAllowedFields(allowedFields) {
+      let keys = request.resource.data.keys();
+      return keys.hasAll(allowedFields) && keys.size() == allowedFields.size();
     }
     function isValidEmail(email) {
       return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -74,6 +75,11 @@ service cloud.firestore {
     match /productFeedback/{feedbackId} {
       allow read: if isAdmin();
       allow create: if isAuthenticated() && isValidProductFeedback(request.resource.data);
+    }
+
+    // Allow connection test
+    match /test/connection {
+      allow read: if true;
     }
   }
 }

@@ -192,20 +192,6 @@ async function startServer() {
     }
   });
 
-  app.post("/api/feedback", async (req, res) => {
-    const { userId, resultId, rating, comment } = req.body;
-    try {
-      await sql`
-        INSERT INTO feedback (user_id, result_id, rating, comment)
-        VALUES (${userId || null}, ${resultId}, ${rating}, ${comment})
-      `;
-      res.json({ message: "Feedback saved successfully" });
-    } catch (error) {
-      console.error("Error saving feedback:", error);
-      res.status(500).json({ error: "Failed to save feedback" });
-    }
-  });
-
   app.post("/api/send-results", async (req, res) => {
     const { email, resultTitle, explanation, tips, products } = req.body;
 
@@ -286,22 +272,29 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
+  // Serve static assets and SPA fallback
+  const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+
+  if (!isProduction) {
+    console.log("Starting in development mode with Vite middleware...");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    app.use(express.static(path.join(__dirname, "dist")));
+    const distPath = path.join(__dirname, "dist");
+    console.log(`Starting in production mode. Serving static files from: ${distPath}`);
+    app.use(express.static(distPath));
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "dist", "index.html"));
+      res.sendFile(path.join(distPath, "index.html"));
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  const port = process.env.PORT || PORT;
+  app.listen(Number(port), "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Environment: ${isProduction ? 'production' : 'development'}`);
   });
 }
 

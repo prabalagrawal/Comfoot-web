@@ -24,7 +24,7 @@ import {
   Star
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent } from 'motion/react';
-import { auth, googleProvider, FirebaseUser, db } from './firebase';
+import { auth, googleProvider, FirebaseUser, db, handleFirestoreError } from './firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 
@@ -333,7 +333,7 @@ const ProductRating: React.FC<{ productId: string; conditionId: string; user: Fi
       });
       setSubmitted(true);
     } catch (error) {
-      console.error("Error saving feedback:", error);
+      handleFirestoreError(error, 'create', '/productFeedback');
     }
   };
 
