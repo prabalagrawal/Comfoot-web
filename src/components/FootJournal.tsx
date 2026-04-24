@@ -21,8 +21,6 @@ import {
 } from 'lucide-react';
 import { db, auth, handleFirestoreError } from '../firebase';
 import { collection, addDoc, query, where, orderBy, onSnapshot, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { getJournalInsight } from '../services/geminiService';
-import Markdown from 'react-markdown';
 
 interface JournalEntry {
   id: string;
@@ -41,11 +39,7 @@ const SYMPTOMS_LIST = [
 ];
 
 export const FootJournal: React.FC = () => {
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [insight, setInsight] = useState<string | null>(null);
-  const [isGeneratingInsight, setIsGeneratingInsight] = useState(false);
   const [symptomSearch, setSymptomSearch] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -132,22 +126,6 @@ export const FootJournal: React.FC = () => {
     }
   };
 
-  const generateInsight = async () => {
-    if (entries.length < 3) {
-      alert("Please add at least 3 entries to get a meaningful insight.");
-      return;
-    }
-    setIsGeneratingInsight(true);
-    try {
-      const result = await getJournalInsight(entries.slice(0, 7));
-      setInsight(result || "No insight generated.");
-    } catch (error) {
-      console.error("Error generating insight:", error);
-    } finally {
-      setIsGeneratingInsight(false);
-    }
-  };
-
   const getPainIcon = (level: number) => {
     if (level <= 3) return <TrendingDown className="text-emerald-500 w-5 h-5" />;
     if (level <= 7) return <Minus className="text-amber-500 w-5 h-5" />;
@@ -177,46 +155,7 @@ export const FootJournal: React.FC = () => {
           </button>
         </div>
 
-        {/* AI Insight Section */}
-        {entries.length >= 3 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 bg-white p-8 md:p-12 rounded-[3rem] border border-brand-brown/5 shadow-soft relative overflow-hidden group"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-brand-orange/10 transition-colors" />
-            
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-brand-orange/10 rounded-2xl flex items-center justify-center text-brand-orange">
-                  <Sparkles className="w-7 h-7" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-display font-bold text-brand-brown">AI Health Insights</h3>
-                  <p className="text-sm text-brand-taupe/70">Powered by Gemini for personalized trend analysis.</p>
-                </div>
-              </div>
-              
-              <button 
-                onClick={generateInsight}
-                disabled={isGeneratingInsight}
-                className="bg-brand-brown text-brand-beige px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all shadow-md active:scale-95 disabled:opacity-50"
-              >
-                {isGeneratingInsight ? 'Analyzing...' : 'Generate New Insight'}
-              </button>
-            </div>
 
-            {insight && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="mt-10 pt-10 border-t border-brand-brown/5 text-brand-taupe leading-relaxed markdown-body"
-              >
-                <Markdown>{insight}</Markdown>
-              </motion.div>
-            )}
-          </motion.div>
-        )}
 
         {/* Journal Entries List */}
         {loading ? (

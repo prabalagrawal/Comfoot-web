@@ -17,8 +17,6 @@ import {
   ShieldAlert,
   Plus
 } from 'lucide-react';
-import { getFootRecommendation } from '../services/geminiService';
-import Markdown from 'react-markdown';
 import { db, auth } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -500,8 +498,7 @@ export const FootProblemQuiz: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-  const [geminiResult, setGeminiResult] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
   const [contactInfo, setContactInfo] = useState('');
   const [formSubmitted, setFormSubmitted] = useState({ email: false, contact: false });
@@ -620,24 +617,6 @@ export const FootProblemQuiz: React.FC = () => {
     });
     setEmailSent(false);
     setEmail('');
-    setGeminiResult(null);
-  };
-
-  const getGeminiAnalysis = async () => {
-    setIsGenerating(true);
-    try {
-      // Fetch recent journal entries if user is logged in
-      let journalEntries: any[] = [];
-      if (auth.currentUser) {
-        // We could fetch them here, but for now let's just pass quiz data
-      }
-      const result = await getFootRecommendation(scores, answers, journalEntries);
-      setGeminiResult(result || "No analysis generated.");
-    } catch (error) {
-      console.error("Error generating Gemini analysis:", error);
-    } finally {
-      setIsGenerating(false);
-    }
   };
 
   const findNearbyPodiatrists = () => {
@@ -875,55 +854,7 @@ export const FootProblemQuiz: React.FC = () => {
                   </button>
                 </div>
               </motion.div>
-              {/* Gemini Deep Analysis Section */}
-              <motion.div 
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-                className="bg-brand-brown text-brand-beige rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group"
-              >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full -mr-32 -mt-32 blur-3xl" />
-                
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-brand-orange rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
-                      <Sparkles className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-display font-bold">Deep AI Analysis</h3>
-                      <p className="text-brand-beige/70 font-light max-w-md">Get a personalized, intent-based recommendation powered by Gemini and real-time Google Search.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <button 
-                      onClick={getGeminiAnalysis}
-                      disabled={isGenerating}
-                      className="bg-brand-orange text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-brand-orange transition-all shadow-xl active:scale-95 disabled:opacity-50"
-                    >
-                      {isGenerating ? 'Analyzing...' : 'Start Deep Analysis'}
-                    </button>
-                    <button 
-                      onClick={findNearbyPodiatrists}
-                      className="bg-white text-brand-brown px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
-                    >
-                      <MapPin className="w-4 h-4" />
-                      Find Podiatrists
-                    </button>
-                  </div>
-                </div>
 
-                {geminiResult && (
-                  <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="mt-12 pt-12 border-t border-white/10 text-brand-beige/90 leading-relaxed markdown-body"
-                  >
-                    <Markdown>{geminiResult}</Markdown>
-                  </motion.div>
-                )}
-              </motion.div>
 
               {/* Result Header */}
               <motion.div 
