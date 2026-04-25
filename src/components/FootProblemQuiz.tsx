@@ -87,6 +87,7 @@ const QUESTIONS: Question[] = [
       { id: 'q3-2', text: "Dull, heavy ache", scores: { fatigue: 4, flat: 2 } },
       { id: 'q3-3', text: "Burning or electric-like", scores: { diabetic: 5 } },
       { id: 'q3-4', text: "Tightness or stiffness", scores: { achilles: 4, heel: 1 } },
+      { id: 'q3-5', text: "Skin cracking or peeling", scores: { dry_cracked: 6 } },
     ]
   },
   {
@@ -119,7 +120,8 @@ const QUESTIONS: Question[] = [
       { id: 'q6-1', text: "Yes, around the ankles", scores: { diabetic: 2, fatigue: 4 } },
       { id: 'q6-2', text: "Yes, at the back of the heel", scores: { achilles: 5 } },
       { id: 'q6-3', text: "Yes, at the big toe joint", scores: { bunion: 5 } },
-      { id: 'q6-4', text: "No visible swelling", scores: { neutral: 3 } },
+      { id: 'q6-4', text: "No, but skin looks hard/cracked", scores: { dry_cracked: 5 } },
+      { id: 'q6-5', text: "No visible swelling", scores: { neutral: 3 } },
     ]
   },
   {
@@ -171,9 +173,10 @@ const QUESTIONS: Question[] = [
     icon: <Zap className="w-6 h-6" />,
     options: [
       { id: 'q11-1', text: "Supportive Sneakers", scores: { neutral: 4 } },
-      { id: 'q11-2', text: "Flat Shoes (Flats, Vans, etc.)", scores: { flat: 4, heel: 3 } },
+      { id: 'q11-2', text: "Flat Shoes (Flats, Vans, etc.)", scores: { flat: 4, heel: 3, dry_cracked: 1 } },
       { id: 'q11-3', text: "Heels or Narrow Dress Shoes", scores: { bunion: 5, fatigue: 3 } },
-      { id: 'q11-4', text: "Safety Boots or Heavy Shoes", scores: { fatigue: 5, heel: 1 } },
+      { id: 'q11-4', text: "Open-backed sandals or slippers", scores: { dry_cracked: 5, neutral: 1 } },
+      { id: 'q11-5', text: "Safety Boots or Heavy Shoes", scores: { fatigue: 5, heel: 1 } },
     ]
   },
   {
@@ -447,6 +450,39 @@ const RESULTS: Record<string, Result> = {
       }
     ]
   },
+  dry_cracked: {
+    id: 'dry_cracked',
+    title: "Dry & Cracked Heels",
+    explanation: "Your assessment suggests that the skin around your heels has become severely dry and thickened, leading to painful cracks or fissures. This is often caused by a combination of friction, pressure, and lack of adequate moisture.",
+    causes: [
+      "Prolonged standing on hard floors without cushioned socks",
+      "Wearing open-backed shoes like sandals or flip-flops",
+      "Low moisture levels in the skin due to environment or metabolic factors",
+      "Cold, dry weather depleting natural skin oils",
+      "Frequent use of harsh soaps that strip moisture"
+    ],
+    tips: [
+      "Apply a thick, urea-based heel balm twice daily",
+      "Wear moisturizing gel-lined heel socks overnight to lock in cream",
+      "After soaking feet, gently use a pumice stone to remove dead skin",
+      "Drink plenty of water to support skin hydration from within",
+      "Choose closed-back shoes to reduce friction and skin hardening"
+    ],
+    products: [
+      {
+        name: "Bodywise Urea Foot Cream Roll",
+        description: "Targeted roll-on application that softens hard calluses and repairs deep heel fissures.",
+        bestFor: "Cracked Heel Repair & Softening",
+        link: "https://amzn.to/3OMQ5jH"
+      },
+      {
+        name: "Tifanso Moisturizing Heel Socks",
+        description: "Comfortable socks with therapy gel linings that soften hard, dry, and cracked heels while you sleep.",
+        bestFor: "Overnight Intensive Hydration",
+        link: "https://amzn.to/4t1fFQ9"
+      }
+    ]
+  },
   complex: {
     id: 'complex',
     title: "Complex Foot Patterns Detected",
@@ -493,12 +529,12 @@ export const FootProblemQuiz: React.FC = () => {
     bunion: 0,
     diabetic: 0,
     achilles: 0,
+    dry_cracked: 0,
     complex: 0
   });
   const [email, setEmail] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-
   const [isSaving, setIsSaving] = useState(false);
   const [contactInfo, setContactInfo] = useState('');
   const [formSubmitted, setFormSubmitted] = useState({ email: false, contact: false });
@@ -517,6 +553,7 @@ export const FootProblemQuiz: React.FC = () => {
       bunion: scores.bunion + (option.scores.bunion || 0),
       diabetic: scores.diabetic + (option.scores.diabetic || 0),
       achilles: scores.achilles + (option.scores.achilles || 0),
+      dry_cracked: scores.dry_cracked + (option.scores.dry_cracked || 0),
       complex: scores.complex + (option.scores.complex || 0)
     };
     setScores(newScores);
@@ -613,6 +650,7 @@ export const FootProblemQuiz: React.FC = () => {
       bunion: 0,
       diabetic: 0,
       achilles: 0,
+      dry_cracked: 0,
       complex: 0
     });
     setEmailSent(false);
@@ -854,7 +892,39 @@ export const FootProblemQuiz: React.FC = () => {
                   </button>
                 </div>
               </motion.div>
-
+              {/* Gemini Deep Analysis Section */}
+              {/* Find Podiatrists only */}
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="bg-brand-brown text-brand-beige rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group"
+              >
+                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+                
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+                  <div className="flex items-center gap-5">
+                    <div className="w-16 h-16 bg-brand-orange rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
+                      <Stethoscope className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-display font-bold">Professional Consultation</h3>
+                      <p className="text-brand-beige/70 font-light max-w-md">While we provide guidance, professional diagnosis is key to long-term foot health.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <button 
+                      onClick={findNearbyPodiatrists}
+                      className="bg-white text-brand-brown px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <MapPin className="w-4 h-4" />
+                      Find Podiatrists
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
 
               {/* Result Header */}
               <motion.div 

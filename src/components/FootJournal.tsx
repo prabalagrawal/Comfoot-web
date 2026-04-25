@@ -39,6 +39,8 @@ const SYMPTOMS_LIST = [
 ];
 
 export const FootJournal: React.FC = () => {
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [symptomSearch, setSymptomSearch] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -154,8 +156,6 @@ export const FootJournal: React.FC = () => {
             <Plus className="w-4 h-4" /> Log Today's Entry
           </button>
         </div>
-
-
 
         {/* Journal Entries List */}
         {loading ? (

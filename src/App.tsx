@@ -272,6 +272,67 @@ const CONDITIONS: Condition[] = [
     ],
     painType: ['Heel Pain', 'Aching'],
     affectedArea: ['Heel', 'Ankle']
+  },
+  {
+    id: 'dry-cracked-heels',
+    title: 'Dry & Cracked Heels',
+    shortDesc: 'Hard, thick, and cracked skin around the heel area.',
+    fullDesc: 'Cracked heels (heel fissures) occur when the skin on the bottom, outer edge of the heel becomes hard, dry, and flaky. This can be painful if the cracks deepen.',
+    whatIsIt: 'A common condition where the skin around the rim of the heel becomes thickened (callus) and eventually splits under pressure.',
+    causes: [
+      'Prolonged standing on hard floors',
+      'Wearing open-backed shoes or sandals',
+      'Lack of moisture in the skin',
+      'Cold, dry weather',
+      'Using harsh soaps or long, hot showers'
+    ],
+    symptoms: [
+      { name: 'Thickened, hard skin (callus)', description: 'Yellowish or dark skin patches around the heel edge that feel rough.' },
+      { name: 'Visible cracks or fissures', description: 'Splits in the skin that can range from fine lines to deep, painful cracks.' },
+      { name: 'Itchy or flaky skin', description: 'The skin feels very dry and may flake off during movement.' },
+      { name: 'Pain while walking', description: 'Deep cracks that reach the sensitive layers of the skin, potentially leading to bleeding.' }
+    ],
+    diySupport: [
+      'Apply urea-based heel balms twice daily',
+      'Soak feet in lukewarm water for 15-20 minutes',
+      'Gently use a pumice stone on callused areas',
+      'Wear moisturizing heel socks overnight',
+      'Stay hydrated to maintain skin elasticity'
+    ],
+    products: [
+      {
+        name: 'Bodywise Urea Foot Cream Roll',
+        description: 'Easy-to-apply roll-on with urea to soften thick skin and repair deep cracks.',
+        bestFor: 'Convenient application and intensive repair.',
+        link: 'https://amzn.to/3OMQ5jH'
+      },
+      {
+        name: 'Foottex Cracked Heel Cream',
+        description: 'Potent formula designed to heal dry and cracked heels effectively.',
+        bestFor: 'Deeply moisturizing severe fissures.',
+        link: 'https://amzn.to/4sZoQAp'
+      },
+      {
+        name: 'Fixderma Footbetik Cream',
+        description: 'Dermatologist-recommended cream for intensive hydration and skin repair.',
+        bestFor: 'Ultra-dry skin and persistent cracking.',
+        link: 'https://amzn.to/4cNsg3o'
+      },
+      {
+        name: 'Tifanso Moisturizing Heel Socks',
+        description: 'Gel-lined socks that lock in moisture and soften hard heels while you sleep.',
+        bestFor: 'Overnight intensive treatment.',
+        link: 'https://amzn.to/4t1fFQ9'
+      },
+      {
+        name: 'Krack Heel Repair Cream',
+        description: 'A classic and trusted solution for soothing and healing cracked skin.',
+        bestFor: 'Quick relief and budget-friendly care.',
+        link: 'https://amzn.to/4mN00lQ'
+      }
+    ],
+    painType: ['Sharp Pain', 'Itching', 'Soreness'],
+    affectedArea: ['Heel']
   }
 ];
 
