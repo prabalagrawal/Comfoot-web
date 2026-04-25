@@ -992,7 +992,7 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="bg-brand-beige w-full max-w-6xl max-h-[92vh] overflow-hidden rounded-[2.5rem] shadow-2xl relative flex flex-col md:flex-row border border-white/20 focus:outline-none"
+        className="bg-brand-beige w-full max-w-6xl max-h-[92vh] overflow-y-auto md:overflow-hidden rounded-[2.5rem] shadow-2xl relative flex flex-col md:flex-row border border-white/20 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -1005,7 +1005,7 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         </button>
 
         {/* Left Side: Editorial Content */}
-        <div className="flex-1 overflow-y-auto p-8 md:p-14 bg-white/40 custom-scrollbar">
+        <div className="flex-1 md:overflow-y-auto p-8 md:p-14 bg-white/40 custom-scrollbar">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="h-px w-8 bg-brand-orange/40" />
@@ -1069,7 +1069,7 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         </div>
  
         {/* Right Side: Curated Products (Affiliate Section) */}
-        <div className="w-full md:w-[420px] bg-brand-beige p-8 md:p-10 overflow-y-auto border-l border-brand-brown/5 custom-scrollbar">
+        <div className="w-full md:w-[420px] bg-brand-beige p-8 md:p-10 md:overflow-y-auto border-l border-brand-brown/5 custom-scrollbar">
           <div className="sticky top-0 bg-brand-beige z-10 pb-6 mb-6 border-bottom border-brand-brown/5">
             <div className="flex items-center gap-2 mb-2">
               <ShieldCheck className="text-brand-orange w-5 h-5" />
@@ -1434,14 +1434,14 @@ export default function App() {
 
   const compareConditions = CONDITIONS.filter(c => compareList.includes(c.id));
 
-  // Prevent scroll when modal is open
+  // Prevent scroll ONLY when modal or comparison is open (not in detail view)
   useEffect(() => {
-    if (selectedCondition || showComparison) {
+    if ((selectedCondition && view === 'home') || showComparison) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedCondition, showComparison]);
+  }, [selectedCondition, showComparison, view]);
 
   if (showAdmin) {
     return <AdminDashboard onBack={() => setShowAdmin(false)} />;
@@ -1483,7 +1483,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-brand-beige/50">
+    <div className="min-h-screen relative overflow-x-hidden bg-brand-beige/50">
       {/* Global Floating Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[15%] left-[-5%] w-[30%] h-[30%] bg-brand-orange/10 rounded-full blur-[100px] animate-pulse" />
