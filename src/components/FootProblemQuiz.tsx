@@ -373,16 +373,16 @@ const RESULTS: Record<string, Result> = {
     ],
     products: [
       {
-        name: "Bunion Corrector & Toe Separator",
-        description: "Soft silicone separators that gently realign the big toe and provide a protective barrier against friction.",
-        bestFor: "Bunion Relief & Alignment",
-        link: "https://amzn.to/4aFri8e"
+        name: "Frido Orthotics Bunion Corrector",
+        description: "Advanced bunion corrector designed for effective toe realignment and pressure relief.",
+        bestFor: "Hallux Valgus correction and pain relief",
+        link: "https://amzn.to/4sW7nZN"
       },
       {
-        name: "Orthopedic Bunion Splint",
-        description: "Adjustable splint that applies gentle pressure to the big toe to help maintain correct alignment during rest.",
-        bestFor: "Corrective Support & Night Use",
-        link: "https://amzn.to/4cBR9jU"
+        name: "AGEasy Antara Bunion Corrector",
+        description: "Comfortable bunion aid that helps in toe separation and alignment.",
+        bestFor: "Daily wear and gradual correction",
+        link: "https://amzn.to/4eHwhc4"
       }
     ]
   },
@@ -405,16 +405,16 @@ const RESULTS: Record<string, Result> = {
     ],
     products: [
       {
-        name: "Diabetic Socks (Seamless)",
-        description: "Non-binding, moisture-wicking socks designed to prevent pressure points and maintain circulation.",
-        bestFor: "Diabetic Foot Protection & Comfort",
-        link: "https://amzn.to/4b0AXHN"
+        name: "Kitcoz Foot Cream Roll on",
+        description: "Convenient roll-on foot cream specifically formulated for intensive moisturizing of diabetic feet.",
+        bestFor: "Moisturizing and skin integrity maintenance",
+        link: "https://amzn.to/4mSq9zN"
       },
       {
-        name: "Foobetik Foot Cream",
-        description: "Specialized moisturizing cream to maintain skin integrity and prevent fissures for sensitive feet.",
-        bestFor: "Dryness & Fissure Prevention",
-        link: "https://amzn.in/d/0gh0wRDf"
+        name: "Fixderma Foobetik Cream",
+        description: "Expertly formulated cream for diabetic foot care, preventing dryness and infection.",
+        bestFor: "Comprehensive diabetic foot skin health",
+        link: "https://amzn.to/4cNsg3o"
       }
     ]
   },
@@ -437,16 +437,16 @@ const RESULTS: Record<string, Result> = {
     ],
     products: [
       {
-        name: "Achilles Tendon Support Sleeve",
-        description: "Compression sleeve with gel pads to stabilize the tendon and reduce strain during movement.",
-        bestFor: "Achilles Pain & Recovery",
-        link: "https://amzn.to/4rZCbsz"
+        name: "Powerstep UltraFlexx Foot Rocker",
+        description: "Ergonomic foot rocker that helps stretch the Achilles tendon and calf muscles effectively.",
+        bestFor: "Tendon stretching and flexibility",
+        link: "https://amzn.to/3ODWFsW"
       },
       {
-        name: "Silicone Heel Lifts",
-        description: "Inserts that slightly elevate the heel to reduce tension on the Achilles tendon immediately.",
-        bestFor: "Immediate Relief & Tendon Decompression",
-        link: "https://amzn.to/4cBR9jU"
+        name: "FOVERA Foot & Calf Stretcher Belt",
+        description: "Designed for safe and controlled stretching of the lower leg muscles and Achilles tendon.",
+        bestFor: "Relieving tendon tightness",
+        link: "https://amzn.to/4cuNSCK"
       }
     ]
   },

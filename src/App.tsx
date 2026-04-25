@@ -176,16 +176,40 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Bunion Corrector & Toe Separator',
-        description: 'Soft silicone separators that gently realign the big toe and provide a protective barrier against friction.',
-        bestFor: 'Night-time realignment and daily friction protection.',
-        link: 'https://amzn.to/4aFri8e'
+        name: 'Frido Orthotics Bunion Corrector',
+        description: 'Advanced bunion corrector designed for effective toe realignment and pressure relief.',
+        bestFor: 'Hallux Valgus correction and pain relief.',
+        link: 'https://amzn.to/4sW7nZN'
       },
       {
-        name: 'Orthopedic Bunion Splint',
-        description: 'Adjustable splint that applies pressure to the big toe to help maintain correct alignment during sleep.',
-        bestFor: 'Corrective support and pain relief.',
-        link: 'https://amzn.to/4cBR9jU'
+        name: 'AGEasy Antara Bunion Corrector',
+        description: 'Comfortable bunion aid that helps in toe separation and alignment.',
+        bestFor: 'Daily wear and gradual correction.',
+        link: 'https://amzn.to/4eHwhc4'
+      },
+      {
+        name: 'Wonder Care Silicone Toe Separators',
+        description: 'Soft silicone separators that gently divide toes to reduce bunion pain.',
+        bestFor: 'Friction reduction and toe spacing.',
+        link: 'https://amzn.to/4cKDWDM'
+      },
+      {
+        name: 'Gel Big toe Bunion Guard',
+        description: 'Protective gel guard that shields the bunion from shoe pressure and rubbing.',
+        bestFor: 'External protection and immediate relief.',
+        link: 'https://amzn.to/4sZinpg'
+      },
+      {
+        name: 'Zebrooc Bunions Gel Toe Separators',
+        description: 'Multi-functional gel separators for bunion relief and toe stretching.',
+        bestFor: 'Comprehensive toe care.',
+        link: 'https://amzn.to/4tCJZ4I'
+      },
+      {
+        name: 'BowieMall Toe Hallux Valgus',
+        description: 'Supportive brace for managing hallux valgus and improving toe posture.',
+        bestFor: 'Toe alignment and joint support.',
+        link: 'https://amzn.to/4sXa2m3'
       }
     ],
     painType: ['Toe Pain', 'Aching'],
@@ -217,16 +241,40 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Diabetic Socks (Seamless)',
-        description: 'Non-binding, moisture-wicking socks with seamless toes to prevent friction and pressure points.',
-        bestFor: 'Daily protection and improved circulation.',
-        link: 'https://amzn.to/4b0AXHN'
+        name: 'Kitcoz Foot Cream Roll on',
+        description: 'Convenient roll-on foot cream specifically formulated for intensive moisturizing of diabetic feet.',
+        bestFor: 'Moisturizing and skin integrity maintenance.',
+        link: 'https://amzn.to/4mSq9zN'
       },
       {
-        name: 'Foobetik Foot Cream',
-        description: 'Specialized moisturizing cream for diabetic feet to prevent dryness and cracking while maintaining skin integrity.',
-        bestFor: 'Preventing fissures and maintaining skin health.',
-        link: 'https://amzn.in/d/0gh0wRDf'
+        name: 'BraceAbility Neuropathy Sock',
+        description: 'Specialized socks designed to provide comfort and protection for feet affected by neuropathy.',
+        bestFor: 'Neuropathy symptoms and foot protection.',
+        link: 'https://amzn.to/4mSVlz0'
+      },
+      {
+        name: 'Fixderma Foobetik Cream',
+        description: 'Expertly formulated cream for diabetic foot care, preventing dryness and infection.',
+        bestFor: 'Comprehensive diabetic foot skin health.',
+        link: 'https://amzn.to/4cNsg3o'
+      },
+      {
+        name: 'ortho joy extra soft slippers',
+        description: 'Ultra-soft therapeutic slippers providing superior cushioning for sensitive diabetic feet.',
+        bestFor: 'Indoor comfort and pressure reduction.',
+        link: 'https://amzn.to/41Z8cGe'
+      },
+      {
+        name: 'Doctorhealth soft Men\'s massage flip flop',
+        description: 'Soft and comfortable flip flops with massage points to stimulate circulation.',
+        bestFor: 'Lightweight summer wear and circulation support.',
+        link: 'https://amzn.to/4twZfQu'
+      },
+      {
+        name: 'DOCTOR EXTRA SOFT Men\'s Sports Shoes',
+        description: 'Cushioned sports shoes designed specifically for those needing extra soft footbeds.',
+        bestFor: 'Active lifestyle and impact protection.',
+        link: 'https://amzn.to/3OCx4R9'
       }
     ],
     painType: ['Numbness', 'Tingling'],
@@ -258,16 +306,46 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Achilles Tendon Support Sleeve',
-        description: 'Compression sleeve with integrated gel pads to stabilize the tendon and reduce vibration during movement.',
-        bestFor: 'Active recovery and sports support.',
-        link: 'https://amzn.to/4rZCbsz'
+        name: 'Powerstep UltraFlexx Foot Rocker',
+        description: 'Ergonomic foot rocker that helps stretch the Achilles tendon and calf muscles effectively.',
+        bestFor: 'Tendon stretching and flexibility.',
+        link: 'https://amzn.to/3ODWFsW'
       },
       {
-        name: 'Silicone Heel Lifts',
-        description: 'Inserts that slightly elevate the heel to reduce the tension and strain on the Achilles tendon.',
-        bestFor: 'Immediate relief during walking.',
-        link: 'https://amzn.to/4cBR9jU'
+        name: 'FOVERA Foot & Calf Stretcher Belt',
+        description: 'Designed for safe and controlled stretching of the lower leg muscles and Achilles tendon.',
+        bestFor: 'Relieving tendon tightness.',
+        link: 'https://amzn.to/4cuNSCK'
+      },
+      {
+        name: 'Sorgen Ankle support for pain relief',
+        description: 'Compression ankle sleeve providing stability and relief for Achilles pain.',
+        bestFor: 'Stability and inflammation reduction.',
+        link: 'https://amzn.to/4cwfpnl'
+      },
+      {
+        name: 'Adjustable Orthopedic Heel Lift',
+        description: 'Customizable heel lifts to reduce tension on the Achilles tendon during daily activities.',
+        bestFor: 'Immediate strain reduction.',
+        link: 'https://amzn.to/3QqI2d3'
+      },
+      {
+        name: 'Dr.Ortho Pain Relief Gel Insoles',
+        description: 'Soft gel insoles that absorb shock and provide comfort to the heel area.',
+        bestFor: 'Shock absorption and daily comfort.',
+        link: 'https://amzn.to/4eI1BYf'
+      },
+      {
+        name: 'Aegon Foot Stretcher Strap',
+        description: 'Versatile strap for deep and effective stretching of the foot and Achilles.',
+        bestFor: 'Intensive stretching sessions.',
+        link: 'https://amzn.to/41QcPm1'
+      },
+      {
+        name: 'Achilles Heel Compression Padded Sleeve Socks',
+        description: 'Padded compression socks that target the Achilles area for maximum support.',
+        bestFor: 'Dedicated tendon compression and protection.',
+        link: 'https://amzn.to/4u7bnYr'
       }
     ],
     painType: ['Heel Pain', 'Aching'],
