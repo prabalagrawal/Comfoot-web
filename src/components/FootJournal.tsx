@@ -137,23 +137,26 @@ export const FootJournal: React.FC = () => {
   return (
     <section id="journal" className="py-24 px-6 bg-brand-beige/30">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="h-px w-12 bg-brand-orange" />
-              <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">Your Momentum</span>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12 mb-20">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-px bg-brand-orange" />
+              <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">Your Momentum Journal</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown tracking-tight leading-tight">Foot Health <span className="text-brand-orange italic font-medium">Journal</span></h2>
-            <p className="text-base md:text-lg text-brand-taupe/70 mt-6 font-light max-w-xl leading-relaxed">
-              Track your symptoms, pain levels, and activity to identify clinical patterns and accelerate your wellness journey.
+            <h2 className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown tracking-[-0.05em] leading-[0.8]">
+              FOOT HEALTH <br />
+              <span className="text-brand-orange italic font-bold">JOURNAL<span className="text-brand-brown">.</span></span>
+            </h2>
+            <p className="text-2xl md:text-3xl text-brand-taupe/60 mt-12 font-light leading-snug max-w-xl tracking-tight">
+              Track symptoms, pain levels, and activity to identify clinical patterns for your wellness journey.
             </p>
           </div>
           
           <button 
             onClick={() => setShowAddModal(true)}
-            className="w-full sm:w-auto bg-brand-orange text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange/90 transition-all shadow-lg flex items-center justify-center gap-3 active:scale-95"
+            className="w-full sm:w-auto bg-brand-orange text-white px-16 py-8 rounded-[2.5rem] font-bold uppercase tracking-[0.5em] text-[13px] hover:bg-brand-brown transition-all shadow-2xl shadow-brand-orange/20 flex items-center justify-center gap-4 active:scale-95"
           >
-            <Plus className="w-4 h-4" /> Log Today's Entry
+            <Plus className="w-5 h-5" /> New Entry
           </button>
         </div>
 

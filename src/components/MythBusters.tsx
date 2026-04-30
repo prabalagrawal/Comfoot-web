@@ -4,7 +4,8 @@ import {
   AlertCircle, 
   CheckCircle2, 
   BookOpen,
-  ArrowRight
+  ArrowRight,
+  Zap
 } from 'lucide-react';
 
 interface MythCardProps {
@@ -28,7 +29,7 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
         delay: index * 0.1,
         ease: [0.21, 0.47, 0.32, 0.98] 
       }}
-      className="perspective-1000 h-[400px] md:h-[450px] w-full group cursor-pointer"
+      className="perspective-1000 h-[450px] md:h-[550px] w-full group cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
       onClick={() => setIsFlipped(!isFlipped)}
@@ -36,73 +37,69 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
       <motion.div
         initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 260, 
+          damping: 20,
+          mass: 1
+        }}
         className="relative w-full h-full preserve-3d"
       >
         {/* Front Side */}
-        <div className="absolute inset-0 backface-hidden bg-white rounded-[2rem] border border-brand-brown/5 shadow-soft p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center gap-6 group-hover:shadow-xl transition-shadow">
-          <div className="p-3 bg-red-50 text-red-500 rounded-2xl group-hover:scale-110 transition-transform duration-500">
-            <AlertCircle className="w-6 h-6 md:w-8 md:h-8" />
+        <div className="absolute inset-0 backface-hidden bg-white rounded-[4rem] border border-brand-brown/5 shadow-soft p-10 md:p-14 flex flex-col justify-center items-center text-center gap-10 group-hover:shadow-luxury transition-all duration-700">
+          <div className="p-5 bg-red-50 text-red-500 rounded-3xl group-hover:scale-110 transition-transform duration-700 group-hover:rotate-12">
+            <AlertCircle className="w-12 h-12" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-500/80">Common Myth</span>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-brand-brown leading-tight px-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-red-500/60 font-sans">Common Misconception</span>
+          <h3 className="text-3xl md:text-5xl font-display font-bold text-brand-brown leading-[0.9] tracking-tight px-4 italic">
             "{myth}"
           </h3>
-          <div className="mt-4 flex items-center gap-2 text-brand-orange font-bold text-[10px] sm:text-xs uppercase tracking-widest group-hover:gap-4 transition-all duration-300">
-            Tap to reveal fact <ArrowRight className="w-4 h-4" />
+          <div className="mt-10 flex items-center gap-4 text-brand-orange font-bold text-[10px] uppercase tracking-[0.5em] group-hover:gap-8 transition-all duration-500 opacity-40 group-hover:opacity-100">
+            Reveal Analysis <ArrowRight className="w-4 h-4" />
           </div>
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 backface-hidden bg-brand-brown rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col justify-center gap-4 sm:gap-6 text-brand-beige rotate-y-180 relative overflow-hidden">
+        <div className="absolute inset-0 backface-hidden bg-[#1A1512] rounded-[4rem] p-10 md:p-14 flex flex-col justify-center gap-12 text-brand-beige rotate-y-180 relative overflow-hidden shadow-luxury">
           {/* Animated Glow Effect */}
           <motion.div 
             animate={{ 
-              opacity: [0.1, 0.3, 0.1],
-              scale: [1, 1.2, 1]
+              opacity: [0.1, 0.2, 0.1],
+              scale: [1, 1.4, 1]
             }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="absolute -top-1/2 -right-1/2 w-full h-full bg-brand-orange/20 rounded-full blur-[80px] pointer-events-none"
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-1/2 -right-1/2 w-full h-full bg-brand-orange/20 rounded-full blur-[100px] pointer-events-none"
           />
           
-          <div className="relative z-10 space-y-6">
-            {/* Myth Section */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-red-500/20 text-red-400 rounded-lg">
-                  <AlertCircle className="w-4 h-4" />
+          <div className="relative z-10 space-y-10">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-xl">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">The Myth</span>
+                <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-emerald-400 font-sans">Clinical Verdict</span>
               </div>
-              <p className="text-sm text-brand-beige/60 italic leading-tight">
-                "{myth}"
-              </p>
-            </div>
-
-            {/* Fact Section */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">The Fact</span>
-              </div>
-              <p className="text-lg font-medium leading-snug">
+              <p className="text-3xl md:text-4xl font-display font-bold leading-tight tracking-tight">
                 {fact}
               </p>
             </div>
+
+            <div className="space-y-4 border-l-2 border-brand-orange/20 pl-8">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-orange">Evidence-Based Insight</h4>
+              <p className="text-brand-beige/70 leading-relaxed font-light text-lg">
+                {explanation}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange">Why This Happens</h4>
-            <p className="text-brand-beige/70 leading-relaxed font-light text-sm">
-              {explanation}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 pt-4 border-t border-white/10">
-            <BookOpen className="w-3.5 h-3.5 text-brand-beige/40" />
-            <span className="text-[10px] text-brand-beige/60 italic">Source: {source}</span>
+          <div className="relative z-10 pt-10 border-t border-white/5 mt-auto flex items-center justify-between">
+            <div className="flex flex-col gap-1">
+              <span className="text-[8px] font-bold uppercase tracking-[0.4em] opacity-30">Journal Source</span>
+              <span className="text-[10px] font-medium opacity-60 italic">{source}</span>
+            </div>
+            <div className="w-14 h-14 rounded-[2rem] bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors">
+              <Zap className="w-6 h-6 text-brand-gold animate-pulse" />
+            </div>
           </div>
         </div>
       </motion.div>
@@ -177,27 +174,28 @@ export const MythBusters: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-brown/5 text-brand-brown rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-brand-brown/10 hover:bg-brand-brown hover:text-white transition-colors duration-300 cursor-default"
+            className="inline-flex items-center gap-4 px-6 py-2 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.6em] mb-12"
           >
-            Education First
+            Education First • 01
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-brand-brown mb-8 tracking-tight leading-[1.1]"
+            className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown mb-12 tracking-[-0.05em] leading-[0.8]"
           >
-            Foot Health <span className="text-brand-orange italic font-medium">Myth Busters</span>
+            FOOT HEALTH <br />
+            <span className="text-brand-orange italic font-bold">MYTH BUSTERS<span className="text-brand-brown">.</span></span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-brand-taupe/70 max-w-2xl mx-auto font-light leading-relaxed px-4 md:px-0"
+            className="text-2xl md:text-3xl lg:text-4xl text-brand-taupe/60 max-w-3xl mx-auto font-light leading-snug px-4 md:px-0 tracking-tight"
           >
-            Deciphering common misconceptions to provide you with the clinical clarity needed for effective daily management.
+            Deciphering common misconceptions with clinical clarity for the urban walker.
           </motion.p>
         </div>
 

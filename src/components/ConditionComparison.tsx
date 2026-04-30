@@ -9,7 +9,9 @@ import {
   ShieldCheck, 
   ChevronRight,
   ArrowRight,
-  Info
+  Info,
+  Activity,
+  ExternalLink
 } from 'lucide-react';
 import { Condition } from '../types';
 
@@ -57,67 +59,84 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar p-8 md:p-12">
-          <div className={`grid gap-8 min-w-[800px]`} style={{ gridTemplateColumns: `repeat(${conditions.length}, 1fr)` }}>
+        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar p-8 md:p-12 bg-white/20">
+          <div className={`grid gap-12 min-w-[900px]`} style={{ gridTemplateColumns: `repeat(${conditions.length}, 1fr)` }}>
             {conditions.map((condition) => (
               <motion.div 
                 key={condition.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex flex-col gap-10"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col gap-14"
               >
                 {/* Title & Short Desc */}
-                <div className="space-y-4">
-                  <div className="bg-brand-orange/10 text-brand-orange w-fit px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                    {condition.id.replace('-', ' ')}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-brown flex items-center justify-center text-brand-orange shadow-lg">
+                      <Activity className="w-6 h-6" />
+                    </div>
+                    <div className="bg-brand-brown/5 px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.3em] text-brand-taupe">
+                      Profile 0{condition.id === 'plantar-fasciitis' ? '1' : condition.id === 'flat-feet' ? '2' : '3'}
+                    </div>
                   </div>
-                  <h3 className="text-3xl font-display font-bold text-brand-brown">{condition.title}</h3>
-                  <p className="text-sm text-brand-taupe leading-relaxed font-light">{condition.shortDesc}</p>
+                  <h3 className="text-4xl md:text-5xl font-display font-black text-brand-brown tracking-tighter leading-none">{condition.title}</h3>
+                  <p className="text-sm text-brand-taupe/60 leading-relaxed font-light max-w-sm tracking-tight">{condition.shortDesc}</p>
                 </div>
 
-                {/* Symptoms Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-brand-brown">
-                    <AlertCircle className="w-4 h-4 text-brand-orange" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest">Key Symptoms</h4>
+                {/* Common Causes Segment */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 border-b border-brand-brown/5 pb-4">
+                    <div className="p-2 bg-brand-gold/10 rounded-xl text-brand-gold">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe">Clinical Etiology</h4>
                   </div>
-                  <div className="space-y-3">
-                    {condition.symptoms.map((symptom, idx) => (
-                      <div key={idx} className="bg-white/60 p-4 rounded-2xl border border-brand-brown/5 hover:border-brand-orange/20 transition-all group">
-                        <span className="text-xs font-bold text-brand-brown block mb-1 group-hover:text-brand-orange transition-colors">{symptom.name}</span>
-                        <p className="text-[10px] text-brand-taupe/70 leading-relaxed">{symptom.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Causes Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-brand-brown">
-                    <Zap className="w-4 h-4 text-brand-gold" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest">Primary Causes</h4>
-                  </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-4">
                     {condition.causes.map((cause, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-[11px] text-brand-taupe leading-relaxed">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-1.5 shrink-0" />
+                      <li key={idx} className="flex items-start gap-4 text-[13px] text-brand-taupe font-light leading-snug group">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-2 shrink-0 group-hover:scale-150 transition-transform" />
                         {cause}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Treatments Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-brand-brown">
-                    <ShieldCheck className="w-4 h-4 text-brand-orange" />
-                    <h4 className="text-xs font-bold uppercase tracking-widest">Recommended Care</h4>
+                {/* DIY Support Segment */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 border-b border-brand-brown/5 pb-4">
+                    <div className="p-2 bg-brand-orange/10 rounded-xl text-brand-orange">
+                      <ShieldCheck className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe">DIY Support Protocols</h4>
                   </div>
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-1 gap-3">
                     {condition.diySupport.map((tip, idx) => (
-                      <div key={idx} className="flex items-center gap-3 bg-brand-beige p-3 rounded-xl border border-brand-brown/5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                        <span className="text-[10px] font-medium text-brand-taupe">{tip}</span>
+                      <div key={idx} className="flex items-center gap-4 bg-white p-5 rounded-[1.5rem] border border-brand-brown/5 shadow-sm group hover:border-brand-orange/20 transition-all">
+                        <div className="p-2 bg-emerald-50 rounded-lg text-emerald-500">
+                          <CheckCircle2 className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] font-medium text-brand-brown/80">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Product Types Segment */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 border-b border-brand-brown/5 pb-4">
+                    <div className="p-2 bg-brand-brown/5 rounded-xl text-brand-taupe">
+                      <ChevronRight className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe">Product Intelligence</h4>
+                  </div>
+                  <div className="space-y-4">
+                    {condition.products.slice(0, 3).map((product, idx) => (
+                      <div key={idx} className="p-6 bg-brand-brown text-brand-beige rounded-[2rem] shadow-xl group cursor-pointer hover:bg-brand-orange transition-all duration-500">
+                        <div className="flex justify-between items-start mb-3">
+                          <span className="text-[9px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 italic">Recommended</span>
+                          <ExternalLink className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />
+                        </div>
+                        <h5 className="text-[14px] font-bold leading-tight mb-2">{product.name}</h5>
+                        <p className="text-[10px] opacity-60 group-hover:opacity-100 transition-opacity leading-relaxed font-light">{product.bestFor}</p>
                       </div>
                     ))}
                   </div>
@@ -126,9 +145,9 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
                 {/* Action */}
                 <button 
                   onClick={() => onSelectCondition(condition)}
-                  className="mt-auto w-full bg-brand-brown text-brand-beige py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-2 group"
+                  className="mt-auto w-full bg-brand-brown text-white py-8 rounded-[2rem] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-4 group shadow-xl"
                 >
-                  Full Profile <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Examine Protocol <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </button>
               </motion.div>
             ))}

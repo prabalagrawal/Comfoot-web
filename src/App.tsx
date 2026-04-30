@@ -30,16 +30,16 @@ import { addDoc, collection } from 'firebase/firestore';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
   <div className={`flex items-center gap-4 ${className}`}>
-    <div className={`bg-brand-orange rounded-2xl flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-16 h-16'}`}>
-      <Footprints className="text-white w-3/5 h-3/5" />
+    <div className={`bg-brand-brown rounded-[1.2rem] flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-16 h-16'}`}>
+      <Footprints className="text-brand-orange w-3/5 h-3/5" />
     </div>
     <div className="flex flex-col leading-[0.8]">
-      <span className={`font-display font-bold text-brand-brown transition-all duration-700 tracking-tighter ${isScrolled ? 'text-xl' : 'text-4xl'}`}>
+      <span className={`font-display font-black text-brand-brown transition-all duration-700 tracking-[-0.05em] ${isScrolled ? 'text-xl' : 'text-4xl md:text-5xl'}`}>
         Com<span className="text-brand-orange">foot</span>
       </span>
       {!isScrolled && (
-        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40 mt-2 ml-0.5">
-          Where Comfort meets your soul
+        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40 mt-3 ml-0.5">
+          Where Comfort meets your Soul
         </span>
       )}
     </div>
@@ -546,161 +546,131 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
 
   const navLinks = [
     { name: 'Home', href: '#home' },
-    { name: 'Quiz', href: '#quiz' },
+    { name: 'Analysis', href: '#quiz' },
     { name: 'Myths', href: '#myth-busters' },
     { name: 'Conditions', href: '#explore' },
-    { name: 'Compare', href: '#compare' },
+    { name: 'Framework', href: '#compare' },
     ...(user ? [{ name: 'Journal', href: '#journal' }] : []),
     { name: 'About', href: '#about' },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-8'}`}>
-      <div className={`absolute inset-0 transition-all duration-700 ${isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-brand-brown/5 shadow-soft' : 'bg-transparent'}`} />
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-10'}`}>
+      <div className={`absolute inset-0 transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'} bg-white/80 backdrop-blur-2xl border-b border-brand-brown/5 shadow-luxury`} />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center relative z-10">
-        <a href="#home" className="hover:opacity-80 transition-opacity">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex items-center justify-between">
+        <a href="#home" className="group">
           <Logo isScrolled={isScrolled} />
         </a>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-10">
-          <div className="flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-brown/60 hover:text-brand-orange transition-colors relative group"
-              >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-orange transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-6 border-l border-brand-brown/10 pl-10">
-            {user ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 px-4 py-2 bg-[#FDFCFB] rounded-2xl border border-brand-brown/5 shadow-inner">
-                  {user.photoURL ? (
-                    <img src={user.photoURL} alt={user.displayName || ''} className="w-5 h-5 rounded-full grayscale hover:grayscale-0 transition-all" referrerPolicy="no-referrer" />
-                  ) : (
-                    <UserIcon className="w-4 h-4 text-brand-taupe" />
-                  )}
-                  <span className="text-[10px] font-bold text-brand-brown uppercase tracking-widest">{user.displayName?.split(' ')[0]}</span>
-                </div>
-                <button 
-                  onClick={handleLogout}
-                  className="p-2 text-brand-taupe/40 hover:text-brand-orange transition-all"
-                  title="Logout"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              <button 
-                onClick={handleLogin}
-                className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-brown hover:text-brand-orange transition-all"
-              >
-                <UserIcon className="w-4 h-4" /> Sign In
-              </button>
-            )}
-
+        <div className="hidden lg:flex items-center gap-2 p-1.5 bg-brand-brown/5 rounded-full backdrop-blur-xl border border-brand-brown/5 shadow-soft">
+          {navLinks.map((link) => (
             <a 
-              href="#explore" 
-              className="bg-brand-brown text-[#FAF9F6] px-8 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-orange hover:shadow-brand-orange/40 transition-all duration-500 shadow-xl"
+              key={link.name}
+              href={link.href}
+              className="px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe hover:text-brand-brown hover:bg-white transition-all duration-500"
             >
-              Start Diagnostic
+              {link.name}
             </a>
-          </div>
+          ))}
         </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden ml-auto p-3.5 rounded-2xl bg-brand-brown text-white shadow-xl hover:bg-brand-orange transition-all duration-300" 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <button 
+              onClick={handleLogout}
+              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-orange transition-all shadow-xl active:scale-95"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Sign Out
+            </button>
+          ) : (
+            <button 
+              onClick={handleLogin}
+              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-orange text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-brown transition-all shadow-xl shadow-brand-orange/20 active:scale-95"
+            >
+              <UserIcon className="w-3.5 h-3.5 transition-transform group-hover:scale-110" />
+              Access
+            </button>
+          )}
+
+          <button 
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-4 bg-brand-brown text-brand-beige rounded-2xl hover:bg-brand-orange transition-all lg:hidden shadow-xl"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Fullscreen Menu */}
+      {/* Mobile Menu Overlay - Shopify Editions Style */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 1.1, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.1, y: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-[110] bg-brand-brown lg:hidden flex flex-col p-8 pt-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-brand-brown text-brand-beige lg:hidden"
           >
-            <div className="flex justify-between items-center mb-16 relative z-10">
-              <Logo className="invert brightness-0" isScrolled={false} />
+            <div className="absolute top-0 right-0 p-10">
               <button 
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-white backdrop-blur-md"
+                className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
               >
-                <X className="w-6 h-6" />
+                <X className="w-8 h-8" />
               </button>
             </div>
 
-            <div className="flex flex-col gap-8 relative z-10">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-4xl font-display font-bold text-white/90 hover:text-brand-orange transition-colors tracking-tighter"
-                >
-                  {link.name}
-                </motion.a>
-              ))}
-            </div>
+            <div className="h-full flex flex-col justify-center px-12 pb-20 overflow-y-auto">
+              <div className="mb-16 mt-20">
+                <Logo className="invert brightness-200" />
+              </div>
+              
+              <div className="space-y-6">
+                {navLinks.map((link, i) => (
+                  <motion.a
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-5xl sm:text-7xl font-display font-bold tracking-tighter hover:text-brand-orange transition-colors"
+                  >
+                    {link.name}<span className="text-brand-orange">.</span>
+                  </motion.a>
+                ))}
+              </div>
 
-            <div className="mt-auto pt-10 border-t border-white/10 flex flex-col gap-6 relative z-10">
-              {user ? (
-                <div className="flex items-center justify-between p-6 bg-white/5 rounded-3xl border border-white/5">
-                  <div className="flex items-center gap-4">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || ''} className="w-12 h-12 rounded-2xl" referrerPolicy="no-referrer" />
-                    ) : (
-                      <UserIcon className="w-12 h-12 p-3 bg-white/10 rounded-2xl text-white" />
-                    )}
-                    <div className="flex flex-col text-left">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Active Session</span>
-                      <span className="text-sm font-bold text-white tracking-tight">{user.displayName?.split(' ')[0]}</span>
-                    </div>
-                  </div>
-                  <button onClick={handleLogout} className="p-3 text-white/40 hover:text-brand-orange transition-colors">
-                    <LogOut className="w-5 h-5" />
+              <div className="mt-20 pt-12 border-t border-white/5 flex flex-col gap-8">
+                {user ? (
+                   <div className="flex items-center gap-4">
+                     {user.photoURL ? (
+                       <img src={user.photoURL} className="w-12 h-12 rounded-2xl" referrerPolicy="no-referrer" alt="" />
+                     ) : (
+                       <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                         <UserIcon className="w-6 h-6" />
+                       </div>
+                     )}
+                     <div className="flex flex-col">
+                       <span className="text-xs font-bold text-white">{user.displayName}</span>
+                       <button onClick={handleLogout} className="text-[10px] uppercase tracking-widest text-brand-orange text-left">Logout Session</button>
+                     </div>
+                   </div>
+                ) : (
+                  <button 
+                    onClick={handleLogin}
+                    className="w-full py-6 bg-brand-orange text-white rounded-3xl font-display font-bold text-xl shadow-2xl active:scale-95"
+                  >
+                    Specialist Access
                   </button>
+                )}
+                <div className="flex items-center gap-6 opacity-40">
+                  <Instagram className="w-6 h-6" />
+                  <Twitter className="w-6 h-6" />
+                  <span className="ml-auto text-[10px] font-bold uppercase tracking-[0.4em]">MMXXIV Edition</span>
                 </div>
-              ) : (
-                <button 
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleLogin();
-                  }}
-                  className="w-full py-5 rounded-2xl bg-white/5 text-white font-bold uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 border border-white/5"
-                >
-                  <UserIcon className="w-4 h-4" /> Account Access
-                </button>
-              )}
-              <a 
-                href="#explore"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-6 rounded-2xl bg-brand-orange text-white font-bold uppercase tracking-[0.3em] text-[10px] flex items-center justify-center shadow-2xl"
-              >
-                Start Diagnostic
-              </a>
-            </div>
-
-            {/* Background design element */}
-            <div className="absolute top-0 right-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
-               <Footprints className="absolute -right-20 top-40 w-[600px] h-[600px] text-white rotate-12" />
+              </div>
             </div>
           </motion.div>
         )}
@@ -718,68 +688,71 @@ const ConditionCard: React.FC<{
 }> = ({ condition, onQuickView, onLearnMore, isComparing, onToggleCompare }) => {
   return (
     <motion.div
-      whileHover={{ y: -12, boxShadow: "0 40px 80px -15px rgba(45, 36, 30, 0.15)" }}
-      className={`group relative overflow-hidden bg-white p-10 rounded-[3.5rem] border-2 transition-all duration-500 flex flex-col h-full ${
-        isComparing ? 'border-brand-orange shadow-luxury' : 'border-brand-brown/5 shadow-soft hover:border-brand-orange/10'
-      }`}
+      whileHover={{ 
+        y: -16, 
+        rotateX: -2,
+        rotateY: 2,
+        boxShadow: "0 50px 100px -20px rgba(45, 36, 30, 0.2)" 
+      }}
+      className={`group relative overflow-hidden bg-white p-12 rounded-[4rem] border-2 transition-all duration-700 flex flex-col h-full ${
+        isComparing ? 'border-brand-orange shadow-luxury' : 'border-brand-brown/5 shadow-soft hover:border-brand-orange/20'
+      } perspective-1000`}
     >
-      {/* Comparison Badge */}
-      <AnimatePresence>
-        {isComparing && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
-            className="absolute top-8 right-8 bg-brand-orange text-white text-[9px] font-bold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full z-10 shadow-xl"
-          >
-            Selected
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Index Number - Editorial Detail */}
+      <div className="absolute top-12 right-12 text-6xl font-display font-black text-brand-brown/5 group-hover:text-brand-orange/10 transition-colors duration-700 select-none">
+        0{condition.id}
+      </div>
 
-      <div className="flex items-center gap-6 mb-8">
-        <div className={`w-16 h-16 rounded-[2rem] flex items-center justify-center transition-all duration-500 ${
-          isComparing ? 'bg-brand-orange text-white' : 'bg-brand-beige text-brand-orange group-hover:bg-brand-orange group-hover:text-white'
-        }`}>
-          <Activity className="w-7 h-7" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">Clinical Profile</span>
-          <h3 className="text-3xl font-display font-bold text-brand-brown mt-1 leading-none">{condition.title}</h3>
+      <div className="flex items-center gap-6 mb-10 relative z-10">
+        <div className={`w-20 h-20 rounded-[2.5rem] flex items-center justify-center transition-all duration-700 ${
+          isComparing ? 'bg-brand-orange text-white scale-110' : 'bg-brand-beige text-brand-orange group-hover:bg-brand-orange group-hover:text-white group-hover:rotate-12 group-hover:scale-110'
+        } shadow-lg`}>
+          <Activity className="w-8 h-8" />
         </div>
       </div>
 
-      <p className="text-base text-brand-taupe/70 leading-relaxed font-light mb-10 border-l-2 border-brand-orange/10 pl-6">
-        {condition.shortDesc}
-      </p>
-      
-      <div className="mt-auto grid grid-cols-2 gap-4">
-        <button 
-          onClick={onToggleCompare}
-          className={`flex items-center justify-center gap-3 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${
-            isComparing 
-              ? 'bg-brand-orange/10 text-brand-orange' 
-              : 'bg-brand-beige text-brand-taupe hover:bg-brand-orange hover:text-white'
-          }`}
-        >
-          {isComparing ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
-          {isComparing ? 'Stored' : 'Compare'}
-        </button>
+      <div className="relative z-10 flex flex-col h-full">
+        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-orange mb-3 group-hover:tracking-[0.6em] transition-all">Clinical Profile</span>
+        <h3 className="text-4xl md:text-5xl font-display font-bold text-brand-brown leading-[0.95] tracking-[-0.03em] mb-8 group-hover:text-brand-orange transition-colors">
+          {condition.title}
+        </h3>
+
+        <p className="text-lg text-brand-taupe/70 leading-relaxed font-light mb-12 border-l-2 border-brand-orange/20 pl-6 group-hover:border-brand-orange transition-colors">
+          {condition.shortDesc}
+        </p>
         
-        <button 
-          onClick={onQuickView}
-          className="flex items-center justify-center py-4 bg-brand-beige text-brand-taupe rounded-2xl hover:bg-brand-brown hover:text-white transition-all"
-          title="Quick Analytics"
-        >
-          <BookOpen className="w-4 h-4" />
-        </button>
-        
-        <button 
-          onClick={onLearnMore}
-          className="col-span-2 bg-brand-brown text-brand-beige py-5 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-brand-orange hover:shadow-brand-orange/30 transition-all active:scale-95 text-center flex items-center justify-center gap-3"
-        >
-          Full Protocol <ArrowRight className="w-4 h-4" />
-        </button>
+        <div className="mt-auto flex flex-col gap-3">
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={onToggleCompare}
+              className={`flex items-center justify-center gap-3 py-5 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all ${
+                isComparing 
+                  ? 'bg-brand-orange text-white shadow-lg' 
+                  : 'bg-brand-beige text-brand-taupe hover:bg-brand-brown hover:text-white'
+              }`}
+            >
+              {isComparing ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+              {isComparing ? 'Selected' : 'Compare'}
+            </button>
+            
+            <button 
+              onClick={onQuickView}
+              className="flex items-center justify-center py-5 bg-brand-beige text-brand-taupe rounded-2xl hover:bg-brand-gold hover:text-white transition-all shadow-sm"
+              title="Quick Analytics"
+            >
+              <BookOpen className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <button 
+            onClick={onLearnMore}
+            className="group/btn relative overflow-hidden bg-brand-brown text-brand-beige py-6 rounded-2xl text-[12px] font-bold uppercase tracking-[0.4em] shadow-xl hover:shadow-brand-orange/30 transition-all active:scale-95 text-center flex items-center justify-center gap-3"
+          >
+            <div className="absolute inset-0 bg-brand-orange translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
+            <span className="relative z-10">Full Protocol</span>
+            <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-2 transition-transform" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -1458,51 +1431,65 @@ const Footprint: React.FC<FootprintProps> = ({ step, scrollY }) => {
   );
 };
 
+const Skeleton = ({ className }: { className?: string }) => (
+  <div className={`skeleton ${className}`} />
+);
+
 const LoadingScreen = () => (
   <motion.div 
     initial={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    transition={{ duration: 1 }}
-    className="fixed inset-0 z-[100] bg-brand-beige flex flex-col items-center justify-center p-6"
+    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+    className="fixed inset-0 z-[200] bg-brand-beige flex flex-col items-center justify-center"
   >
-    <div className="relative">
+    <div className="relative mb-8">
       <motion.div
-        animate={{ 
-          scale: [1, 1.15, 1],
-          rotate: [0, 5, -5, 0],
-          opacity: [0.5, 1, 0.5]
-        }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        className="w-32 h-32 bg-brand-brown rounded-[2.5rem] flex items-center justify-center shadow-2xl relative z-10"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="w-40 h-40 bg-brand-brown rounded-[3rem] flex items-center justify-center shadow-luxury"
       >
-        <Footprints className="w-16 h-16 text-brand-orange" />
+        <Footprints className="w-20 h-20 text-brand-orange" />
       </motion.div>
-      <div className="absolute inset-0 bg-brand-orange/20 blur-3xl rounded-full scale-150 -z-0" />
+      <motion.div 
+        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity }}
+        className="absolute inset-0 bg-brand-orange/30 blur-3xl rounded-full -z-10"
+      />
     </div>
     
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5 }}
-      className="mt-12 text-center"
-    >
-      <h2 className="text-2xl font-display font-bold text-brand-brown mb-2 tracking-tight">Comfoot</h2>
-      <div className="flex items-center gap-2 justify-center">
-        <div className="h-1 w-12 bg-brand-brown/10 rounded-full overflow-hidden">
-          <motion.div 
-            animate={{ x: [-48, 48] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="h-full w-full bg-brand-orange"
-          />
-        </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe/60 italic">Science for your Sole</span>
-      </div>
-    </motion.div>
+    <div className="overflow-hidden flex flex-col items-center">
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
+        <h2 className="text-4xl font-display font-black text-brand-brown tracking-tighter">
+          COM<span className="text-brand-orange">FOOT</span>
+        </h2>
+      </motion.div>
+      <motion.div 
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        transition={{ delay: 0.8, duration: 1.5, ease: "easeInOut" }}
+        className="h-0.5 bg-brand-brown/10 mt-4 rounded-full relative overflow-hidden w-48"
+      >
+        <motion.div 
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 bg-brand-orange w-1/2"
+        />
+      </motion.div>
+      <motion.span 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.4 }}
+        transition={{ delay: 1.2 }}
+        className="text-[10px] font-bold uppercase tracking-[0.5em] text-brand-brown mt-6"
+      >
+        where comfort meets your Soul
+      </motion.span>
+    </div>
   </motion.div>
-);
-
-const Skeleton = ({ className }: { className?: string }) => (
-  <div className={`animate-pulse bg-brand-brown/5 rounded-2xl ${className}`} />
 );
 
 const LazyImage = ({ src, alt, className, imgClassName }: { src: string; alt: string; className?: string; imgClassName?: string }) => {
@@ -1692,6 +1679,19 @@ const WalkingTrail = () => {
       ))}
     </div>
   );
+};
+
+const revealVariants: any = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
 };
 
 export default function App() {
@@ -1897,30 +1897,30 @@ export default function App() {
             className="text-center lg:text-left flex flex-col items-center lg:items-start"
           >
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="inline-flex items-center gap-3 px-6 py-2 bg-brand-orange/10 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-8 md:mb-12 border border-brand-orange/20 italic text-brand-orange"
+              transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="inline-flex items-center gap-3 px-6 py-2 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-8 md:mb-12 border border-white/10"
             >
-              Where Comfort meets your soul
+              Walking Reinvisioned • 2026
             </motion.div>
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] mb-6 md:mb-8 leading-[1] md:leading-[0.82] tracking-tighter font-display font-bold text-brand-brown">
-              Walking <br />
-              <span className="text-brand-orange inline-block italic font-medium">Reinvisioned.</span>
+            <h1 className="text-8xl sm:text-9xl md:text-[11rem] lg:text-[14rem] mb-12 leading-[0.8] md:leading-[0.75] tracking-[-0.065em] font-display font-black text-brand-brown">
+              WALKING <br />
+              <span className="text-brand-orange inline-block italic font-bold">REINVISIONED<span className="text-brand-brown">.</span></span>
             </h1>
             
-            <p className="text-lg md:text-xl lg:text-2xl mb-10 md:mb-12 text-brand-taupe/70 leading-relaxed max-w-xl font-light mx-auto lg:mx-0 px-4 sm:px-0">
-              Structured diagnostics for <span className="text-brand-brown font-medium">heel pain, flat feet, and diabetic care</span> curated for Indian urban lifestyles.
+            <p className="text-2xl md:text-3xl lg:text-4xl mb-16 text-brand-taupe/60 leading-[1.1] max-w-xl font-light mx-auto lg:mx-0 tracking-tight">
+              Science-first diagnostics for the urban explorer. Specialized care for heel pain, flat feet, and diabetic health.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 w-full sm:w-auto">
-              <motion.a 
-                whileHover={{ scale: 1.02, y: -2 }}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 w-full sm:w-auto">
+              <motion.a
+                whileHover={{ scale: 1.02, backgroundColor: "#2D241E" }}
                 whileTap={{ scale: 0.98 }}
-                href="#explore" 
-                className="w-full sm:w-auto bg-brand-orange text-white px-12 py-6 rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:shadow-brand-orange/40 transition-all flex items-center justify-center gap-3"
+                href="#quiz"
+                className="w-full sm:w-auto px-16 py-8 bg-brand-orange text-white rounded-[2.5rem] text-[14px] font-bold uppercase tracking-[0.6em] shadow-2xl shadow-brand-orange/20 transition-all text-center"
               >
-                Start Diagnostic <ArrowRight className="w-5 h-5" />
+                Start Analysis
               </motion.a>
               <motion.a 
                 whileHover={{ x: 5 }}
@@ -1981,55 +1981,72 @@ export default function App() {
       <section className="py-40 bg-brand-beige/50 relative overflow-hidden">
         <div className="section-padding relative z-10">
           <div className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-12 md:p-20 rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[500px]">
-              <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full -mr-[250px] -mt-[250px] blur-[120px] group-hover:scale-125 transition-transform duration-1000" />
+            {/* Featured Mission Bento - 2026 Style */}
+            <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-12 md:p-24 rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[600px]">
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full -mr-[300px] -mt-[300px] blur-[140px] group-hover:scale-125 transition-transform duration-1000" />
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-12 border border-white/10 italic text-white/80">
-                  Mission Statement
+                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-16 border border-white/10 italic text-white/40">
+                  Mission Statement • Edition 2.6
                 </div>
-                <h2 className="text-6xl md:text-8xl font-display font-bold mb-8 leading-[0.9] tracking-tighter">
-                  Where Comfort <br /><span className="text-brand-orange italic font-light">meets your soul.</span>
+                <h2 className="text-7xl md:text-9xl font-display font-bold mb-10 leading-[0.85] tracking-[-0.05em]">
+                  Where Comfort <br />
+                  <span className="text-brand-orange italic font-light drop-shadow-2xl">meets your soul.</span>
                 </h2>
-                <p className="text-xl md:text-2xl opacity-70 max-w-xl leading-relaxed font-light">
-                  We combine clinical science with practical lifestyle advice to help you navigate foot health in India's unique urban landscape.
+                <p className="text-xl md:text-3xl opacity-60 max-w-2xl leading-relaxed font-light font-sans mt-8">
+                  We combine clinical precision with soulful lifestyle integration to help you reclaim every step in India's unique urban terrain.
                 </p>
               </div>
-              <div className="relative z-10 mt-16 flex items-center gap-6">
-                <div className="h-16 w-16 rounded-[2rem] bg-white text-brand-brown flex items-center justify-center shadow-2xl">
-                  <ShieldCheck className="w-8 h-8" />
+              
+              <div className="mt-16 flex flex-wrap gap-12 relative z-10">
+                <div className="flex flex-col gap-2">
+                  <span className="text-4xl font-display font-bold text-brand-orange">1.2M+</span>
+                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Steps Analyzed</span>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-white">Vetted by Specialists</span>
-                  <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">Certified Protocols</span>
+                <div className="flex flex-col gap-2">
+                  <span className="text-4xl font-display font-bold text-brand-gold">500+</span>
+                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Clinical Patterns</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-4xl font-display font-bold text-white">150+</span>
+                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Product Updates</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-4 grid sm:grid-cols-2 lg:grid-cols-1 gap-8">
+            {/* Side Column - Editorial Accents (Shopify 2026 Style) */}
+            <div className="lg:col-span-4 flex flex-col gap-8">
               <motion.div 
-                whileHover={{ y: -8 }}
-                className="bg-brand-orange text-white p-12 rounded-[3.5rem] flex flex-col justify-between group shadow-luxury aspect-square lg:aspect-auto"
+                whileHover={{ y: -10, boxShadow: "0 40px 80px -15px rgba(216, 116, 42, 0.15)" }}
+                className="flex-1 bg-brand-orange text-white p-12 rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[300px] shadow-luxury transition-all duration-500"
               >
-                <div className="w-16 h-16 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-md mb-8">
-                  <Zap className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+                <div className="relative z-10">
+                  <div className="p-4 bg-white/20 rounded-2xl w-fit mb-12 backdrop-blur-md">
+                    <ShieldCheck className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-4xl font-display font-bold leading-[1] mb-6 tracking-[-0.03em]">Clinical <br />Foundation.</h3>
+                  <p className="text-white/80 font-light leading-relaxed text-sm">
+                    Every data point is validated against certified orthopedics and global kinetic standards.
+                  </p>
                 </div>
-                <div>
-                  <h3 className="text-4xl font-display font-bold mb-4 tracking-tight">Fast Relief.</h3>
-                  <p className="text-lg opacity-80 leading-relaxed font-light">Immediate DIY protocols for acute pain management.</p>
-                </div>
+                <div className="relative z-10 text-[9px] uppercase font-bold tracking-[0.4em] opacity-40">Standard 2.6 Verified</div>
               </motion.div>
 
               <motion.div 
-                whileHover={{ y: -8 }}
-                className="bg-brand-gold text-white p-12 rounded-[3.5rem] flex flex-col justify-between group shadow-luxury aspect-square lg:aspect-auto"
+                whileHover={{ y: -10, boxShadow: "0 40px 80px -15px rgba(232, 165, 82, 0.15)" }}
+                className="flex-1 bg-brand-gold text-white p-12 rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[300px] shadow-luxury transition-all duration-500"
               >
-                <div className="w-16 h-16 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-md mb-8">
-                  <Activity className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full -ml-32 -mb-32 blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+                <div className="relative z-10">
+                  <div className="p-4 bg-white/20 rounded-2xl w-fit mb-12 backdrop-blur-md">
+                    <Zap className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-4xl font-display font-bold leading-[1] mb-6 tracking-[-0.03em]">Rapid <br />Intervention.</h3>
+                  <p className="text-white/80 font-light leading-relaxed text-sm">
+                    Direct access to immediate DIY protocols for acute plantar and heel discomfort.
+                  </p>
                 </div>
-                <div>
-                  <h3 className="text-4xl font-display font-bold mb-4 tracking-tight">Recovery.</h3>
-                  <p className="text-lg opacity-80 leading-relaxed font-light">Long-term strategies to keep you moving freely.</p>
-                </div>
+                <div className="relative z-10 text-[9px] uppercase font-bold tracking-[0.4em] opacity-40 italic">Active Recovery</div>
               </motion.div>
             </div>
 
@@ -2078,57 +2095,56 @@ export default function App() {
       {user && <FootJournal />}
       
       {/* Testimonials Section */}
-      <section className="py-32 bg-brand-brown text-brand-beige relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] bg-brand-orange rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-[50%] h-[70%] bg-brand-gold rounded-full blur-[150px]" />
-        </div>
-        
+      <section className="py-40 bg-brand-brown text-brand-beige relative overflow-hidden">
         <div className="section-padding relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-white/10">
-              User Stories
+        <div className="flex flex-col items-center text-center mb-32">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-px bg-brand-orange" />
+              <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">User Stories</span>
             </div>
-            <h2 className="text-3xl md:text-6xl font-display font-bold mb-6 text-center text-brand-beige tracking-tight leading-tight">Real Relief, <span className="text-brand-gold italic font-medium">Real People</span>.</h2>
-            <p className="text-lg md:text-xl opacity-70 max-w-2xl mx-auto font-light leading-relaxed">Join thousands of people in India who have reclaimed their mobility with Comfoot's structured guidance.</p>
+            <h2 className="text-7xl md:text-[10rem] font-display font-black leading-[0.8] tracking-[-0.05em] mb-12">
+              REAL RELIEF, <br />
+              <span className="text-brand-orange italic font-bold">REAL PEOPLE<span className="text-brand-beige">.</span></span>
+            </h2>
+            <p className="text-2xl md:text-3xl opacity-60 max-w-3xl mx-auto font-light leading-snug tracking-tight">Join thousands who have reclaimed their mobility with our structured protocols.</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-12">
             {[
               {
                 name: "Anjali Sharma",
                 role: "Teacher, New Delhi",
-                text: "Standing for 6 hours a day was becoming impossible. The Plantar Fasciitis protocol and the recommended insoles changed my life in just 3 weeks.",
-                condition: "Plantar Fasciitis"
+                text: "Standing for 6 hours a day was becoming impossible. The Plantar Fasciitis protocol changed my life in just 3 weeks.",
+                condition: "Success Case"
               },
               {
                 name: "Vikram Mehta",
                 role: "IT Professional, Bangalore",
-                text: "I didn't even realize I had flat feet until I took the quiz. The arch support exercises are simple and actually work. Highly recommended!",
-                condition: "Flat Feet"
+                text: "I didn't even realize I had flat feet until I took the quiz. The arch support exercises are simple and actually work.",
+                condition: "Optimization"
               },
               {
                 name: "Dr. Rajesh Iyer",
                 role: "Orthopedic Surgeon, Mumbai",
-                text: "Comfoot provides accurate, structured information that bridges the gap between clinical advice and daily lifestyle management.",
-                condition: "Expert Review"
+                text: "Comfoot provides accurate, structured information that bridges the gap between clinical advice and lifestyle.",
+                condition: "Clinical Verdict"
               }
             ].map((t, i) => (
               <motion.div 
                 key={i}
-                whileHover={{ y: -10 }}
-                className="bg-white/5 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 flex flex-col gap-6 relative group"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white/5 p-12 rounded-[3.5rem] border border-white/5 flex flex-col gap-10 group"
               >
-                <div className="flex gap-1 text-brand-gold">
-                  {[...Array(5)].map((_, i) => <Zap key={i} className="w-3.5 h-3.5 fill-current" />)}
+                <div className="flex gap-1.5 text-brand-orange">
+                  {[...Array(5)].map((_, i) => <Zap key={i} className="w-4 h-4 fill-current opacity-40 group-hover:opacity-100 transition-opacity" />)}
                 </div>
-                <p className="text-lg leading-relaxed font-light italic opacity-90">"{t.text}"</p>
-                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+                <p className="text-3xl leading-tight font-light italic opacity-70 group-hover:opacity-100 transition-opacity">"{t.text}"</p>
+                <div className="mt-auto pt-10 border-t border-white/5 flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-sm">{t.name}</h4>
-                    <p className="text-[10px] opacity-60 uppercase tracking-widest">{t.role}</p>
+                    <h4 className="font-bold text-lg text-brand-beige">{t.name}</h4>
+                    <p className="text-[10px] opacity-40 uppercase tracking-[0.4em] mt-1">{t.role}</p>
                   </div>
-                  <span className="text-[9px] font-bold uppercase tracking-widest px-3 py-1 bg-brand-orange/20 text-brand-orange rounded-full border border-brand-orange/20">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.4em] px-4 py-2 bg-brand-beige/5 rounded-full border border-white/5">
                     {t.condition}
                   </span>
                 </div>
@@ -2144,16 +2160,17 @@ export default function App() {
         
         <div className="section-padding relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="h-px w-12 bg-brand-orange" />
-                <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">The Diagnostics</span>
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-12 h-px bg-brand-orange" />
+                <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">The Diagnostics</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown leading-[1.1] tracking-tight">
-                Choose Your <span className="text-brand-orange italic font-medium">Condition</span>.
+              <h2 className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown leading-[0.8] tracking-[-0.05em]">
+                CHOOSE <br />
+                <span className="text-brand-orange italic font-bold">CONDITION<span className="text-brand-brown">.</span></span>
               </h2>
-              <p className="text-lg md:text-xl text-brand-taupe/70 mt-8 font-light leading-relaxed max-w-lg">
-                Explore our deep-dive analysis on common urban foot issues to find relief that fits your lifestyle.
+              <p className="text-2xl md:text-3xl text-brand-taupe/60 mt-12 font-light leading-snug max-w-xl tracking-tight">
+                Deep-dive clinical analysis on common urban foot issues to find relief that fits your lifestyle.
               </p>
             </div>
             
@@ -2214,10 +2231,13 @@ export default function App() {
                   <motion.div
                     key={condition.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    custom={idx}
+                    variants={revealVariants}
+                    initial="hidden"
+                    whileInView="visible"
                     exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                   >
                     <ConditionCard 
                       condition={condition} 
@@ -2324,71 +2344,71 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <section id="compare" className="py-32 bg-brand-beige/50 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-brand-orange/10 rounded-full blur-[150px] -z-10" />
+      <section id="compare" className="py-40 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[#FAF9F6]/50 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#2D241E 2px, transparent 2px)', backgroundSize: '80px 80px' }} />
         
         <div className="section-padding relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-gold/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-brand-gold/20">
-              Decision Guide
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-8">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-3 px-4 py-2 bg-brand-gold/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-10 border border-brand-gold/20">
+                Decision Framework
+              </div>
+              <h2 className="text-5xl md:text-8xl font-display font-bold text-brand-brown leading-[0.9] tracking-[-0.05em]">
+                Not Sure What <br />
+                <span className="text-brand-gold italic font-light lowercase">you need?</span>
+              </h2>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6">Not Sure What You <span className="text-brand-gold italic">Need</span>?</h2>
-            <p className="text-lg text-brand-taupe/70 max-w-2xl mx-auto font-light">A curated guide to matching your symptoms with the most effective support protocols.</p>
+            <p className="text-xl md:text-2xl text-brand-taupe/60 max-w-md leading-relaxed font-light font-sans">
+              A curated navigation through clinical patterns to find your optimal support protocol.
+            </p>
           </div>
           
-          <div className="overflow-x-auto rounded-[2.5rem] border border-brand-brown/5 shadow-2xl bg-white/80 backdrop-blur-sm">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-brand-brown text-brand-beige">
-                  <th className="p-8 font-display font-bold uppercase tracking-widest text-[11px]">Condition</th>
-                  <th className="p-8 font-display font-bold uppercase tracking-widest text-[11px]">Our Recommendation</th>
-                  <th className="p-8 font-display font-bold uppercase tracking-widest text-[11px]">Primary Benefit</th>
-                  <th className="p-8 font-display font-bold uppercase tracking-widest text-[11px] text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-brand-brown/5">
-                {CONDITIONS.map((c) => (
-                  <tr key={c.id} className="hover:bg-brand-orange/5 transition-all duration-300 group">
-                    <td className="p-8">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-all">
-                          <Activity className="w-5 h-5" />
-                        </div>
-                        <span className="font-display font-bold text-lg text-brand-brown">{c.title}</span>
-                      </div>
-                    </td>
-                    <td className="p-8">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-brand-brown">{c.products[0].name}</span>
-                        <span className="text-xs text-brand-taupe/60 mt-1">Medical-Grade Support</span>
-                      </div>
-                    </td>
-                    <td className="p-8">
-                      <span className="text-sm text-brand-taupe font-light italic leading-relaxed">"{c.products[0].bestFor}"</span>
-                    </td>
-                    <td className="p-8 text-right">
-                      <div className="flex items-center justify-end gap-4">
-                        <button 
-                          onClick={() => setSelectedCondition(c)}
-                          className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe hover:text-brand-orange transition-colors"
-                        >
-                          Quick View
-                        </button>
-                        <button 
-                          onClick={() => {
-                            setSelectedCondition(c);
-                            setView('detail');
-                          }}
-                          className="text-[10px] font-bold uppercase tracking-widest text-brand-orange hover:text-brand-orange transition-colors flex items-center gap-2"
-                        >
-                          Learn More <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {CONDITIONS.map((c, i) => (
+              <motion.div
+                key={c.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+                viewport={{ once: true }}
+                className="group relative bg-[#F9F6F2] p-12 rounded-[4rem] border border-brand-brown/5 hover:border-brand-orange/20 transition-all duration-700 min-h-[450px] flex flex-col justify-between"
+              >
+                <div className="absolute top-12 right-12 text-5xl font-display font-black text-brand-brown/[0.03] group-hover:text-brand-orange/5 transition-colors">
+                  {i + 1}
+                </div>
+                
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center text-brand-orange shadow-soft mb-12 group-hover:scale-110 transition-transform">
+                    <Activity className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-3xl font-display font-bold text-brand-brown mb-4 tracking-tight leading-tight">
+                    {c.title}
+                  </h3>
+                  <p className="text-brand-taupe/60 font-light text-base leading-relaxed line-clamp-2">
+                    {c.shortDesc}
+                  </p>
+                </div>
+
+                <div className="pt-12 border-t border-brand-brown/5">
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-orange">Priority Gear</span>
+                      <span className="text-base font-medium text-brand-brown">{c.products[0].name}</span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setSelectedCondition(c);
+                        setView('detail');
+                      }}
+                      className="group/select flex items-center justify-between py-6 px-10 bg-brand-brown text-brand-beige rounded-3xl text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-brand-orange transition-all duration-500 shadow-xl"
+                    >
+                      Protocol
+                      <ArrowRight className="w-4 h-4 group-hover/select:translate-x-2 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
