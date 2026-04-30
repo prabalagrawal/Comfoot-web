@@ -141,17 +141,17 @@ export const FootJournal: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <span className="h-px w-12 bg-brand-orange" />
-              <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">Your Progress</span>
+              <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">Your Momentum</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-brand-brown">Foot Health Journal</h2>
-            <p className="text-brand-taupe mt-4 font-light max-w-xl">
-              Track your symptoms, pain levels, and activity to identify patterns and improve your foot wellness.
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown tracking-tight leading-tight">Foot Health <span className="text-brand-orange italic font-medium">Journal</span></h2>
+            <p className="text-base md:text-lg text-brand-taupe/70 mt-6 font-light max-w-xl leading-relaxed">
+              Track your symptoms, pain levels, and activity to identify clinical patterns and accelerate your wellness journey.
             </p>
           </div>
           
           <button 
             onClick={() => setShowAddModal(true)}
-            className="bg-brand-orange text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange/90 transition-all shadow-lg flex items-center gap-3 active:scale-95"
+            className="w-full sm:w-auto bg-brand-orange text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange/90 transition-all shadow-lg flex items-center justify-center gap-3 active:scale-95"
           >
             <Plus className="w-4 h-4" /> Log Today's Entry
           </button>
@@ -254,29 +254,30 @@ export const FootJournal: React.FC = () => {
         {/* Add Entry Modal */}
         <AnimatePresence>
           {showAddModal && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-brand-brown/60 backdrop-blur-md">
+            <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-brand-brown/60 backdrop-blur-md">
               <motion.div 
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                className="bg-brand-beige w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] shadow-2xl relative p-8 md:p-12 custom-scrollbar"
+                initial={{ opacity: 0, y: "100%" }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="bg-brand-beige w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl relative p-6 sm:p-8 md:p-12 custom-scrollbar"
               >
-                <div className="flex justify-between items-center mb-10">
-                  <h3 className="text-3xl font-display font-bold text-brand-brown">New Journal Entry</h3>
+                <div className="flex justify-between items-center mb-8 sm:mb-10">
+                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-brand-brown">New Journal Entry</h3>
                   <button 
                     onClick={() => {
                       setShowAddModal(false);
                       setSymptomSearch('');
                       setShowSuggestions(false);
                     }}
-                    className="p-2 hover:bg-brand-brown/5 rounded-full transition-all"
+                    className="p-3 bg-brand-brown/5 hover:bg-brand-brown/10 rounded-full transition-all"
                   >
-                    <Plus className="w-6 h-6 rotate-45" />
+                    <Plus className="w-5 h-5 sm:w-6 sm:h-6 rotate-45" />
                   </button>
                 </div>
 
-                <form onSubmit={handleAddEntry} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
+                <form onSubmit={handleAddEntry} className="space-y-6 sm:space-y-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60">Date</label>
                       <input 

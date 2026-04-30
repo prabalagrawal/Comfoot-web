@@ -28,7 +28,7 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
         delay: index * 0.1,
         ease: [0.21, 0.47, 0.32, 0.98] 
       }}
-      className="perspective-1000 h-[450px] w-full group cursor-pointer"
+      className="perspective-1000 h-[400px] md:h-[450px] w-full group cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
       onClick={() => setIsFlipped(!isFlipped)}
@@ -40,21 +40,21 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
         className="relative w-full h-full preserve-3d"
       >
         {/* Front Side */}
-        <div className="absolute inset-0 backface-hidden bg-white rounded-[2rem] border border-brand-brown/5 shadow-soft p-8 md:p-10 flex flex-col justify-center items-center text-center gap-6 group-hover:shadow-xl transition-shadow">
+        <div className="absolute inset-0 backface-hidden bg-white rounded-[2rem] border border-brand-brown/5 shadow-soft p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center gap-6 group-hover:shadow-xl transition-shadow">
           <div className="p-3 bg-red-50 text-red-500 rounded-2xl group-hover:scale-110 transition-transform duration-500">
-            <AlertCircle className="w-8 h-8" />
+            <AlertCircle className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-500/80">Common Myth</span>
-          <h3 className="text-2xl md:text-3xl font-display font-bold text-brand-brown leading-tight">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-brand-brown leading-tight px-4">
             "{myth}"
           </h3>
-          <div className="mt-4 flex items-center gap-2 text-brand-orange font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all duration-300">
-            Hover to reveal fact <ArrowRight className="w-4 h-4" />
+          <div className="mt-4 flex items-center gap-2 text-brand-orange font-bold text-[10px] sm:text-xs uppercase tracking-widest group-hover:gap-4 transition-all duration-300">
+            Tap to reveal fact <ArrowRight className="w-4 h-4" />
           </div>
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 backface-hidden bg-brand-brown rounded-[2rem] p-8 md:p-10 flex flex-col justify-center gap-6 text-brand-beige rotate-y-180 relative overflow-hidden">
+        <div className="absolute inset-0 backface-hidden bg-brand-brown rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col justify-center gap-4 sm:gap-6 text-brand-beige rotate-y-180 relative overflow-hidden">
           {/* Animated Glow Effect */}
           <motion.div 
             animate={{ 
@@ -186,18 +186,18 @@ export const MythBusters: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6 hover:tracking-tight transition-all duration-500"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-brand-brown mb-8 tracking-tight leading-[1.1]"
           >
-            Foot Health <span className="text-brand-orange">Myth Busters</span>
+            Foot Health <span className="text-brand-orange italic font-medium">Myth Busters</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-brand-taupe max-w-2xl mx-auto font-light leading-relaxed"
+            className="text-lg md:text-xl lg:text-2xl text-brand-taupe/70 max-w-2xl mx-auto font-light leading-relaxed px-4 md:px-0"
           >
-            Many things we hear about feet are not always true. Let’s separate common myths from real facts.
+            Deciphering common misconceptions to provide you with the clinical clarity needed for effective daily management.
           </motion.p>
         </div>
 

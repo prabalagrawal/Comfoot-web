@@ -23,23 +23,23 @@ import {
   BookOpen,
   Star
 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent, useMotionValue } from 'motion/react';
 import { auth, googleProvider, FirebaseUser, db, handleFirestoreError } from './firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
-  <div className={`flex items-center gap-3 ${className}`}>
-    <div className={`bg-brand-orange rounded-xl flex items-center justify-center shadow-lg transition-all duration-500 ${isScrolled ? 'w-10 h-10' : 'w-14 h-14'}`}>
+  <div className={`flex items-center gap-4 ${className}`}>
+    <div className={`bg-brand-orange rounded-2xl flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-16 h-16'}`}>
       <Footprints className="text-white w-3/5 h-3/5" />
     </div>
-    <div className="flex flex-col leading-none">
-      <span className={`font-display font-bold text-brand-brown transition-all duration-500 ${isScrolled ? 'text-xl' : 'text-3xl'}`}>
+    <div className="flex flex-col leading-[0.8]">
+      <span className={`font-display font-bold text-brand-brown transition-all duration-700 tracking-tighter ${isScrolled ? 'text-xl' : 'text-4xl'}`}>
         Com<span className="text-brand-orange">foot</span>
       </span>
       {!isScrolled && (
-        <span className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-taupe/60 mt-1">
-          Sole Support
+        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40 mt-2 ml-0.5">
+          Where Comfort meets your soul
         </span>
       )}
     </div>
@@ -555,39 +555,43 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-beige/90 backdrop-blur-xl shadow-sm py-2' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#home" className="flex items-center">
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-8'}`}>
+      <div className={`absolute inset-0 transition-all duration-700 ${isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-brand-brown/5 shadow-soft' : 'bg-transparent'}`} />
+      
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center relative z-10">
+        <a href="#home" className="hover:opacity-80 transition-opacity">
           <Logo isScrolled={isScrolled} />
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-10">
+          <div className="flex items-center gap-8">
             {navLinks.map((link) => (
               <a 
                 key={link.name} 
                 href={link.href} 
-                className="text-[11px] font-bold uppercase tracking-[0.15em] text-brand-taupe px-5 py-2.5 rounded-full hover:bg-brand-brown hover:text-brand-beige transition-all duration-300 active:scale-95"
+                className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-brown/60 hover:text-brand-orange transition-colors relative group"
               >
                 {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-orange transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
-            <div className="w-px h-4 bg-brand-brown/10 mx-2" />
-            
+          </div>
+
+          <div className="flex items-center gap-6 border-l border-brand-brown/10 pl-10">
             {user ? (
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 px-4 py-2 bg-brand-beige rounded-full border border-brand-brown/10">
+                <div className="flex items-center gap-2 px-4 py-2 bg-[#FDFCFB] rounded-2xl border border-brand-brown/5 shadow-inner">
                   {user.photoURL ? (
-                    <img src={user.photoURL} alt={user.displayName || ''} className="w-6 h-6 rounded-full" referrerPolicy="no-referrer" />
+                    <img src={user.photoURL} alt={user.displayName || ''} className="w-5 h-5 rounded-full grayscale hover:grayscale-0 transition-all" referrerPolicy="no-referrer" />
                   ) : (
-                    <UserIcon className="w-4 h-4 text-brand-brown" />
+                    <UserIcon className="w-4 h-4 text-brand-taupe" />
                   )}
-                  <span className="text-[10px] font-bold text-brand-brown truncate max-w-[80px]">{user.displayName?.split(' ')[0]}</span>
+                  <span className="text-[10px] font-bold text-brand-brown uppercase tracking-widest">{user.displayName?.split(' ')[0]}</span>
                 </div>
                 <button 
                   onClick={handleLogout}
-                  className="p-2.5 text-brand-taupe hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all"
+                  className="p-2 text-brand-taupe/40 hover:text-brand-orange transition-all"
                   title="Logout"
                 >
                   <LogOut className="w-4 h-4" />
@@ -596,75 +600,107 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
             ) : (
               <button 
                 onClick={handleLogin}
-                className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-brand-brown px-5 py-2.5 rounded-full hover:bg-brand-brown hover:text-brand-beige transition-all duration-300"
+                className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-brown hover:text-brand-orange transition-all"
               >
-                <UserIcon className="w-4 h-4" /> Login
+                <UserIcon className="w-4 h-4" /> Sign In
               </button>
             )}
 
-            <div className="w-px h-4 bg-brand-brown/10 mx-2" />
             <a 
               href="#explore" 
-              className="bg-brand-orange text-white px-7 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-brand-orange/90 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"
+              className="bg-brand-brown text-[#FAF9F6] px-8 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-orange hover:shadow-brand-orange/40 transition-all duration-500 shadow-xl"
             >
-              Get Started
+              Start Diagnostic
             </a>
           </div>
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden ml-auto text-brand-brown" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X /> : <Menu />}
+        <button 
+          className="md:hidden ml-auto p-3.5 rounded-2xl bg-brand-brown text-white shadow-xl hover:bg-brand-orange transition-all duration-300" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Fullscreen Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-brand-beige border-t border-brand-brown/10 shadow-xl md:hidden"
+          <motion.div
+            initial={{ opacity: 0, scale: 1.1, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.1, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-[110] bg-brand-brown lg:hidden flex flex-col p-8 pt-10"
           >
-            <div className="flex flex-col p-6 gap-4">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
+            <div className="flex justify-between items-center mb-16 relative z-10">
+              <Logo className="invert brightness-0" isScrolled={false} />
+              <button 
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-white backdrop-blur-md"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-8 relative z-10">
+              {navLinks.map((link, i) => (
+                <motion.a
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                  key={link.name}
+                  href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-medium text-brand-brown py-2 border-b border-brand-brown/5"
+                  className="text-4xl font-display font-bold text-white/90 hover:text-brand-orange transition-colors tracking-tighter"
                 >
                   {link.name}
-                </a>
+                </motion.a>
               ))}
+            </div>
+
+            <div className="mt-auto pt-10 border-t border-white/10 flex flex-col gap-6 relative z-10">
               {user ? (
-                <div className="flex items-center justify-between p-4 bg-brand-brown/5 rounded-xl">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between p-6 bg-white/5 rounded-3xl border border-white/5">
+                  <div className="flex items-center gap-4">
                     {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
+                      <img src={user.photoURL} alt={user.displayName || ''} className="w-12 h-12 rounded-2xl" referrerPolicy="no-referrer" />
                     ) : (
-                      <UserIcon className="w-5 h-5 text-brand-brown" />
+                      <UserIcon className="w-12 h-12 p-3 bg-white/10 rounded-2xl text-white" />
                     )}
-                    <span className="font-bold text-brand-brown">{user.displayName}</span>
+                    <div className="flex flex-col text-left">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Active Session</span>
+                      <span className="text-sm font-bold text-white tracking-tight">{user.displayName?.split(' ')[0]}</span>
+                    </div>
                   </div>
-                  <button onClick={handleLogout} className="text-rose-500 font-bold text-xs uppercase tracking-widest">Logout</button>
+                  <button onClick={handleLogout} className="p-3 text-white/40 hover:text-brand-orange transition-colors">
+                    <LogOut className="w-5 h-5" />
+                  </button>
                 </div>
               ) : (
                 <button 
-                  onClick={() => { handleLogin(); setMobileMenuOpen(false); }}
-                  className="flex items-center justify-center gap-2 bg-brand-brown text-brand-beige py-3 rounded-xl font-bold uppercase tracking-widest text-xs"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleLogin();
+                  }}
+                  className="w-full py-5 rounded-2xl bg-white/5 text-white font-bold uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 border border-white/5"
                 >
-                  <UserIcon className="w-4 h-4" /> Login with Google
+                  <UserIcon className="w-4 h-4" /> Account Access
                 </button>
               )}
               <a 
-                href="#explore" 
+                href="#explore"
                 onClick={() => setMobileMenuOpen(false)}
-                className="bg-brand-orange text-white text-center py-3 rounded-xl font-semibold mt-2"
+                className="w-full py-6 rounded-2xl bg-brand-orange text-white font-bold uppercase tracking-[0.3em] text-[10px] flex items-center justify-center shadow-2xl"
               >
-                Explore Your Condition
+                Start Diagnostic
               </a>
+            </div>
+
+            {/* Background design element */}
+            <div className="absolute top-0 right-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
+               <Footprints className="absolute -right-20 top-40 w-[600px] h-[600px] text-white rotate-12" />
             </div>
           </motion.div>
         )}
@@ -682,61 +718,67 @@ const ConditionCard: React.FC<{
 }> = ({ condition, onQuickView, onLearnMore, isComparing, onToggleCompare }) => {
   return (
     <motion.div
-      whileHover={{ y: -8 }}
-      className={`bg-white p-8 rounded-[2rem] shadow-soft border transition-all group text-left w-full h-full relative overflow-hidden ${
-        isComparing ? 'border-brand-orange ring-1 ring-brand-orange/20' : 'border-brand-brown/5 hover:border-brand-orange/20'
+      whileHover={{ y: -12, boxShadow: "0 40px 80px -15px rgba(45, 36, 30, 0.15)" }}
+      className={`group relative overflow-hidden bg-white p-10 rounded-[3.5rem] border-2 transition-all duration-500 flex flex-col h-full ${
+        isComparing ? 'border-brand-orange shadow-luxury' : 'border-brand-brown/5 shadow-soft hover:border-brand-orange/10'
       }`}
     >
       {/* Comparison Badge */}
       <AnimatePresence>
         {isComparing && (
           <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="absolute top-6 right-6 bg-brand-orange text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-10 shadow-lg"
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            className="absolute top-8 right-8 bg-brand-orange text-white text-[9px] font-bold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full z-10 shadow-xl"
           >
-            Comparing
+            Selected
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className={`p-4 rounded-2xl transition-all duration-500 ${
-        isComparing ? 'bg-brand-orange text-brand-beige' : 'bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-beige'
-      }`}>
-        <Activity className="w-6 h-6" />
-      </div>
-      <h3 className="text-2xl font-display font-bold text-brand-brown group-hover:text-brand-orange transition-colors mt-4">{condition.title}</h3>
-      <p className="text-sm text-brand-taupe/80 leading-relaxed font-light flex-1">{condition.shortDesc}</p>
-      
-      <div className="mt-auto pt-6 flex flex-col gap-3 w-full">
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={onToggleCompare}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all border ${
-              isComparing 
-                ? 'bg-brand-orange/10 text-brand-orange border-brand-orange/20' 
-                : 'bg-brand-beige text-brand-taupe border-brand-brown/5 hover:border-brand-orange/20'
-            }`}
-          >
-            {isComparing ? <Check className="w-3 h-3" /> : <Share2 className="w-3 h-3 rotate-90" />}
-            {isComparing ? 'Selected' : 'Compare'}
-          </button>
-          
-          <button 
-            onClick={onQuickView}
-            className="p-2.5 bg-brand-beige text-brand-taupe rounded-xl border border-brand-brown/5 hover:border-brand-orange/20 transition-all"
-            title="Quick View"
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-          </button>
+      <div className="flex items-center gap-6 mb-8">
+        <div className={`w-16 h-16 rounded-[2rem] flex items-center justify-center transition-all duration-500 ${
+          isComparing ? 'bg-brand-orange text-white' : 'bg-brand-beige text-brand-orange group-hover:bg-brand-orange group-hover:text-white'
+        }`}>
+          <Activity className="w-7 h-7" />
         </div>
+        <div className="flex flex-col">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">Clinical Profile</span>
+          <h3 className="text-3xl font-display font-bold text-brand-brown mt-1 leading-none">{condition.title}</h3>
+        </div>
+      </div>
+
+      <p className="text-base text-brand-taupe/70 leading-relaxed font-light mb-10 border-l-2 border-brand-orange/10 pl-6">
+        {condition.shortDesc}
+      </p>
+      
+      <div className="mt-auto grid grid-cols-2 gap-4">
+        <button 
+          onClick={onToggleCompare}
+          className={`flex items-center justify-center gap-3 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${
+            isComparing 
+              ? 'bg-brand-orange/10 text-brand-orange' 
+              : 'bg-brand-beige text-brand-taupe hover:bg-brand-orange hover:text-white'
+          }`}
+        >
+          {isComparing ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+          {isComparing ? 'Stored' : 'Compare'}
+        </button>
+        
+        <button 
+          onClick={onQuickView}
+          className="flex items-center justify-center py-4 bg-brand-beige text-brand-taupe rounded-2xl hover:bg-brand-brown hover:text-white transition-all"
+          title="Quick Analytics"
+        >
+          <BookOpen className="w-4 h-4" />
+        </button>
         
         <button 
           onClick={onLearnMore}
-          className="w-full bg-brand-brown text-brand-beige py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-brand-orange transition-all shadow-sm active:scale-95 text-center"
+          className="col-span-2 bg-brand-brown text-brand-beige py-5 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-brand-orange hover:shadow-brand-orange/30 transition-all active:scale-95 text-center flex items-center justify-center gap-3"
         >
-          Learn More
+          Full Protocol <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </motion.div>
@@ -1416,6 +1458,220 @@ const Footprint: React.FC<FootprintProps> = ({ step, scrollY }) => {
   );
 };
 
+const LoadingScreen = () => (
+  <motion.div 
+    initial={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 1 }}
+    className="fixed inset-0 z-[100] bg-brand-beige flex flex-col items-center justify-center p-6"
+  >
+    <div className="relative">
+      <motion.div
+        animate={{ 
+          scale: [1, 1.15, 1],
+          rotate: [0, 5, -5, 0],
+          opacity: [0.5, 1, 0.5]
+        }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="w-32 h-32 bg-brand-brown rounded-[2.5rem] flex items-center justify-center shadow-2xl relative z-10"
+      >
+        <Footprints className="w-16 h-16 text-brand-orange" />
+      </motion.div>
+      <div className="absolute inset-0 bg-brand-orange/20 blur-3xl rounded-full scale-150 -z-0" />
+    </div>
+    
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 }}
+      className="mt-12 text-center"
+    >
+      <h2 className="text-2xl font-display font-bold text-brand-brown mb-2 tracking-tight">Comfoot</h2>
+      <div className="flex items-center gap-2 justify-center">
+        <div className="h-1 w-12 bg-brand-brown/10 rounded-full overflow-hidden">
+          <motion.div 
+            animate={{ x: [-48, 48] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            className="h-full w-full bg-brand-orange"
+          />
+        </div>
+        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe/60 italic">Science for your Sole</span>
+      </div>
+    </motion.div>
+  </motion.div>
+);
+
+const Skeleton = ({ className }: { className?: string }) => (
+  <div className={`animate-pulse bg-brand-brown/5 rounded-2xl ${className}`} />
+);
+
+const LazyImage = ({ src, alt, className, imgClassName }: { src: string; alt: string; className?: string; imgClassName?: string }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className={`relative overflow-hidden ${className}`}>
+      {!loaded && <Skeleton className="absolute inset-0 z-10" />}
+      <img
+        src={src}
+        alt={alt}
+        className={`${imgClassName || 'w-full h-full object-cover'} transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+        loading="lazy"
+      />
+    </div>
+  );
+};
+
+const WalkingFeet = ({ className }: { className?: string }) => {
+  return (
+    <div className={`flex gap-12 ${className}`}>
+      <motion.div
+        animate={{
+          y: [0, -30, 0],
+          x: [0, 15, 0],
+          rotate: [0, 10, 0],
+          opacity: [0.4, 1, 0.4]
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        <Footprints className="w-16 h-16 text-brand-orange/30" />
+      </motion.div>
+      <motion.div
+        animate={{
+          y: [0, -30, 0],
+          x: [0, 15, 0],
+          rotate: [0, -10, 0],
+          opacity: [0.4, 1, 0.4]
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1
+        }}
+      >
+        <Footprints className="w-16 h-16 text-brand-orange/30" />
+      </motion.div>
+    </div>
+  );
+};
+
+const ViewSkeleton = () => (
+  <div className="min-h-screen pt-32 section-padding space-y-12">
+    <div className="flex flex-col md:flex-row gap-12 items-center">
+      <div className="flex-1 space-y-6">
+        <Skeleton className="h-12 w-3/4" />
+        <Skeleton className="h-24 w-full" />
+        <div className="flex gap-4">
+          <Skeleton className="h-14 w-40 rounded-full" />
+          <Skeleton className="h-14 w-40 rounded-full" />
+        </div>
+      </div>
+      <div className="flex-1 w-full">
+        <Skeleton className="aspect-square md:aspect-video rounded-[3rem]" />
+      </div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {[...Array(3)].map((_, i) => (
+        <Skeleton key={i} className="h-64" />
+      ))}
+    </div>
+  </div>
+);
+
+const HeroVisual = () => {
+  return (
+    <div className="relative w-full max-w-2xl mx-auto px-4 perspective-1000 mt-12 lg:mt-0">
+      <div className="relative group">
+        {/* Main Editorial Image */}
+        <motion.div
+          whileHover={{ rotateY: -5, rotateX: 5, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] xl:aspect-video rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl border border-white/40 z-20"
+        >
+          <LazyImage 
+            src="https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?auto=format&fit=crop&q=80&w=1200" 
+            alt="Editorial Foot Health"
+            imgClassName="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-brown/40 to-transparent" />
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1 }}
+            className="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-6 md:w-8 h-px bg-brand-orange" />
+              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em]">Our Philosophy</span>
+            </div>
+            <h3 className="text-xl md:text-3xl font-display font-medium">Where Comfort meets your soul.</h3>
+          </motion.div>
+        </motion.div>
+
+        {/* Walking Feet Animation Overlay */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none opacity-20">
+          <WalkingFeet />
+        </div>
+
+        {/* Supporting Images / Decorative Cards */}
+        <motion.div
+          initial={{ opacity: 0, x: 40, y: 40 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ delay: 0.6, duration: 1 }}
+          className="absolute -bottom-10 -right-8 w-48 h-64 md:w-56 md:h-72 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white z-30 hidden sm:block"
+        >
+          <LazyImage 
+            src="https://images.unsplash.com/photo-1560343060-c140a58e920c?auto=format&fit=crop&q=80&w=800" 
+            alt="Product Detail"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -40, y: -40 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ delay: 0.8, duration: 1 }}
+          className="absolute -top-12 -left-8 w-40 h-40 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white z-10 hidden md:block"
+        >
+          <LazyImage 
+            src="https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&q=80&w=800" 
+            alt="Soft Texture"
+            imgClassName="w-full h-full object-cover hover:scale-125 transition-transform duration-1000"
+          />
+        </motion.div>
+
+        {/* Floaters */}
+        <motion.div 
+          animate={{ y: [0, -15, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 -right-12 z-40 bg-white/40 backdrop-blur-xl p-4 rounded-3xl border border-white/60 shadow-xl hidden lg:block"
+        >
+          <ShieldCheck className="w-8 h-8 text-brand-orange mb-2" />
+          <div className="text-[9px] font-bold uppercase tracking-widest text-brand-brown">Certified</div>
+        </motion.div>
+      </div>
+
+      <div className="absolute -bottom-12 left-1/4 z-40 bg-brand-brown text-white px-8 py-5 rounded-[2rem] shadow-2xl border border-white/10 hidden md:flex items-center gap-4">
+        <div className="flex -space-x-3">
+          {[1,2,3].map(i => (
+            <div key={i} className="w-10 h-10 rounded-full border-2 border-brand-brown bg-brand-orange/20 flex items-center justify-center overflow-hidden">
+               <LazyImage src={`https://i.pravatar.cc/100?u=${i}`} alt={`User ${i}`} />
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col">
+          <span className="text-xs font-bold leading-none tracking-tight">PRACTITIONER CURATED</span>
+          <span className="text-[9px] opacity-60 uppercase tracking-widest mt-1">Science-First Approach</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const WalkingTrail = () => {
   const { scrollY } = useScroll();
   const smoothScrollY = useSpring(scrollY, { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -1440,6 +1696,8 @@ const WalkingTrail = () => {
 
 export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [showAdmin, setShowAdmin] = useState(false);
   const [view, setView] = useState<'home' | 'detail'>('home');
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(null);
@@ -1449,6 +1707,13 @@ export default function App() {
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterMessage, setNewsletterMessage] = useState('');
   
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -1561,7 +1826,23 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-brand-beige/50">
+    <div className="min-h-screen relative overflow-x-hidden bg-brand-beige/50 font-sans">
+      <AnimatePresence mode="wait">
+        {isInitialLoading && <LoadingScreen />}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        {loading && !isInitialLoading && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-brand-beige/80 backdrop-blur-sm flex items-center justify-center"
+          >
+            <ViewSkeleton />
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Global Floating Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[15%] left-[-5%] w-[30%] h-[30%] bg-brand-orange/10 rounded-full blur-[100px] animate-pulse" />
@@ -1584,122 +1865,206 @@ export default function App() {
       </AnimatePresence>
 
       {/* Hero Section */}
-      <header id="home" className="relative pt-32 pb-20 md:pt-48 md:pb-40 bg-brand-beige/80 overflow-hidden">
-        {/* Designer Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[60%] bg-brand-orange/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[70%] bg-brand-gold/10 rounded-full blur-[150px]" />
-          <div className="absolute top-[20%] right-[10%] w-[30%] h-[40%] bg-brand-brown/10 rounded-full blur-[100px]" />
+      <header id="home" className="relative min-h-screen flex items-center justify-center bg-brand-beige/50 overflow-hidden pt-20">
+        {/* Designer Background Elements - More Dynamic */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              x: [0, 50, 0],
+              y: [0, -30, 0]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[-10%] left-[-5%] w-[60%] h-[60%] bg-brand-orange/10 rounded-full blur-[120px]" 
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.3, 1],
+              x: [0, -70, 0],
+              y: [0, 40, 0]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-[-10%] right-[-5%] w-[70%] h-[70%] bg-brand-gold/10 rounded-full blur-[150px]" 
+          />
+          <div className="absolute top-[20%] right-[10%] w-[30%] h-[40%] bg-brand-brown/5 rounded-full blur-[100px]" />
         </div>
  
-        <div className="section-padding text-center relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-center lg:text-left flex flex-col items-center lg:items-start"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/10 text-brand-orange rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-8 border border-brand-orange/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-ping" />
-              Structured Foot Health
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl lg:text-8xl mb-8 leading-[0.95] tracking-tight font-display font-bold text-brand-brown">
-              The Art of <span className="text-brand-orange">Comfortable</span> Walking.
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="inline-flex items-center gap-3 px-6 py-2 bg-brand-orange/10 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-8 md:mb-12 border border-brand-orange/20 italic text-brand-orange"
+            >
+              Where Comfort meets your soul
+            </motion.div>
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] mb-6 md:mb-8 leading-[1] md:leading-[0.82] tracking-tighter font-display font-bold text-brand-brown">
+              Walking <br />
+              <span className="text-brand-orange inline-block italic font-medium">Reinvisioned.</span>
             </h1>
             
-            <p className="text-xl md:text-2xl mb-12 text-brand-taupe/80 leading-relaxed max-w-2xl mx-auto font-light">
-              Structured guidance for heel pain, flat feet, and daily foot discomfort in India.
+            <p className="text-lg md:text-xl lg:text-2xl mb-10 md:mb-12 text-brand-taupe/70 leading-relaxed max-w-xl font-light mx-auto lg:mx-0 px-4 sm:px-0">
+              Structured diagnostics for <span className="text-brand-brown font-medium">heel pain, flat feet, and diabetic care</span> curated for Indian urban lifestyles.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <a 
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 w-full sm:w-auto">
+              <motion.a 
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 href="#explore" 
-                className="w-full sm:w-auto bg-brand-brown text-brand-beige px-10 py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-orange transition-all shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 active:scale-95"
+                className="w-full sm:w-auto bg-brand-orange text-white px-12 py-6 rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:shadow-brand-orange/40 transition-all flex items-center justify-center gap-3"
               >
-                Explore Conditions <ArrowRight className="w-5 h-5" />
-              </a>
-              <a 
-                href="#about" 
-                className="w-full sm:w-auto bg-white/50 backdrop-blur-sm text-brand-brown px-10 py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-brown hover:text-brand-beige transition-all border border-brand-brown/10 active:scale-95"
+                Start Diagnostic <ArrowRight className="w-5 h-5" />
+              </motion.a>
+              <motion.a 
+                whileHover={{ x: 5 }}
+                href="#about"
+                className="group flex items-center gap-3 text-brand-brown font-bold text-[10px] uppercase tracking-[0.2em]"
               >
                 Our Philosophy
-              </a>
+                <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:bg-brand-brown group-hover:text-white transition-all">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </motion.a>
             </div>
+          </motion.div>
 
-            {/* Scroll Indicator */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-              className="mt-20 flex flex-col items-center gap-3"
-            >
-              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-taupe/40">Scroll to Explore</span>
-              <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="w-px h-12 bg-gradient-to-b from-brand-orange to-transparent"
-              />
-            </motion.div>
+          {/* New Interactive Hero Visual */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
+            className="relative lg:block"
+          >
+            <HeroVisual />
+            
+            {/* Background elements for depth */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10">
+              <div className="absolute inset-0 bg-brand-gold/5 blur-[100px] rounded-full animate-pulse" />
+            </div>
           </motion.div>
         </div>
+
+        {/* Floating Particles for more activity */}
         <FloatingParticles />
+
+        {/* Soulful floating tag */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.5, duration: 2 }}
+          className="absolute left-12 bottom-12 hidden lg:flex flex-col gap-1 items-start"
+        >
+          <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-brand-orange/40">Established MMXXIV</span>
+          <span className="text-sm font-display font-medium text-brand-brown/60 italic tracking-tight">"Where Comfort meets your soul."</span>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+        >
+          <div className="w-px h-16 bg-gradient-to-b from-brand-orange to-transparent" />
+          <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-brand-taupe/40 [writing-mode:vertical-rl] rotate-180">Scroll</span>
+        </motion.div>
       </header>
 
       {/* Why Comfoot - Bento Grid Section */}
-      <section className="py-24 bg-brand-beige/50 relative overflow-hidden">
-        {/* Subtle Background Texture */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2D241E 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-        
+      <section className="py-40 bg-brand-beige/50 relative overflow-hidden">
         <div className="section-padding relative z-10">
-          <div className="grid md:grid-cols-12 gap-6">
-            <div className="md:col-span-8 bg-brand-brown text-brand-beige p-10 md:p-16 rounded-[3rem] flex flex-col justify-between relative overflow-hidden group shadow-2xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-white/10 transition-all duration-700" />
-              <div>
-                <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight">Guidance in Every Step.</h2>
-                <p className="text-lg opacity-80 max-w-md leading-relaxed font-light">We combine medical knowledge with practical lifestyle advice to help you navigate foot health in India.</p>
-              </div>
-              <div className="mt-12 flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20">
-                  <ShieldCheck className="w-6 h-6" />
+          <div className="grid lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-12 md:p-20 rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[500px]">
+              <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full -mr-[250px] -mt-[250px] blur-[120px] group-hover:scale-125 transition-transform duration-1000" />
+              <div className="relative z-10">
+                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-12 border border-white/10 italic text-white/80">
+                  Mission Statement
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Vetted by Comfoot</span>
+                <h2 className="text-6xl md:text-8xl font-display font-bold mb-8 leading-[0.9] tracking-tighter">
+                  Where Comfort <br /><span className="text-brand-orange italic font-light">meets your soul.</span>
+                </h2>
+                <p className="text-xl md:text-2xl opacity-70 max-w-xl leading-relaxed font-light">
+                  We combine clinical science with practical lifestyle advice to help you navigate foot health in India's unique urban landscape.
+                </p>
+              </div>
+              <div className="relative z-10 mt-16 flex items-center gap-6">
+                <div className="h-16 w-16 rounded-[2rem] bg-white text-brand-brown flex items-center justify-center shadow-2xl">
+                  <ShieldCheck className="w-8 h-8" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-white">Vetted by Specialists</span>
+                  <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">Certified Protocols</span>
+                </div>
               </div>
             </div>
 
-            <div className="md:col-span-4 bg-brand-orange text-white p-10 rounded-[3rem] flex flex-col justify-between group shadow-xl hover:shadow-2xl transition-all duration-500">
-              <Zap className="w-12 h-12 mb-8 group-hover:rotate-12 transition-transform duration-500" />
-              <div>
-                <h3 className="text-3xl font-display font-bold mb-4">Fast Relief.</h3>
-                <p className="text-sm opacity-90 leading-relaxed font-light">Immediate DIY protocols for acute pain management at home.</p>
-              </div>
+            <div className="lg:col-span-4 grid sm:grid-cols-2 lg:grid-cols-1 gap-8">
+              <motion.div 
+                whileHover={{ y: -8 }}
+                className="bg-brand-orange text-white p-12 rounded-[3.5rem] flex flex-col justify-between group shadow-luxury aspect-square lg:aspect-auto"
+              >
+                <div className="w-16 h-16 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-md mb-8">
+                  <Zap className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <h3 className="text-4xl font-display font-bold mb-4 tracking-tight">Fast Relief.</h3>
+                  <p className="text-lg opacity-80 leading-relaxed font-light">Immediate DIY protocols for acute pain management.</p>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                whileHover={{ y: -8 }}
+                className="bg-brand-gold text-white p-12 rounded-[3.5rem] flex flex-col justify-between group shadow-luxury aspect-square lg:aspect-auto"
+              >
+                <div className="w-16 h-16 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-md mb-8">
+                  <Activity className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <h3 className="text-4xl font-display font-bold mb-4 tracking-tight">Recovery.</h3>
+                  <p className="text-lg opacity-80 leading-relaxed font-light">Long-term strategies to keep you moving freely.</p>
+                </div>
+              </motion.div>
             </div>
 
-            <div className="md:col-span-4 bg-brand-gold text-white p-10 rounded-[3rem] flex flex-col justify-between group shadow-xl hover:shadow-2xl transition-all duration-500">
-              <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center mb-8 border border-white/20">
-                <Activity className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-3xl font-display font-bold mb-4">Active Recovery.</h3>
-                <p className="text-sm opacity-90 leading-relaxed font-light">Long-term strategies to keep you moving without discomfort.</p>
-              </div>
-            </div>
-
-            <div className="md:col-span-8 bg-white p-10 md:p-16 rounded-[3rem] border border-brand-brown/5 shadow-soft flex flex-col md:flex-row gap-12 items-center group">
-              <div className="flex-1">
-                <h3 className="text-3xl md:text-4xl font-display font-bold text-brand-brown mb-4">Curated Gear.</h3>
-                <p className="text-brand-taupe leading-relaxed font-light">We handpick the best footwear and orthotics available in the Indian market, so you don't have to.</p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {['Insoles', 'Massagers', 'Support Sleeves'].map(tag => (
-                    <span key={tag} className="px-5 py-2 bg-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.15em] text-brand-gold border border-brand-gold/10 hover:bg-brand-gold hover:text-white transition-colors cursor-default">
+            <div className="lg:col-span-12 bg-white p-12 md:p-24 rounded-[4rem] border border-brand-brown/5 shadow-soft flex flex-col lg:flex-row gap-20 items-center group relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-96 h-96 bg-brand-beige rounded-full -mr-48 -mt-48 blur-3xl opacity-50" />
+               <div className="flex-1 relative z-10">
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="w-12 h-px bg-brand-orange" />
+                  <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">Curated Gear</span>
+                </div>
+                <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-brand-brown mb-8 leading-[1] tracking-tighter">
+                  Handpicked <br />Science-First <span className="text-brand-gold italic font-medium">Solutions.</span>
+                </h3>
+                <p className="text-lg md:text-xl text-brand-taupe/60 leading-relaxed font-light max-w-2xl mb-12">
+                  We meticulously research every footcare product in the Indian market to bring you only the most effective tools.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  {['Custom Insoles', 'Electric Massagers', 'Compression Sleeves', 'Arch Supports'].map(tag => (
+                    <span key={tag} className="px-8 py-4 bg-brand-beige rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] text-brand-brown border border-brand-brown/5 hover:bg-brand-orange hover:text-white hover:border-brand-orange transition-all cursor-default">
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="w-full md:w-48 h-48 bg-brand-beige rounded-[2.5rem] flex items-center justify-center relative group overflow-hidden border border-brand-brown/5">
-                <div className="absolute inset-0 bg-brand-orange/5 group-hover:bg-brand-orange/10 transition-all duration-500" />
-                <ExternalLink className="w-12 h-12 text-brand-orange group-hover:scale-110 transition-transform duration-500" />
+              <div className="w-full lg:w-96 aspect-square bg-brand-beige rounded-[3.5rem] flex items-center justify-center relative group overflow-hidden border border-brand-brown/5 shadow-inner">
+                <div className="absolute inset-0 bg-brand-orange/5 group-hover:bg-brand-orange/10 transition-all duration-700" />
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 6, repeat: Infinity }}
+                >
+                  <ExternalLink className="w-24 h-24 text-brand-orange group-hover:scale-110 transition-transform duration-700" />
+                </motion.div>
+                <div className="absolute bottom-10 inset-x-0 text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">Marketplace Portal</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1724,8 +2089,8 @@ export default function App() {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-white/10">
               User Stories
             </div>
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Real Relief, <span className="text-brand-gold italic">Real People</span>.</h2>
-            <p className="text-lg opacity-70 max-w-2xl mx-auto font-light">Join thousands of people in India who have reclaimed their mobility with Comfoot's structured guidance.</p>
+            <h2 className="text-3xl md:text-6xl font-display font-bold mb-6 text-center text-brand-beige tracking-tight leading-tight">Real Relief, <span className="text-brand-gold italic font-medium">Real People</span>.</h2>
+            <p className="text-lg md:text-xl opacity-70 max-w-2xl mx-auto font-light leading-relaxed">Join thousands of people in India who have reclaimed their mobility with Comfoot's structured guidance.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -1782,13 +2147,13 @@ export default function App() {
             <div className="max-w-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <span className="h-px w-12 bg-brand-orange" />
-                <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">The Diagnostics</span>
+                <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">The Diagnostics</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold text-brand-brown leading-tight">
-                Choose Your <span className="text-brand-orange">Condition</span>.
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown leading-[1.1] tracking-tight">
+                Choose Your <span className="text-brand-orange italic font-medium">Condition</span>.
               </h2>
-              <p className="text-lg text-brand-taupe/70 mt-6 font-light">
-                Select a profile below to unlock structured guidance, DIY protocols, and curated product recommendations tailored for your specific foot health needs.
+              <p className="text-lg md:text-xl text-brand-taupe/70 mt-8 font-light leading-relaxed max-w-lg">
+                Explore our deep-dive analysis on common urban foot issues to find relief that fits your lifestyle.
               </p>
             </div>
             
@@ -1967,7 +2332,7 @@ export default function App() {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-gold/10 text-brand-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-brand-gold/20">
               Decision Guide
             </div>
-            <h2 className="text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6">Not Sure What You <span className="text-brand-gold italic">Need</span>?</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6">Not Sure What You <span className="text-brand-gold italic">Need</span>?</h2>
             <p className="text-lg text-brand-taupe/70 max-w-2xl mx-auto font-light">A curated guide to matching your symptoms with the most effective support protocols.</p>
           </div>
           
@@ -2110,103 +2475,104 @@ export default function App() {
 
 
       {/* Footer */}
-      <footer className="bg-brand-beige text-brand-taupe pt-32 pb-12 px-6 border-t border-brand-brown/5 relative overflow-hidden">
-        {/* Subtle Background Texture */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2D241E 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      <footer className="bg-[#FAF9F6] text-brand-taupe pt-40 pb-16 px-6 border-t border-brand-brown/5 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2D241E 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-16 mb-24">
-            <div className="md:col-span-5">
+          <div className="grid lg:grid-cols-12 gap-20 mb-32">
+            <div className="lg:col-span-5">
               <Logo className="mb-12" />
-              <p className="text-lg max-w-sm leading-relaxed text-brand-taupe/80 font-light mb-10">
-                Crafting the future of foot wellness through education, curated support, and structured guidance.
+              <p className="text-2xl max-w-sm leading-relaxed text-brand-brown/70 font-light mb-12 tracking-tight">
+                Reimagining the future of <span className="text-brand-brown font-medium italic">foot wellness</span> through data, curation, and structured guidance.
               </p>
-              <div className="flex items-center gap-4">
-                <a href="https://x.com/Comfooot" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Twitter">
-                  <Twitter className="w-4 h-4" />
-                </a>
-                <a href="https://www.linkedin.com/company/comfoot/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="LinkedIn">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a href="https://www.instagram.com/comfoot._/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Instagram">
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a href="mailto:hello@comfoot.in" className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center hover:bg-brand-brown hover:text-brand-beige transition-all duration-300" aria-label="Email">
-                  <Mail className="w-4 h-4" />
-                </a>
+              <div className="flex items-center gap-6">
+                {[Twitter, Linkedin, Instagram, Mail].map((Icon, i) => (
+                  <motion.a 
+                    key={i}
+                    whileHover={{ y: -4, color: "#D8742A" }}
+                    href="#" 
+                    className="text-brand-taupe/40 transition-colors"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </motion.a>
+                ))}
               </div>
             </div>
             
-            <div className="md:col-span-2">
-              <h4 className="text-brand-brown font-bold mb-8 uppercase tracking-[0.2em] text-[10px]">Navigation</h4>
-              <ul className="space-y-4 text-sm font-medium">
-                <li><a href="#home" className="hover:text-brand-orange transition-colors">Home</a></li>
-                <li><a href="#explore" className="hover:text-brand-orange transition-colors">Conditions</a></li>
-                <li><a href="#compare" className="hover:text-brand-orange transition-colors">Comparison</a></li>
-                <li><a href="#about" className="hover:text-brand-orange transition-colors">Philosophy</a></li>
-              </ul>
-            </div>
+            <div className="lg:col-span-7 grid md:grid-cols-3 gap-12">
+              <div className="flex flex-col gap-8">
+                <h4 className="text-brand-brown font-bold uppercase tracking-[0.4em] text-[10px]">Ecosystem</h4>
+                <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60">
+                  <li><a href="#home" className="hover:text-brand-orange transition-colors">Platform Home</a></li>
+                  <li><a href="#explore" className="hover:text-brand-orange transition-colors">Diagnostics</a></li>
+                  <li><a href="#compare" className="hover:text-brand-orange transition-colors">Comparison Engine</a></li>
+                  <li><a href="#about" className="hover:text-brand-orange transition-colors">Our Ethos</a></li>
+                </ul>
+              </div>
 
-            <div className="md:col-span-2">
-              <h4 className="text-brand-brown font-bold mb-8 uppercase tracking-[0.2em] text-[10px]">Resources</h4>
-              <ul className="space-y-4 text-sm font-medium">
-                <li><a href="#" className="hover:text-brand-orange transition-colors">Foot Care Guide</a></li>
-                <li><a href="#" className="hover:text-brand-orange transition-colors">Shoe Fitting 101</a></li>
-                <li><a href="#" className="hover:text-brand-orange transition-colors">Wellness Blog</a></li>
-                <li><a href="#" className="hover:text-brand-orange transition-colors">FAQs</a></li>
-              </ul>
-            </div>
+              <div className="flex flex-col gap-8">
+                <h4 className="text-brand-brown font-bold uppercase tracking-[0.4em] text-[10px]">Knowledge</h4>
+                <ul className="space-y-4 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/60">
+                  <li><a href="#" className="hover:text-brand-orange transition-colors">Scientific Journals</a></li>
+                  <li><a href="#" className="hover:text-brand-orange transition-colors">Product Studies</a></li>
+                  <li><a href="#" className="hover:text-brand-orange transition-colors">Community Forum</a></li>
+                  <li><a href="#" className="hover:text-brand-orange transition-colors">Partner Program</a></li>
+                </ul>
+              </div>
 
-            <div className="md:col-span-3">
-              <h4 className="text-brand-brown font-bold mb-8 uppercase tracking-[0.2em] text-[10px]">Newsletter</h4>
-              <p className="text-xs text-brand-taupe/70 mb-6 leading-relaxed">Join our community for weekly foot health insights and curated gear updates.</p>
-              <form className="relative" onSubmit={handleNewsletterSubmit}>
-                <input 
-                  type="email" 
-                  placeholder="Email Address" 
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  disabled={newsletterStatus === 'loading'}
-                  className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50"
-                  required
-                />
-                <button 
-                  type="submit"
-                  disabled={newsletterStatus === 'loading'}
-                  className="absolute right-2 top-2 bottom-2 bg-brand-brown text-brand-beige px-6 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-brand-orange transition-all disabled:opacity-50"
-                >
-                  {newsletterStatus === 'loading' ? '...' : 'Join'}
-                </button>
-              </form>
-              {newsletterStatus !== 'idle' && (
-                <p className={`mt-3 text-[10px] font-bold uppercase tracking-widest ${newsletterStatus === 'success' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                  {newsletterMessage}
+              <div className="flex flex-col gap-8">
+                <h4 className="text-brand-brown font-bold uppercase tracking-[0.4em] text-[10px]">The Journal</h4>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40 leading-relaxed mb-4">
+                  Weekly insights into elite foot health and curated tech.
                 </p>
-              )}
-            </div>
-          </div>
-          
-          <div className="pt-12 border-t border-brand-brown/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">
-              <span>&copy; {new Date().getFullYear()} Comfoot</span>
-              <a href="#" className="hover:text-brand-brown transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-brand-brown transition-colors">Terms of Service</a>
-              <button onClick={() => setShowAdmin(true)} className="hover:text-brand-brown transition-colors">Admin</button>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">
-              <span>Made with</span>
-              <Activity className="w-3 h-3 text-brand-orange" />
-              <span>for your soles</span>
+                <form className="relative group" onSubmit={handleNewsletterSubmit}>
+                  <input 
+                    type="email" 
+                    placeholder="PROTOCOL@COMFOOT.IN" 
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    disabled={newsletterStatus === 'loading'}
+                    className="w-full bg-white border-b-2 border-brand-brown/10 py-4 text-[10px] font-bold uppercase tracking-widest focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50 placeholder:text-brand-taupe/20 px-4"
+                    required
+                  />
+                  <button 
+                    type="submit"
+                    disabled={newsletterStatus === 'loading'}
+                    className="absolute right-0 bottom-3 text-brand-orange p-2 hover:bg-brand-orange/10 rounded-full transition-all"
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                  <AnimatePresence>
+                    {newsletterMessage && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`text-[9px] font-bold uppercase tracking-widest mt-4 ${newsletterStatus === 'success' ? 'text-emerald-600' : 'text-brand-orange'}`}
+                      >
+                        {newsletterMessage}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </form>
+              </div>
             </div>
           </div>
 
-          <div className="mt-12 bg-white/50 p-6 rounded-2xl border border-brand-brown/5">
-            <p className="text-[10px] leading-relaxed text-center text-brand-taupe/60 italic">
-              <strong className="text-brand-brown not-italic">Medical Disclaimer:</strong> Content on this website is for educational purposes only and is not intended as medical advice. Always consult with a qualified healthcare professional for diagnosis and treatment of foot conditions.
-            </p>
+          <div className="flex flex-col md:flex-row justify-between items-center pt-16 border-t border-brand-brown/5 gap-8">
+            <div className="flex items-center gap-8 text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">
+              <span>© {new Date().getFullYear()} Comfoot Labs</span>
+              <span className="hidden md:block italic">Where Comfort meets your soul</span>
+              <button onClick={() => setShowAdmin(true)} className="hover:text-brand-brown transition-colors">Access Console</button>
+            </div>
+            <div className="flex gap-8 text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/60">
+              <a href="#" className="hover:text-brand-orange transition-colors">Privacy Charter</a>
+              <a href="#" className="hover:text-brand-orange transition-colors">Usage Terms</a>
+              <a href="#" className="hover:text-brand-orange transition-colors">Diagnostics Disclaimer</a>
+            </div>
           </div>
         </div>
       </footer>
+
     </div>
   );
 }

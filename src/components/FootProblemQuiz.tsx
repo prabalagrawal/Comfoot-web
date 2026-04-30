@@ -706,29 +706,29 @@ export const FootProblemQuiz: React.FC = () => {
           {step === 0 && (
             <motion.div
               key="start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="text-center px-4"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-brand-orange/10 rounded-full mb-8">
-                <Footprints className="w-10 h-10 text-brand-orange" />
+              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-brand-orange/10 rounded-[2rem] mb-8">
+                <Footprints className="w-8 h-8 md:w-10 md:h-10 text-brand-orange" />
               </div>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-brand-brown mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-brand-brown mb-6 md:mb-8 leading-[1.1] tracking-tight">
                 Find Your Foot Problem in 60 Seconds
               </h2>
-              <p className="text-xl text-brand-taupe max-w-2xl mx-auto mb-4 leading-relaxed">
+              <p className="text-lg md:text-xl text-brand-taupe/70 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
                 Answer a few quick questions to understand what your feet might be experiencing.
               </p>
-              <p className="text-xs text-brand-taupe/60 max-w-lg mx-auto mb-12 italic">
-                This tool provides educational insights based on common foot patterns and does not replace professional medical advice.
+              <p className="text-[10px] sm:text-xs text-brand-taupe/60 max-w-lg mx-auto mb-10 italic uppercase tracking-wider">
+                Educational insights only. Not medical advice.
               </p>
               <button
                 onClick={handleStart}
                 aria-label="Start the foot problem finder quiz"
-                className="group relative inline-flex items-center gap-3 bg-brand-brown text-white px-12 py-6 rounded-full font-bold text-lg hover:bg-brand-orange transition-all duration-300 shadow-lg hover:shadow-brand-orange/20 active:scale-95"
+                className="group relative inline-flex items-center gap-3 bg-brand-brown text-white px-10 py-5 sm:px-12 sm:py-6 rounded-2xl font-bold text-sm sm:text-lg hover:bg-brand-orange transition-all duration-300 shadow-xl hover:shadow-brand-orange/20 active:scale-95"
               >
-                Start Quiz
+                Start Diagnostic
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
@@ -737,56 +737,40 @@ export const FootProblemQuiz: React.FC = () => {
           {step >= 1 && step <= 12 && (
             <motion.div
               key={`question-${step}`}
-              initial={{ opacity: 0, x: 50, scale: 0.98 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -50, scale: 0.98 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ 
                 type: "spring", 
-                stiffness: 300, 
-                damping: 30,
-                opacity: { duration: 0.2 }
+                stiffness: 400, 
+                damping: 40
               }}
               role="region"
               aria-live="polite"
-              className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-soft border border-brand-brown/5"
+              className="bg-white rounded-[2.5rem] p-6 sm:p-10 md:p-12 shadow-soft border border-brand-brown/5"
             >
               {/* Progress Bar */}
-              <div className="mb-12">
+              <div className="mb-8 md:mb-12">
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold text-brand-orange uppercase tracking-[0.2em]">
+                  <span className="text-[10px] font-bold text-brand-orange uppercase tracking-[0.2em]">
                     Question {step} of 12
                   </span>
-                  <span className="text-xs font-bold text-brand-taupe uppercase tracking-widest">
-                    {Math.round(progress)}% Complete
+                  <span className="text-[10px] font-bold text-brand-taupe uppercase tracking-widest opacity-40">
+                    {Math.round(progress)}%
                   </span>
                 </div>
                 <div 
-                  className="h-3 w-full bg-brand-brown/5 rounded-full overflow-hidden relative shadow-inner"
+                  className="h-2 w-full bg-brand-brown/5 rounded-full overflow-hidden relative"
                   role="progressbar"
                   aria-valuenow={Math.round(progress)}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  aria-label={`Quiz progress: ${Math.round(progress)}%`}
                 >
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    transition={{ type: "spring", stiffness: 40, damping: 15 }}
-                    className="h-full bg-gradient-to-r from-brand-orange to-brand-gold relative"
-                  >
-                    {/* Shimmer effect */}
-                    <motion.div
-                      animate={{
-                        x: ["-100%", "100%"],
-                      }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 2.5,
-                        ease: "linear",
-                      }}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent w-full"
-                    />
-                  </motion.div>
+                    className="h-full bg-brand-orange"
+                  />
                 </div>
               </div>
 
@@ -794,12 +778,12 @@ export const FootProblemQuiz: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="flex items-center gap-4 mb-10"
+                className="flex flex-col sm:flex-row items-center gap-4 mb-8 md:mb-10"
               >
-                <div className="w-14 h-14 bg-brand-beige rounded-2xl flex items-center justify-center text-brand-brown shadow-inner">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-brand-beige rounded-2xl flex items-center justify-center text-brand-brown shrink-0">
                   {currentQuestion.icon}
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-brand-brown leading-tight">
+                <h3 className="text-xl md:text-3xl font-display font-bold text-brand-brown leading-tight text-center sm:text-left">
                   {currentQuestion.text}
                 </h3>
               </motion.div>
@@ -828,12 +812,12 @@ export const FootProblemQuiz: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleAnswer(option)}
                     aria-label={`Select option: ${option.text}`}
-                    className="group flex items-center justify-between p-6 md:p-8 rounded-2xl border-2 border-brand-beige hover:border-brand-orange hover:bg-brand-orange/5 transition-all duration-300 text-left"
+                    className="group flex items-center justify-between p-5 sm:p-6 md:p-8 rounded-2xl border-2 border-brand-beige hover:border-brand-orange hover:bg-brand-orange/5 transition-all duration-300 text-left active:scale-[0.98]"
                   >
-                    <span className="text-lg md:text-xl font-medium text-brand-brown group-hover:text-brand-orange transition-colors">
+                    <span className="text-base sm:text-lg md:text-xl font-medium text-brand-brown group-hover:text-brand-orange transition-colors">
                       {option.text}
                     </span>
-                    <div className="w-6 h-6 rounded-full border-2 border-brand-beige group-hover:border-brand-orange flex items-center justify-center transition-all shrink-0">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-brand-beige group-hover:border-brand-orange flex items-center justify-center transition-all shrink-0 ml-4">
                       <div className="w-2.5 h-2.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </motion.button>
@@ -864,31 +848,31 @@ export const FootProblemQuiz: React.FC = () => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="bg-brand-orange text-white rounded-[2.5rem] p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6"
+                className="bg-brand-orange text-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6"
               >
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/20 rounded-xl">
-                    <Zap className="w-6 h-6" />
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                  <div className="p-3 bg-white/20 rounded-xl shrink-0">
+                    <Zap className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold">Email Your Results</h4>
-                    <p className="text-white/80 text-sm">Get a copy of this analysis sent to your inbox.</p>
+                    <h4 className="text-lg md:text-xl font-bold">Email Your Results</h4>
+                    <p className="text-white/70 text-xs md:text-sm">Get a copy sent to your inbox.</p>
                   </div>
                 </div>
-                <div className="flex w-full md:w-auto gap-2">
+                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
                   <input 
                     type="email" 
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-grow md:w-64 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:outline-none focus:bg-white/20 transition-all"
+                    className="w-full sm:w-64 px-5 py-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/20 transition-all text-sm"
                   />
                   <button 
                     onClick={sendEmailResults}
                     disabled={isSendingEmail || emailSent}
-                    className="px-6 py-3 bg-white text-brand-orange rounded-xl font-bold hover:bg-brand-beige transition-all disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-4 bg-white text-brand-orange rounded-xl font-bold hover:bg-brand-beige transition-all disabled:opacity-50 text-sm uppercase tracking-widest"
                   >
-                    {isSendingEmail ? 'Sending...' : emailSent ? 'Sent!' : 'Send'}
+                    {isSendingEmail ? 'Sending' : emailSent ? 'Sent!' : 'Send'}
                   </button>
                 </div>
               </motion.div>
@@ -932,19 +916,19 @@ export const FootProblemQuiz: React.FC = () => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="bg-white rounded-[3rem] p-10 md:p-16 shadow-soft border border-brand-brown/5 text-center relative overflow-hidden"
+                className="bg-white rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 md:p-16 shadow-soft border border-brand-brown/5 text-center relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 w-full h-3 bg-brand-orange" />
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-brand-orange/10 rounded-full mb-8">
-                  <CheckCircle2 className="w-10 h-10 text-brand-orange" />
+                <div className="absolute top-0 left-0 w-full h-2 md:h-3 bg-brand-orange" />
+                <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-brand-orange/10 rounded-[1.5rem] md:rounded-full mb-6 md:mb-8">
+                  <CheckCircle2 className="w-8 h-8 md:w-10 md:h-10 text-brand-orange" />
                 </div>
-                <h2 className="text-3xl md:text-5xl font-display font-bold text-brand-brown mb-6">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown mb-4 md:mb-8 leading-tight tracking-tight">
                   {getResult().title}
                 </h2>
                 <div className="max-w-2xl mx-auto">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-4">What This Means</h3>
-                  <p className="text-lg md:text-xl text-brand-taupe leading-relaxed font-light">
-                    {getResult().explanation}
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-brand-orange mb-4 md:mb-6">The Clinical Core</h3>
+                  <p className="text-lg md:text-2xl text-brand-taupe/80 leading-relaxed font-light italic">
+                    "{getResult().explanation}"
                   </p>
                 </div>
               </motion.div>
@@ -957,35 +941,35 @@ export const FootProblemQuiz: React.FC = () => {
                 }}
                 className="grid md:grid-cols-2 gap-8"
               >
-                <div className="bg-brand-brown text-white rounded-[2.5rem] p-10 md:p-12 shadow-2xl">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="p-2 bg-brand-gold/20 rounded-xl">
-                      <Info className="w-6 h-6 text-brand-gold" />
+                <div className="bg-brand-brown text-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl">
+                  <div className="flex items-center gap-3 mb-6 md:mb-8">
+                    <div className="p-2 bg-brand-gold/10 rounded-xl shrink-0">
+                      <Info className="w-5 h-5 md:w-6 md:h-6 text-brand-gold" />
                     </div>
-                    <h3 className="text-2xl font-display font-bold">Why This May Happen</h3>
+                    <h3 className="text-xl md:text-2xl font-display font-bold">Why This Happens</h3>
                   </div>
-                  <ul className="space-y-5">
+                  <ul className="space-y-4 md:space-y-5">
                     {getResult().causes.map((cause, i) => (
-                      <li key={i} className="flex items-start gap-4 text-white/80 text-lg font-light">
-                        <div className="w-2 h-2 rounded-full bg-brand-gold mt-2.5 shrink-0" />
-                        <span>{cause}</span>
+                      <li key={i} className="flex items-start gap-4 text-white/70 text-base md:text-lg font-light">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-2.5 shrink-0" />
+                        <span className="leading-relaxed">{cause}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-white rounded-[2.5rem] p-10 md:p-12 shadow-soft border border-brand-brown/5">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="p-2 bg-brand-orange/10 rounded-xl">
-                      <Zap className="w-6 h-6 text-brand-orange" />
+                <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-soft border border-brand-brown/5">
+                  <div className="flex items-center gap-3 mb-6 md:mb-8">
+                    <div className="p-2 bg-brand-orange/10 rounded-xl shrink-0">
+                      <Zap className="w-5 h-5 md:w-6 md:h-6 text-brand-orange" />
                     </div>
-                    <h3 className="text-2xl font-display font-bold text-brand-brown">What May Help</h3>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-brand-brown">Management Tips</h3>
                   </div>
-                  <ul className="space-y-5">
+                  <ul className="space-y-4 md:space-y-5">
                     {getResult().tips.map((tip, i) => (
-                      <li key={i} className="flex items-start gap-4 text-brand-taupe text-lg font-light">
-                        <div className="w-2 h-2 rounded-full bg-brand-orange mt-2.5 shrink-0" />
-                        <span>{tip}</span>
+                      <li key={i} className="flex items-start gap-4 text-brand-taupe text-base md:text-lg font-light">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2.5 shrink-0" />
+                        <span className="leading-relaxed">{tip}</span>
                       </li>
                     ))}
                   </ul>
@@ -1006,18 +990,18 @@ export const FootProblemQuiz: React.FC = () => {
                   </h3>
                   <p className="text-brand-taupe/70 font-light">Curated solutions tailored to your specific patterns.</p>
                 </div>
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {getResult().products.map((product, i) => (
                     <motion.div 
                       key={i} 
                       whileHover={{ y: -8 }}
-                      className="bg-white rounded-[2.5rem] p-10 shadow-soft border border-brand-brown/5 flex flex-col group hover:border-brand-orange/20 transition-all"
+                      className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 shadow-soft border border-brand-brown/5 flex flex-col group hover:border-brand-orange/20 transition-all"
                     >
-                      <div className="inline-block px-4 py-1.5 bg-brand-orange/5 text-brand-orange text-[10px] font-bold rounded-full mb-6 self-start uppercase tracking-[0.2em] border border-brand-orange/10">
-                        Best for: {product.bestFor}
+                      <div className="inline-block px-4 py-1.5 bg-brand-orange/5 text-brand-orange text-[9px] md:text-[10px] font-bold rounded-full mb-6 self-start uppercase tracking-[0.2em] border border-brand-orange/10">
+                        {product.bestFor}
                       </div>
-                      <h4 className="text-2xl font-display font-bold text-brand-brown mb-4 group-hover:text-brand-orange transition-colors">{product.name}</h4>
-                      <p className="text-brand-taupe/90 mb-10 flex-grow leading-relaxed font-light">
+                      <h4 className="text-xl md:text-2xl font-display font-bold text-brand-brown mb-4 group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                      <p className="text-sm md:text-base text-brand-taupe/90 mb-8 flex-grow leading-relaxed font-light">
                         {product.description}
                       </p>
                       <a 
