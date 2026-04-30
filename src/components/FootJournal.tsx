@@ -143,18 +143,18 @@ export const FootJournal: React.FC = () => {
               <div className="w-12 h-px bg-brand-orange" />
               <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">Your Momentum Journal</span>
             </div>
-            <h2 className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown tracking-[-0.05em] leading-[0.8]">
+            <h2 className="text-5xl md:text-7xl font-display font-black text-brand-brown tracking-[-0.04em] leading-tight">
               FOOT HEALTH <br />
               <span className="text-brand-orange italic font-bold">JOURNAL<span className="text-brand-brown">.</span></span>
             </h2>
-            <p className="text-2xl md:text-3xl text-brand-taupe/60 mt-12 font-light leading-snug max-w-xl tracking-tight">
+            <p className="text-base md:text-lg text-brand-taupe/60 mt-8 font-light leading-relaxed max-w-xl">
               Track symptoms, pain levels, and activity to identify clinical patterns for your wellness journey.
             </p>
           </div>
           
           <button 
             onClick={() => setShowAddModal(true)}
-            className="w-full sm:w-auto bg-brand-orange text-white px-16 py-8 rounded-[2.5rem] font-bold uppercase tracking-[0.5em] text-[13px] hover:bg-brand-brown transition-all shadow-2xl shadow-brand-orange/20 flex items-center justify-center gap-4 active:scale-95"
+            className="w-full sm:w-auto bg-brand-orange text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-brown transition-all shadow-xl shadow-brand-orange/20 flex items-center justify-center gap-3 active:scale-95"
           >
             <Plus className="w-5 h-5" /> New Entry
           </button>

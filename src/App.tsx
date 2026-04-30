@@ -30,15 +30,15 @@ import { addDoc, collection } from 'firebase/firestore';
 
 const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
   <div className={`flex items-center gap-4 ${className}`}>
-    <div className={`bg-brand-brown rounded-[1.2rem] flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-16 h-16'}`}>
+    <div className={`bg-brand-brown rounded-[1.2rem] flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-12 h-12'}`}>
       <Footprints className="text-brand-orange w-3/5 h-3/5" />
     </div>
     <div className="flex flex-col leading-[0.8]">
-      <span className={`font-display font-black text-brand-brown transition-all duration-700 tracking-[-0.05em] ${isScrolled ? 'text-xl' : 'text-4xl md:text-5xl'}`}>
+      <span className={`font-display font-black text-brand-brown transition-all duration-700 tracking-[-0.05em] ${isScrolled ? 'text-lg' : 'text-xl md:text-2xl'}`}>
         Com<span className="text-brand-orange">foot</span>
       </span>
       {!isScrolled && (
-        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40 mt-3 ml-0.5">
+        <span className="text-[7px] font-bold uppercase tracking-[0.2em] text-brand-taupe/40 mt-1 ml-0.5">
           Where Comfort meets your Soul
         </span>
       )}
@@ -555,7 +555,7 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-10'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-6 md:py-8'}`}>
       <div className={`absolute inset-0 transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'} bg-white/80 backdrop-blur-2xl border-b border-brand-brown/5 shadow-luxury`} />
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex items-center justify-between">
@@ -563,12 +563,12 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
           <Logo isScrolled={isScrolled} />
         </a>
 
-        <div className="hidden lg:flex items-center gap-2 p-1.5 bg-brand-brown/5 rounded-full backdrop-blur-xl border border-brand-brown/5 shadow-soft">
+        <div className="hidden lg:flex items-center gap-1 p-1 bg-brand-brown/5 rounded-full backdrop-blur-xl border border-brand-brown/5 shadow-soft">
           {navLinks.map((link) => (
             <a 
               key={link.name}
               href={link.href}
-              className="px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe hover:text-brand-brown hover:bg-white transition-all duration-500"
+              className="px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-brand-taupe hover:text-brand-brown hover:bg-white transition-all duration-500"
             >
               {link.name}
             </a>
@@ -1258,7 +1258,7 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
 const FloatingParticles = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {[...Array(15)].map((_, i) => (
+      {[...Array(6)].map((_, i) => (
         <motion.div
           key={i}
           initial={{ 
@@ -1386,7 +1386,7 @@ const Footprint: React.FC<FootprintProps> = ({ step, scrollY }) => {
   const opacity = useTransform(
     scrollY,
     [targetY - viewportHeight * 0.8, targetY - viewportHeight * 0.4, targetY + viewportHeight * 0.2, targetY + viewportHeight * 0.6],
-    [0, 0.15, 0.15, 0]
+    [0, 0.06, 0.06, 0]
   );
   
   // Scale up as it appears
@@ -1510,37 +1510,33 @@ const LazyImage = ({ src, alt, className, imgClassName }: { src: string; alt: st
 
 const WalkingFeet = ({ className }: { className?: string }) => {
   return (
-    <div className={`flex gap-12 ${className}`}>
+    <div className={`flex gap-16 ${className}`}>
       <motion.div
         animate={{
-          y: [0, -30, 0],
-          x: [0, 15, 0],
-          rotate: [0, 10, 0],
-          opacity: [0.4, 1, 0.4]
+          y: [0, -20, 0],
+          opacity: [0.3, 0.6, 0.3]
         }}
         transition={{
-          duration: 2,
+          duration: 3,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       >
-        <Footprints className="w-16 h-16 text-brand-orange/30" />
+        <Footprints className="w-12 h-12 text-brand-orange/20" />
       </motion.div>
       <motion.div
         animate={{
-          y: [0, -30, 0],
-          x: [0, 15, 0],
-          rotate: [0, -10, 0],
-          opacity: [0.4, 1, 0.4]
+          y: [0, -20, 0],
+          opacity: [0.3, 0.6, 0.3]
         }}
         transition={{
-          duration: 2,
+          duration: 3,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: 1
+          delay: 1.5
         }}
       >
-        <Footprints className="w-16 h-16 text-brand-orange/30" />
+        <Footprints className="w-12 h-12 text-brand-orange/20" />
       </motion.div>
     </div>
   );
@@ -1575,14 +1571,14 @@ const HeroVisual = () => {
       <div className="relative group">
         {/* Main Editorial Image */}
         <motion.div
-          whileHover={{ rotateY: -5, rotateX: 5, scale: 1.02 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] xl:aspect-video rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl border border-white/40 z-20"
+          whileHover={{ scale: 1.01 }}
+          transition={{ duration: 0.4 }}
+          className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-white/40 z-20"
         >
           <LazyImage 
             src="https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?auto=format&fit=crop&q=80&w=1200" 
             alt="Editorial Foot Health"
-            imgClassName="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            imgClassName="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-brown/40 to-transparent" />
           
@@ -1590,27 +1586,27 @@ const HeroVisual = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 }}
-            className="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white"
+            className="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-white"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="w-6 md:w-8 h-px bg-brand-orange" />
               <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em]">Our Philosophy</span>
             </div>
-            <h3 className="text-xl md:text-3xl font-display font-medium">Where Comfort meets your soul.</h3>
+            <h3 className="text-xl md:text-2xl font-display font-medium">Where Comfort meets your soul.</h3>
           </motion.div>
         </motion.div>
 
         {/* Walking Feet Animation Overlay */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none opacity-20">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none opacity-10">
           <WalkingFeet />
         </div>
 
-        {/* Supporting Images / Decorative Cards */}
+        {/* Supporting Images / Decorative Cards - Simplified */}
         <motion.div
-          initial={{ opacity: 0, x: 40, y: 40 }}
+          initial={{ opacity: 0, x: 20, y: 20 }}
           animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="absolute -bottom-10 -right-8 w-48 h-64 md:w-56 md:h-72 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white z-30 hidden sm:block"
+          className="absolute -bottom-6 -right-6 w-32 h-44 md:w-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-2xl border-2 border-white z-30 hidden sm:block"
         >
           <LazyImage 
             src="https://images.unsplash.com/photo-1560343060-c140a58e920c?auto=format&fit=crop&q=80&w=800" 
@@ -1618,27 +1614,14 @@ const HeroVisual = () => {
           />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: -40, y: -40 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ delay: 0.8, duration: 1 }}
-          className="absolute -top-12 -left-8 w-40 h-40 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white z-10 hidden md:block"
-        >
-          <LazyImage 
-            src="https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&q=80&w=800" 
-            alt="Soft Texture"
-            imgClassName="w-full h-full object-cover hover:scale-125 transition-transform duration-1000"
-          />
-        </motion.div>
-
-        {/* Floaters */}
+        {/* Floaters - Simplified */}
         <motion.div 
-          animate={{ y: [0, -15, 0] }}
+          animate={{ y: [0, -10, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 -right-12 z-40 bg-white/40 backdrop-blur-xl p-4 rounded-3xl border border-white/60 shadow-xl hidden lg:block"
+          className="absolute top-1/4 -right-10 z-40 bg-white/60 backdrop-blur-xl p-3 rounded-2xl border border-white/60 shadow-xl hidden lg:block"
         >
-          <ShieldCheck className="w-8 h-8 text-brand-orange mb-2" />
-          <div className="text-[9px] font-bold uppercase tracking-widest text-brand-brown">Certified</div>
+          <ShieldCheck className="w-6 h-6 text-brand-orange mb-1" />
+          <div className="text-[8px] font-bold uppercase tracking-widest text-brand-brown">Certified</div>
         </motion.div>
       </div>
 
@@ -1682,13 +1665,13 @@ const WalkingTrail = () => {
 };
 
 const revealVariants: any = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1,
-      duration: 1.2,
+      delay: i * 0.05,
+      duration: 0.8,
       ease: [0.22, 1, 0.36, 1],
     },
   }),
@@ -1889,7 +1872,7 @@ export default function App() {
           <div className="absolute top-[20%] right-[10%] w-[30%] h-[40%] bg-brand-brown/5 rounded-full blur-[100px]" />
         </div>
  
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid lg:grid-cols-2 gap-20 lg:gap-32 items-center relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1904,21 +1887,21 @@ export default function App() {
             >
               Walking Reinvisioned • 2026
             </motion.div>
-            <h1 className="text-8xl sm:text-9xl md:text-[11rem] lg:text-[14rem] mb-12 leading-[0.8] md:leading-[0.75] tracking-[-0.065em] font-display font-black text-brand-brown">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-8 leading-[1] tracking-[-0.04em] font-display font-black text-brand-brown">
               WALKING <br />
               <span className="text-brand-orange inline-block italic font-bold">REINVISIONED<span className="text-brand-brown">.</span></span>
             </h1>
             
-            <p className="text-2xl md:text-3xl lg:text-4xl mb-16 text-brand-taupe/60 leading-[1.1] max-w-xl font-light mx-auto lg:mx-0 tracking-tight">
+            <p className="text-base md:text-lg lg:text-xl mb-10 text-brand-taupe/60 leading-relaxed max-w-lg mx-auto lg:mx-0 tracking-tight font-light">
               Science-first diagnostics for the urban explorer. Specialized care for heel pain, flat feet, and diabetic health.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 w-full sm:w-auto">
               <motion.a
                 whileHover={{ scale: 1.02, backgroundColor: "#2D241E" }}
                 whileTap={{ scale: 0.98 }}
                 href="#quiz"
-                className="w-full sm:w-auto px-16 py-8 bg-brand-orange text-white rounded-[2.5rem] text-[14px] font-bold uppercase tracking-[0.6em] shadow-2xl shadow-brand-orange/20 transition-all text-center"
+                className="w-full sm:w-auto px-12 py-6 bg-brand-orange text-white rounded-2xl text-[12px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center"
               >
                 Start Analysis
               </motion.a>
@@ -1985,14 +1968,14 @@ export default function App() {
             <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-12 md:p-24 rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[600px]">
               <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full -mr-[300px] -mt-[300px] blur-[140px] group-hover:scale-125 transition-transform duration-1000" />
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-16 border border-white/10 italic text-white/40">
+                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] mb-12 border border-white/10 italic text-white/40">
                   Mission Statement • Edition 2.6
                 </div>
-                <h2 className="text-7xl md:text-9xl font-display font-bold mb-10 leading-[0.85] tracking-[-0.05em]">
+                <h2 className="text-5xl md:text-7xl font-display font-bold mb-8 leading-[1] tracking-[-0.04em]">
                   Where Comfort <br />
                   <span className="text-brand-orange italic font-light drop-shadow-2xl">meets your soul.</span>
                 </h2>
-                <p className="text-xl md:text-3xl opacity-60 max-w-2xl leading-relaxed font-light font-sans mt-8">
+                <p className="text-lg md:text-xl opacity-60 max-w-xl leading-relaxed font-light font-sans mt-6">
                   We combine clinical precision with soulful lifestyle integration to help you reclaim every step in India's unique urban terrain.
                 </p>
               </div>
@@ -2102,11 +2085,11 @@ export default function App() {
               <div className="w-12 h-px bg-brand-orange" />
               <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">User Stories</span>
             </div>
-            <h2 className="text-7xl md:text-[10rem] font-display font-black leading-[0.8] tracking-[-0.05em] mb-12">
+            <h2 className="text-5xl md:text-7xl font-display font-black leading-[1] tracking-[-0.04em] mb-8">
               REAL RELIEF, <br />
               <span className="text-brand-orange italic font-bold">REAL PEOPLE<span className="text-brand-beige">.</span></span>
             </h2>
-            <p className="text-2xl md:text-3xl opacity-60 max-w-3xl mx-auto font-light leading-snug tracking-tight">Join thousands who have reclaimed their mobility with our structured protocols.</p>
+            <p className="text-base md:text-lg opacity-60 max-w-2xl mx-auto font-light leading-relaxed">Join thousands who have reclaimed their mobility with our structured protocols.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
@@ -2165,11 +2148,11 @@ export default function App() {
                 <div className="w-12 h-px bg-brand-orange" />
                 <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">The Diagnostics</span>
               </div>
-              <h2 className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown leading-[0.8] tracking-[-0.05em]">
+              <h2 className="text-5xl md:text-7xl font-display font-black text-brand-brown leading-[1] tracking-[-0.04em]">
                 CHOOSE <br />
                 <span className="text-brand-orange italic font-bold">CONDITION<span className="text-brand-brown">.</span></span>
               </h2>
-              <p className="text-2xl md:text-3xl text-brand-taupe/60 mt-12 font-light leading-snug max-w-xl tracking-tight">
+              <p className="text-base md:text-lg text-brand-taupe/60 mt-6 font-light leading-relaxed max-w-xl">
                 Deep-dive clinical analysis on common urban foot issues to find relief that fits your lifestyle.
               </p>
             </div>

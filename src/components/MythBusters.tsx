@@ -51,7 +51,7 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
             <AlertCircle className="w-12 h-12" />
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-red-500/60 font-sans">Common Misconception</span>
-          <h3 className="text-3xl md:text-5xl font-display font-bold text-brand-brown leading-[0.9] tracking-tight px-4 italic">
+          <h3 className="text-2xl md:text-3xl font-display font-bold text-brand-brown leading-[0.9] tracking-tight px-4 italic">
             "{myth}"
           </h3>
           <div className="mt-10 flex items-center gap-4 text-brand-orange font-bold text-[10px] uppercase tracking-[0.5em] group-hover:gap-8 transition-all duration-500 opacity-40 group-hover:opacity-100">
@@ -79,7 +79,7 @@ const MythCard: React.FC<MythCardProps> = ({ myth, fact, explanation, source, in
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-emerald-400 font-sans">Clinical Verdict</span>
               </div>
-              <p className="text-3xl md:text-4xl font-display font-bold leading-tight tracking-tight">
+              <p className="text-xl md:text-2xl font-display font-bold leading-tight tracking-tight">
                 {fact}
               </p>
             </div>
@@ -183,7 +183,7 @@ export const MythBusters: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-7xl sm:text-8xl md:text-[10rem] font-display font-black text-brand-brown mb-12 tracking-[-0.05em] leading-[0.8]"
+            className="text-5xl md:text-7xl font-display font-black text-brand-brown mb-8 tracking-[-0.04em] leading-tight"
           >
             FOOT HEALTH <br />
             <span className="text-brand-orange italic font-bold">MYTH BUSTERS<span className="text-brand-brown">.</span></span>
@@ -193,7 +193,7 @@ export const MythBusters: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-2xl md:text-3xl lg:text-4xl text-brand-taupe/60 max-w-3xl mx-auto font-light leading-snug px-4 md:px-0 tracking-tight"
+            className="text-base md:text-lg text-brand-taupe/60 max-w-2xl mx-auto font-light leading-relaxed px-4 md:px-0"
           >
             Deciphering common misconceptions with clinical clarity for the urban walker.
           </motion.p>

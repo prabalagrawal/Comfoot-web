@@ -78,13 +78,13 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
                       Profile 0{condition.id === 'plantar-fasciitis' ? '1' : condition.id === 'flat-feet' ? '2' : '3'}
                     </div>
                   </div>
-                  <h3 className="text-4xl md:text-5xl font-display font-black text-brand-brown tracking-tighter leading-none">{condition.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-display font-black text-brand-brown tracking-tight leading-none">{condition.title}</h3>
                   <p className="text-sm text-brand-taupe/60 leading-relaxed font-light max-w-sm tracking-tight">{condition.shortDesc}</p>
                 </div>
 
                 {/* Common Causes Segment */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4 border-b border-brand-brown/5 pb-4">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 border-b border-brand-brown/5 pb-2">
                     <div className="p-2 bg-brand-gold/10 rounded-xl text-brand-gold">
                       <Zap className="w-4 h-4" />
                     </div>
@@ -145,7 +145,7 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
                 {/* Action */}
                 <button 
                   onClick={() => onSelectCondition(condition)}
-                  className="mt-auto w-full bg-brand-brown text-white py-8 rounded-[2rem] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-4 group shadow-xl"
+                  className="mt-auto w-full bg-brand-brown text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-4 group shadow-xl"
                 >
                   Examine Protocol <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </button>
