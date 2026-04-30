@@ -437,16 +437,28 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Dr. Foot Metatarsal Pads',
-        description: 'Soft gel pads designed to provide cushioning and pressure relief for the ball of the foot.',
-        bestFor: 'Relieving pain from Morton\'s Neuroma.',
-        link: 'https://amzn.to/4tUfT9r'
+        name: 'Herbal Detox Foot Pads',
+        description: 'Natural detox patches infused with herbal extracts to help soothe nerve pain and improve circulation.',
+        bestFor: 'Nightly recovery and detoxification.',
+        link: 'https://amzn.to/4mZP3gZ'
       },
       {
-        name: 'Gel Forefoot Sleeves',
-        description: 'Protective sleeves with integrated gel pads for comprehensive forefoot support.',
-        bestFor: 'Daily wear and impact protection.',
-        link: 'https://amzn.to/4eGCHOn'
+        name: 'Digolex Gel Pads',
+        description: 'Advanced metatarsal gel cushions designed to offload pressure from the neuroma site.',
+        bestFor: 'Impact absorption and nerve relief.',
+        link: 'https://amzn.to/4w1Vq7I'
+      },
+      {
+        name: 'Fomibobri Ball of Foot Cushions',
+        description: 'Ultra-soft cushions that provide a therapeutic barrier for the metatarsal heads.',
+        bestFor: 'Walking comfort and friction reduction.',
+        link: 'https://amzn.to/4unQ5Gg'
+      },
+      {
+        name: 'Wonder Care Silicone Toe Separators',
+        description: 'Medical-grade silicone separators that help realign toes and reduce pressure on the interdigital nerve.',
+        bestFor: 'Toe alignment and space correction.',
+        link: 'https://amzn.to/3QCGZqw'
       }
     ],
     painType: ['Ball of Foot Pain', 'Numbness', 'Burning'],
@@ -478,16 +490,28 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Silicone Heel Cups',
-        description: 'Shock-absorbing silicone cups that cradle the heel and provide relief from spur-related pressure.',
-        bestFor: 'Immediate heel pain relief.',
-        link: 'https://amzn.to/4a6V7jV'
+        name: 'Relieve Heel Pain for Heel Spur',
+        description: 'Specialized orthotic inserts designed to cradle the heel and offload pressure from bony spurs.',
+        bestFor: 'Acute heel pain management.',
+        link: 'https://amzn.to/4ucazSa'
       },
       {
-        name: 'Orthopedic Heel Lift Inserts',
-        description: 'Adjustable inserts to elevate the heel and reduce strain on the plantar fascia and spur area.',
-        bestFor: 'Correcting alignment and reducing impact.',
-        link: 'https://amzn.to/4ePsw8g'
+        name: 'Purastep Silicone Gel Pads',
+        description: 'Dual-density silicone pads that provide intensive shock absorption for the heel strike.',
+        bestFor: 'Long durations of standing.',
+        link: 'https://amzn.to/4d1B9GN'
+      },
+      {
+        name: 'Dr. Scholl\'s Orthotics Insole',
+        description: 'Clinically proven insoles for heavy-duty support and relief from heel spur discomfort.',
+        bestFor: 'Reliable daily arch and heel support.',
+        link: 'https://amzn.to/3QxvKj9'
+      },
+      {
+        name: 'Heel Cup Sleeve',
+        description: 'Compression sleeves with integrated heel cups to provide stable support and cushioning.',
+        bestFor: 'Active movement and stability.',
+        link: 'https://amzn.to/4eSNrDJ'
       }
     ],
     painType: ['Heel Pain', 'Sharp Pain'],
@@ -520,16 +544,28 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Tulis Metatarsal Cushions',
-        description: 'High-quality medical grade cushions that absorb shock and protect the metatarsal heads.',
-        bestFor: 'High-impact sports and long walks.',
-        link: 'https://amzn.to/4eBfF0C'
+        name: 'Heavy Duty Support Metatarsal Pain Relief Insole',
+        description: 'Rigid orthotics engineered for maximum weight distribution away from the metatarsal heads.',
+        bestFor: 'High-impact pressure relief.',
+        link: 'https://amzn.to/4eSNrDJ'
       },
       {
-        name: 'Copper Compression Foot Arch Support',
-        description: 'Compression sleeves that provide support to the arch and redistribute pressure away from the ball of the foot.',
-        bestFor: 'Continuous support during movement.',
-        link: 'https://amzn.to/4gY0W4m'
+        name: 'Metatarsal Pad',
+        description: 'Classic felt metatarsal pads that lift the transverse arch to relieve burning pain.',
+        bestFor: 'Direct offloading of the ball of the foot.',
+        link: 'https://amzn.to/48wakJc'
+      },
+      {
+        name: 'Metatarsal Gel Sleeves',
+        description: 'Elastic sleeves with integrated gel cushions for a secure and comfortable fit.',
+        bestFor: 'Versatile daily use in any shoe.',
+        link: 'https://amzn.to/4tGDwFL'
+      },
+      {
+        name: 'Footlogics Metatarsalgic Orthotic Insole',
+        description: 'Podiatrist-designed insoles targeting metatarsal pain with a built-in metatarsal raise.',
+        bestFor: 'Structural correction and long-term relief.',
+        link: 'https://amzn.to/4cFvK9k'
       }
     ],
     painType: ['Ball of Foot Pain', 'Aching', 'Burning'],
@@ -561,16 +597,22 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'ZenToes Hammer Toe Crest Mallet Toe Splints',
-        description: 'Comfortable gel splints that encourage correct toe alignment and reduce pain.',
-        bestFor: 'Straightening toes and relieving pressure.',
-        link: 'https://amzn.to/3ZInE3e'
+        name: 'Anzailala 2pcs Hammer Toe Corrector',
+        description: 'Soft and adjustable splints that gently pull the hammered toe into a neutral position.',
+        bestFor: 'Flexible hammertoe correction.',
+        link: 'https://amzn.to/4uoOmk2'
       },
       {
-        name: 'Gel Toe Protectors',
-        description: 'Soft gel sleeves that protect the tops of hammered toes from shoe friction.',
-        bestFor: 'Preventing corns and calluses.',
-        link: 'https://amzn.to/42O7x9L'
+        name: 'Wonder Care Silicone Toe Separator',
+        description: 'Big toe corrector and separator patches designed for post-surgical or preventative care.',
+        bestFor: 'Joint alignment and pressure relief.',
+        link: 'https://amzn.to/4w2rlow'
+      },
+      {
+        name: 'Foot Alignment Socks',
+        description: 'Therapeutic socks with separated toe spacers to stretch and realign contracted toes.',
+        bestFor: 'Overnight rest and active stretching.',
+        link: 'https://amzn.to/4tDqkBz'
       }
     ],
     painType: ['Toe Pain', 'Joint Pain'],
@@ -602,16 +644,28 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Dancer\'s Pads (Metatarsal Felt Pads)',
-        description: 'U-shaped pads designed specifically to offload the big toe joint and sesamoid bones.',
-        bestFor: 'Offloading the sesamoid joint.',
-        link: 'https://amzn.to/3ZIsP9t'
+        name: 'Kimihome Dancer Pads 8 Count Gel Cushions',
+        description: 'High-grade gel pads designed with a U-shaped cutout to offload the sesamoid bones.',
+        bestFor: 'Targeted sesamoid joint protection.',
+        link: 'https://amzn.to/42K03FP'
       },
       {
-        name: 'Soft Gel Toe Sleeves',
-        description: 'Cushioned sleeves that provide a protective barrier for the bottom of the big toe.',
-        bestFor: 'Reducing friction and direct impact.',
-        link: 'https://amzn.to/3DEh0vQ'
+        name: 'Silicone Forefoot Pad',
+        description: 'Comprehensive forefoot cushioning to reduce direct impact on the big toe joint.',
+        bestFor: 'Dancing and athletic performance.',
+        link: 'https://amzn.to/4efcSPC'
+      },
+      {
+        name: 'Offloading Boot',
+        description: 'Medical-grade walking boot to completely immobilize the sesamoid joint for healing.',
+        bestFor: 'Severe inflammation or fractures.',
+        link: 'https://amzn.to/4n6vFiC'
+      },
+      {
+        name: 'ZenToes Ball of Foot Pads',
+        description: 'Durable gel cushions that provide consistent relief for the balls of the feet.',
+        bestFor: 'Daily impact management.',
+        link: 'https://amzn.to/4tLLH3U'
       }
     ],
     painType: ['Big Toe Pain', 'Aching', 'Sharp Pain'],
@@ -643,16 +697,16 @@ const CONDITIONS: Condition[] = [
     ],
     products: [
       {
-        name: 'Seamless Diabetic Socks',
-        description: 'Moisture-wicking, non-binding socks that reduce friction and pressure points.',
-        bestFor: 'Preventing foot irritation and ulcers.',
-        link: 'https://amzn.to/3ZE7fE3'
+        name: 'Bamboo Compression Socks',
+        description: 'Ultra-soft socks that provide graduated compression to improve leg circulation and reduce nerve swelling.',
+        bestFor: 'Managing edema and neuropathy pain.',
+        link: 'https://amzn.to/3QJFNBC'
       },
       {
-        name: 'Extra Depth Orthopedic Shoes',
-        description: 'Shoes with a wide toe box and extra depth to accommodate orthotics and prevent pressure.',
-        bestFor: 'Safe daily walking for diabetic patients.',
-        link: 'https://amzn.to/42O8lS0'
+        name: 'Bamboo Ankle Socks',
+        description: 'Odour-free, breathable socks with seamless construction to prevent friction-induced ulcers.',
+        bestFor: 'Sensitive feet and daily diabetic care.',
+        link: 'https://amzn.to/4mWiPDe'
       }
     ],
     painType: ['Numbness', 'Burning', 'Tingling'],
