@@ -812,173 +812,151 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
           <span className="text-xs font-bold uppercase tracking-widest">Back to Explore</span>
         </button>
 
+        {/* Full-width Header */}
+        <div className="mb-20">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="h-px w-12 bg-brand-orange" />
+            <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">Clinical Protocol Profile</span>
+          </div>
+          <h1 className="text-5xl md:text-8xl font-display font-bold text-brand-brown mb-8 leading-tight tracking-tight">
+            {condition.title}
+          </h1>
+          <p className="text-xl md:text-2xl leading-relaxed text-brand-taupe/70 font-light max-w-4xl">
+            {condition.fullDesc}
+          </p>
+        </div>
+
         <div className="grid lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-8" ref={contentRef}>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-12 bg-brand-orange" />
-              <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">In-Depth Analysis</span>
+          {/* Main Content Area - Products (8 columns) */}
+          <div className="lg:col-span-8 order-2 lg:order-1">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange shadow-sm">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="text-3xl font-display font-bold text-brand-brown">Curated Relief Gear</h3>
             </div>
-            
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-brand-brown mb-8 leading-tight">
-              {condition.title}
-            </h1>
-            
-            <p className="text-2xl leading-relaxed text-brand-taupe mb-16 font-light">
-              {condition.fullDesc}
-            </p>
 
-            <div className="space-y-20">
-              <section>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange">
-                    <Info className="w-6 h-6" />
+            <div className="grid md:grid-cols-2 gap-8">
+              {condition.products.map((product, i) => (
+                <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-brand-brown/5 shadow-soft hover:shadow-luxury hover:-translate-y-1 transition-all duration-500 group flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-brand-beige/50 flex items-center justify-center text-brand-brown font-bold text-xs uppercase tracking-widest">
+                      Item 0{i + 1}
+                    </div>
                   </div>
-                  <h2 className="text-2xl font-display font-bold text-brand-brown">Understanding the Condition</h2>
+                  
+                  <h4 className="text-xl font-display font-bold text-brand-brown mb-3 group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                  <p className="text-sm text-brand-taupe/70 mb-10 leading-relaxed flex-grow">{product.description}</p>
+                  
+                  <div className="mt-auto space-y-8">
+                    <ProductRating productId={product.name} conditionId={condition.id} user={user} />
+                    <a 
+                      href={product.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-brand-brown text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-4 group/btn shadow-lg"
+                    >
+                      Amazon Protocol Hub <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
+                    </a>
+                  </div>
                 </div>
-                <div className="prose prose-brand max-w-none text-lg text-brand-taupe/90 leading-relaxed bg-white p-10 rounded-[2.5rem] border border-brand-brown/5 shadow-soft">
-                  <p>{condition.whatIsIt}</p>
-                </div>
-              </section>
+              ))}
+            </div>
 
-              <div className="grid md:grid-cols-2 gap-12">
-                <section>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-6 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-orange" /> Common Causes
-                  </h3>
-                  <div className="bg-white p-8 rounded-[2rem] border border-brand-brown/5 shadow-soft">
+            {/* Support Section */}
+            <div className="mt-16 bg-brand-brown p-12 rounded-[3.5rem] text-brand-beige shadow-luxury relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full -mr-[300px] -mt-[300px] blur-[140px]" />
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center mb-8">
+                  <HelpCircle className="w-8 h-8 text-brand-orange" />
+                </div>
+                <h3 className="text-4xl font-display font-bold mb-6">Need more clarity?</h3>
+                <p className="text-lg opacity-70 mb-10 leading-relaxed font-light max-w-2xl">If these interventions don't yield results within 14 days, a clinical consultation is advised. Revisit our framework for next steps.</p>
+                <div className="flex flex-wrap gap-6">
+                  <a href="#framework" className="bg-brand-orange text-white px-10 py-5 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:text-brand-orange transition-all shadow-xl shadow-brand-orange/20">
+                    Explore Framework
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar - Science & Information (4 columns) */}
+          <div className="lg:col-span-4 order-1 lg:order-2" ref={contentRef}>
+            <div className="sticky top-32 space-y-10">
+              <div className="bg-white p-8 rounded-[2.5rem] border border-brand-brown/5 shadow-soft">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand-orange">{currentSection}</span>
+                  <span className="text-[10px] font-bold text-brand-taupe/40 font-mono italic">{percent}% read</span>
+                </div>
+                <div className="h-1.5 w-full bg-brand-brown/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    className="h-full bg-brand-orange origin-left rounded-full"
+                    style={{ scaleX: scrollYProgress }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <section className="bg-white p-10 rounded-[3rem] border border-brand-brown/5 shadow-soft">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                      <Info className="w-6 h-6" />
+                    </div>
+                    <h2 className="text-xl font-display font-bold text-brand-brown">Diagnosis</h2>
+                  </div>
+                  <p className="text-sm text-brand-taupe/80 leading-relaxed mb-8 font-light italic opacity-80 border-l-2 border-brand-orange/20 pl-6">
+                    {condition.whatIsIt}
+                  </p>
+                  
+                  <div className="pt-8 border-t border-brand-brown/5">
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-brand-orange mb-6">Pathology Roots</h4>
                     <ul className="space-y-4">
                       {condition.causes.map((cause, i) => (
-                        <li key={i} className="text-sm flex items-start gap-4 text-brand-taupe group">
-                          <div className="w-8 h-8 rounded-lg bg-brand-beige flex items-center justify-center shrink-0 text-brand-brown font-bold text-[10px] group-hover:bg-brand-orange group-hover:text-white transition-colors">
-                            0{i + 1}
-                          </div>
-                          <span className="pt-1.5">{cause}</span>
+                        <li key={i} className="text-[12px] flex items-start gap-4 text-brand-taupe leading-snug">
+                          <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-1.5 opacity-40 shrink-0" />
+                          {cause}
                         </li>
                       ))}
                     </ul>
                   </div>
                 </section>
 
-                <section>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-6 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold" /> Key Symptoms <HelpCircle className="w-3 h-3 opacity-50" />
-                  </h3>
-                  <div className="bg-white p-8 rounded-[2rem] border border-brand-brown/5 shadow-soft">
+                  <section className="bg-brand-beige/30 p-10 rounded-[3rem] border border-brand-brown/5">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold">
+                        <Activity className="w-6 h-6" />
+                      </div>
+                      <h2 className="text-xl font-display font-bold text-brand-brown">Clinical Signs</h2>
+                    </div>
                     <ul className="space-y-4">
                       {condition.symptoms.map((symptom, i) => (
                         <SymptomItem key={i} symptom={symptom} />
                       ))}
                     </ul>
-                  </div>
-                </section>
-              </div>
+                  </section>
 
-              <section>
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-8">Self-Care & DIY Protocols</h3>
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {condition.diySupport.map((tip, i) => (
-                    <div key={i} className="bg-brand-brown text-brand-beige p-8 rounded-[2rem] flex items-center gap-5 group hover:bg-brand-orange transition-colors duration-500">
-                      <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10 group-hover:rotate-12 transition-transform">
-                        <CheckCircle2 className="w-6 h-6" />
+                <section className="bg-brand-brown text-brand-beige p-10 rounded-[3rem]">
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-brand-orange mb-8 underline decoration-brand-orange/30 underline-offset-8">Bio-Hacking Steps</h3>
+                  <div className="space-y-4">
+                    {condition.diySupport.map((tip, i) => (
+                      <div key={i} className="flex items-start gap-4 p-5 bg-white/5 rounded-2xl">
+                        <CheckCircle2 className="w-5 h-5 text-brand-orange shrink-0" />
+                        <span className="text-[12px] font-light leading-relaxed">{tip}</span>
                       </div>
-                      <span className="text-sm font-bold uppercase tracking-widest leading-relaxed">{tip}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4">
-            <div className="sticky top-32 flex gap-8 items-start">
-              {/* Vertical Scroll Progress Indicator */}
-              <div className="hidden lg:flex flex-col items-center gap-4 py-8 h-[450px] shrink-0">
-                <div className="flex flex-col items-center gap-2 mb-2">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-brand-taupe/40 [writing-mode:vertical-lr] rotate-180">Reading Progress</span>
-                  <motion.span className="text-[8px] font-bold text-brand-orange uppercase tracking-widest [writing-mode:vertical-lr] rotate-180">
-                    {currentSection}
-                  </motion.span>
-                </div>
-                <div className="w-1 flex-1 bg-brand-brown/5 rounded-full overflow-hidden relative">
-                  {/* Milestone Dots */}
-                  <div className="absolute inset-y-0 left-0 right-0 flex flex-col justify-between py-2 pointer-events-none z-0">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="w-full h-px bg-brand-brown/10" />
                     ))}
                   </div>
-                  
-                  <motion.div 
-                    className="absolute top-0 left-0 right-0 bg-brand-orange origin-top rounded-full z-10"
-                    style={{ height: '100%', scaleY }}
-                  />
-                </div>
-                <div className="w-2 h-2 rounded-full border-2 border-brand-orange/20 flex items-center justify-center">
-                  <motion.div 
-                    className="w-1 h-1 rounded-full bg-brand-orange"
-                    animate={{ scale: [1, 1.5, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-                <motion.span className="text-[8px] font-bold text-brand-orange mt-1">
-                  {percent}%
-                </motion.span>
-              </div>
+                </section>
 
-              <div className="flex-1 space-y-8">
-                <div className="bg-white p-10 rounded-[3rem] border border-brand-brown/5 shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full -mr-16 -mt-16 blur-2xl" />
-                
-                <div className="flex items-center gap-3 mb-8">
-                  <ShieldCheck className="text-brand-orange w-6 h-6" />
-                  <h3 className="text-2xl font-display font-bold text-brand-brown">Curated Gear</h3>
-                </div>
-                
-                <p className="text-sm text-brand-taupe/70 mb-10 leading-relaxed">
-                  We've handpicked these specific solutions to help manage {condition.title} effectively.
-                </p>
-
-                <div className="space-y-6">
-                  {condition.products.map((product, i) => (
-                    <div key={i} className="p-6 rounded-2xl bg-brand-beige/50 border border-brand-brown/5 hover:border-brand-orange/20 transition-all group">
-                      <h4 className="font-bold text-brand-brown mb-2 group-hover:text-brand-orange transition-colors">{product.name}</h4>
-                      <p className="text-xs text-brand-taupe/70 mb-4 line-clamp-2">{product.description}</p>
-                      <a 
-                        href={product.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-bold uppercase tracking-widest text-brand-orange flex items-center gap-2 hover:gap-3 transition-all"
-                      >
-                        View on Amazon <ArrowRight className="w-3 h-3" />
-                      </a>
-                      <ProductRating productId={product.name} conditionId={condition.id} user={user} />
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-10 pt-10 border-t border-brand-brown/5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Info className="w-3.5 h-3.5 text-brand-taupe/40" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-taupe/40">Affiliate Disclosure</span>
-                  </div>
-                  <p className="text-[10px] text-brand-taupe/40 leading-relaxed italic">
-                    Comfoot earns a small commission from qualifying purchases at no extra cost to you.
+                <div className="p-8 text-center bg-brand-beige/20 rounded-[2.5rem]">
+                  <p className="text-[10px] text-brand-taupe/50 leading-relaxed">
+                    Comfoot earns from qualifying purchases. This supports our independent clinical research.
                   </p>
                 </div>
-              </div>
-
-              <div className="bg-brand-orange p-10 rounded-[3rem] text-white shadow-xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <HelpCircle className="w-12 h-12 mb-6 opacity-50" />
-                <h3 className="text-2xl font-display font-bold mb-4">Still in Pain?</h3>
-                <p className="text-sm opacity-90 mb-8 leading-relaxed">If symptoms persist for more than 2 weeks, we strongly recommend consulting a podiatrist.</p>
-                <a href="#about" className="inline-block bg-white text-brand-orange px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-brown hover:text-white transition-all">
-                  Contact Support
-                </a>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </motion.div>
   );
