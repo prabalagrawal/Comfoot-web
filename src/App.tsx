@@ -411,6 +411,170 @@ const CONDITIONS: Condition[] = [
     ],
     painType: ['Sharp Pain', 'Itching', 'Soreness'],
     affectedArea: ['Heel']
+  },
+  {
+    id: 'mortons-neuroma',
+    title: "Morton's Neuroma",
+    shortDesc: "Pain in the ball of the foot, often between the 3rd and 4th toes.",
+    fullDesc: "Morton's neuroma is a painful condition that affects the ball of your foot, most commonly the area between your third and fourth toes.",
+    whatIsIt: "It involves a thickening of the tissue around one of the nerves leading to your toes. It can feel like you're standing on a pebble in your shoe.",
+    causes: [
+      'Wearing high heels or tight shoes',
+      'High-impact athletic activities (running, tennis)',
+      'Foot deformities (bunions, flat feet, high arches)'
+    ],
+    symptoms: [
+      { name: 'Burning pain in the ball of the foot', description: 'A sharp, burning sensation that may radiate into your toes.' },
+      { name: 'Numbness or tingling in the toes', description: 'A feeling of "pins and needles" or loss of sensation in the affected toes.' },
+      { name: 'The feeling of standing on a pebble', description: 'A persistent sensation that there is something inside your shoe when nothing is there.' },
+      { name: 'Pain that worsens with activity or tight shoes', description: 'Pressure on the forefoot exacerbates the nerve irritation.' }
+    ],
+    diySupport: [
+      'Switching to shoes with a wide toe box',
+      'Using metatarsal pads',
+      'Icing the area to reduce inflammation',
+      'Resting and avoiding high-impact sports'
+    ],
+    products: [
+      {
+        name: 'Dr. Foot Metatarsal Pads',
+        description: 'Soft gel pads designed to provide cushioning and pressure relief for the ball of the foot.',
+        bestFor: 'Relieving pain from Morton\'s Neuroma.',
+        link: 'https://amzn.to/4tUfT9r'
+      },
+      {
+        name: 'Gel Forefoot Sleeves',
+        description: 'Protective sleeves with integrated gel pads for comprehensive forefoot support.',
+        bestFor: 'Daily wear and impact protection.',
+        link: 'https://amzn.to/4eGCHOn'
+      }
+    ],
+    painType: ['Ball of Foot Pain', 'Numbness', 'Burning'],
+    affectedArea: ['Ball of Foot', 'Toes']
+  },
+  {
+    id: 'heel-spurs',
+    title: 'Heel Spurs',
+    shortDesc: 'Bony protrusions caused by calcium deposits on the heel bone.',
+    fullDesc: 'A heel spur is a calcium deposit causing a bony protrusion on the underside of the heel bone. They are often associated with plantar fasciitis.',
+    whatIsIt: 'Imagine a tiny, sharp hook of bone growing under your heel. While sometimes painless, they can cause chronic heel pain when inflamed.',
+    causes: [
+      'Strains on foot muscles and ligaments',
+      'Stretching of the plantar fascia',
+      'Repeated tearing of the membrane that covers the heel bone',
+      'Age-related wear and tear'
+    ],
+    symptoms: [
+      { name: 'Sharp pain like a knife in the heel', description: 'Usually most severe when first standing up in the morning.' },
+      { name: 'Dull ache in the heel throughout the day', description: 'Persistent discomfort that lingers after long periods of activity.' },
+      { name: 'Visible protrusion under the heel', description: 'In some cases, the bony growth can be felt through the skin.' },
+      { name: 'Inflammation and swelling at the front of the heel', description: 'The tissue around the spur becomes irritated and painful.' }
+    ],
+    diySupport: [
+      'Using orthotic inserts with heel cutouts',
+      'Stretching exercises for the calves and feet',
+      'Wearing properly fitting shoes with shock-absorbent soles',
+      'Rest and physical therapy'
+    ],
+    products: [
+      {
+        name: 'Silicone Heel Cups',
+        description: 'Shock-absorbing silicone cups that cradle the heel and provide relief from spur-related pressure.',
+        bestFor: 'Immediate heel pain relief.',
+        link: 'https://amzn.to/4a6V7jV'
+      },
+      {
+        name: 'Orthopedic Heel Lift Inserts',
+        description: 'Adjustable inserts to elevate the heel and reduce strain on the plantar fascia and spur area.',
+        bestFor: 'Correcting alignment and reducing impact.',
+        link: 'https://amzn.to/4ePsw8g'
+      }
+    ],
+    painType: ['Heel Pain', 'Sharp Pain'],
+    affectedArea: ['Heel']
+  },
+  {
+    id: 'metatarsalgia',
+    title: 'Metatarsalgia',
+    shortDesc: 'Pain and inflammation in the ball of your foot.',
+    fullDesc: "Metatarsalgia is a condition in which the ball of your foot becomes inflamed and painful. You might experience it if you participate in activities that involve running and jumping.",
+    whatIsIt: "It is often considered a symptom of other conditions rather than a specific disease itself. It results from excessive pressure on the metatarsal heads.",
+    causes: [
+      'Intense training or activity',
+      'Certain foot shapes (high arches or long second toes)',
+      'Foot deformities (hammertoes, bunions)',
+      'Excess weight',
+      'Poorly fitting shoes'
+    ],
+    symptoms: [
+      { name: 'Sharp, aching or burning pain in the ball of the foot', description: 'The part of the sole just behind your toes feels highly sensitive.' },
+      { name: 'Pain that worsens when you stand, run, or walk barefoot', description: 'Direct pressure on the ball of the foot increases the discomfort.' },
+      { name: 'A feeling of having a pebble in your shoe', description: 'A common sensation caused by the inflammation of the metatarsal area.' },
+      { name: 'Numbness or tingling in your toes', description: 'Pressure on the nerves in the ball of the foot can affect sensation in the toes.' }
+    ],
+    diySupport: [
+      'Resting and elevating your foot after activity',
+      'Applying ice packs to the affected area',
+      'Wearing shoes with good support and cushioning',
+      'Using metatarsal pads to redistribute weight'
+    ],
+    products: [
+      {
+        name: 'Tulis Metatarsal Cushions',
+        description: 'High-quality medical grade cushions that absorb shock and protect the metatarsal heads.',
+        bestFor: 'High-impact sports and long walks.',
+        link: 'https://amzn.to/4eBfF0C'
+      },
+      {
+        name: 'Copper Compression Foot Arch Support',
+        description: 'Compression sleeves that provide support to the arch and redistribute pressure away from the ball of the foot.',
+        bestFor: 'Continuous support during movement.',
+        link: 'https://amzn.to/4gY0W4m'
+      }
+    ],
+    painType: ['Ball of Foot Pain', 'Aching', 'Burning'],
+    affectedArea: ['Ball of Foot']
+  },
+  {
+    id: 'hammertoes',
+    title: 'Hammertoes',
+    shortDesc: 'Abnormal bend in the middle joint of a toe.',
+    fullDesc: "A hammertoe is a deformity that causes your toe to bend or curl downward instead of pointing forward. This deformity can affect any toe, but most often it affects the second or third toe.",
+    whatIsIt: "It usually starts as a mild deformity and gets worse over time. In the early stages, hammertoes are flexible and can be corrected with simple measures.",
+    causes: [
+      'Inappropriate footwear (tight or pointed shoes)',
+      'Trauma to the toe',
+      'Imbalance in toe muscles',
+      'Arthritis or other medical conditions'
+    ],
+    symptoms: [
+      { name: 'Bending of the toe downward', description: 'The middle joint of the toe sticks up, and the tip points down.' },
+      { name: 'Corns or calluses on the top of the middle joint', description: 'Caused by rubbing against the top of the shoe.' },
+      { name: 'Pain in the toe joint where it meets the foot', description: 'Difficulty moves the toe or finding comfortable shoes.' },
+      { name: 'Swelling and redness at the joint', description: 'The affected joint may become inflamed and tender.' }
+    ],
+    diySupport: [
+      'Switching to shoes with deep toe boxes',
+      'Using toe splints or regulators',
+      'Performing toe exercises (picking up marbles)',
+      'Using non-medicated corn pads'
+    ],
+    products: [
+      {
+        name: 'ZenToes Hammer Toe Crest Mallet Toe Splints',
+        description: 'Comfortable gel splints that encourage correct toe alignment and reduce pain.',
+        bestFor: 'Straightening toes and relieving pressure.',
+        link: 'https://amzn.to/3ZInE3e'
+      },
+      {
+        name: 'Gel Toe Protectors',
+        description: 'Soft gel sleeves that protect the tops of hammered toes from shoe friction.',
+        bestFor: 'Preventing corns and calluses.',
+        link: 'https://amzn.to/42O7x9L'
+      }
+    ],
+    painType: ['Toe Pain', 'Joint Pain'],
+    affectedArea: ['Toes']
   }
 ];
 
