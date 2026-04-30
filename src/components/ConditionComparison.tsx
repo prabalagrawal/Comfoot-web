@@ -61,7 +61,7 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
         {/* Content */}
         <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar p-8 md:p-12 bg-white/20">
           <div className={`grid gap-12 min-w-[900px]`} style={{ gridTemplateColumns: `repeat(${conditions.length}, 1fr)` }}>
-            {conditions.map((condition) => (
+            {conditions.map((condition, idx) => (
               <motion.div 
                 key={condition.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -75,7 +75,7 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
                       <Activity className="w-6 h-6" />
                     </div>
                     <div className="bg-brand-brown/5 px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.3em] text-brand-taupe">
-                      Profile 0{condition.id === 'plantar-fasciitis' ? '1' : condition.id === 'flat-feet' ? '2' : '3'}
+                      Profile 0{idx + 1}
                     </div>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-display font-black text-brand-brown tracking-tight leading-none">{condition.title}</h3>

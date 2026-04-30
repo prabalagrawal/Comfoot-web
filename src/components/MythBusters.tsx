@@ -153,6 +153,24 @@ export const MythBusters: React.FC = () => {
       fact: "Shoes without proper support can sometimes increase strain on the foot.",
       explanation: "Supportive footwear helps distribute pressure across the foot and reduces stress on muscles and ligaments during walking and standing.",
       source: "Harvard Health Publishing"
+    },
+    {
+      myth: "Running will ruin your knees and feet over time.",
+      fact: "Proper running can actually increase bone density and strengthen tissues.",
+      explanation: "Research indicates that recreational runners often have lower rates of knee osteoarthritis compared to sedentary individuals. The key is gradual progression and supportive footwear.",
+      source: "Journal of Orthopaedic & Sports Physical Therapy"
+    },
+    {
+      myth: "Barefoot walking on concrete is natural and healthy.",
+      fact: "Modern hard surfaces lack the shock absorption of natural terrain.",
+      explanation: "While walking barefoot on soft surfaces is beneficial, flat concrete provides no arch support or impact dispersion, potentially leading to fat pad atrophy.",
+      source: "American Podiatric Medical Association (APMA)"
+    },
+    {
+      myth: "The higher the arch support, the better the insole.",
+      fact: "Excessive arch support can weaken the foot's natural shock absorption.",
+      explanation: "An arch that is too high can lock the foot into a supinated position. Optimal support should mimic the natural contour without being overly rigid.",
+      source: "British Journal of Sports Medicine (BJSM)"
     }
   ];
 

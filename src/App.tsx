@@ -575,6 +575,88 @@ const CONDITIONS: Condition[] = [
     ],
     painType: ['Toe Pain', 'Joint Pain'],
     affectedArea: ['Toes']
+  },
+  {
+    id: 'sesamoiditis',
+    title: 'Sesamoiditis',
+    shortDesc: 'Inflammation of the small bones under the big toe joint.',
+    fullDesc: 'Sesamoiditis is a form of tendonitis that affects the sesamoid bones—two tiny bones under the big toe joint that act like pulleys for tendons.',
+    whatIsIt: 'It is a common overuse injury in dancers, runners, and people with high arches. Because these bones are so small, inflammation can be incredibly persistent.',
+    causes: [
+      'Repeated impact on the ball of the foot',
+      'Wearing high heels or thin-soled shoes',
+      'Increased activity level in high-impact sports',
+      'Having high arches'
+    ],
+    symptoms: [
+      { name: 'Pain under the big toe joint', description: 'Pain that develops gradually and focuses on the bottom of the big toe.' },
+      { name: 'Difficulty bending and straightening the big toe', description: 'The tendon around the sesamoid bones becomes stiff and inflamed.' },
+      { name: 'Swelling and bruising', description: 'In acute cases, the area around the sesamoid bones may become noticeably inflamed.' },
+      { name: 'Pain when walking barefoot or on hard surfaces', description: 'Lack of cushioning exacerbates the pressure on the sesamoid bones.' }
+    ],
+    diySupport: [
+      'Applying the R.I.C.E protocol (Rest, Ice, Compression, Elevation)',
+      'Wearing low-heeled, cushioned shoes',
+      'Using a "dancer\'s pad" to offload the joint',
+      'Taping the big toe to restrict movement'
+    ],
+    products: [
+      {
+        name: 'Dancer\'s Pads (Metatarsal Felt Pads)',
+        description: 'U-shaped pads designed specifically to offload the big toe joint and sesamoid bones.',
+        bestFor: 'Offloading the sesamoid joint.',
+        link: 'https://amzn.to/3ZIsP9t'
+      },
+      {
+        name: 'Soft Gel Toe Sleeves',
+        description: 'Cushioned sleeves that provide a protective barrier for the bottom of the big toe.',
+        bestFor: 'Reducing friction and direct impact.',
+        link: 'https://amzn.to/3DEh0vQ'
+      }
+    ],
+    painType: ['Big Toe Pain', 'Aching', 'Sharp Pain'],
+    affectedArea: ['Ball of Foot']
+  },
+  {
+    id: 'diabetic-neuropathy',
+    title: 'Diabetic Neuropathy',
+    shortDesc: 'Nerve damage that can occur if you have diabetes.',
+    fullDesc: 'Diabetic neuropathy is a type of nerve damage that can occur if you have diabetes. High blood sugar can injure nerves throughout your body, but it most often damages nerves in your legs and feet.',
+    whatIsIt: 'It is a serious complication of diabetes that can lead to loss of sensation. This is a critical condition because injuries can go unnoticed, potentially leading to infections or ulcers.',
+    causes: [
+      'High blood sugar levels over long periods',
+      'Vessel damage causing reduced oxygen to nerves',
+      'Genetic factors',
+      'Inflammation in the nerves'
+    ],
+    symptoms: [
+      { name: 'Numbness or reduced ability to feel pain', description: 'Inability to detect temperature changes or sharp objects.' },
+      { name: 'Tingling or burning sensation', description: 'A persistent "pins and needles" feeling that often worsens at night.' },
+      { name: 'Sharp pains or cramps', description: 'Sudden, intense nerve pains that can be debilitating.' },
+      { name: 'Increased sensitivity to touch', description: 'For some, even the weight of a bedsheet can be painful (allodynia).' }
+    ],
+    diySupport: [
+      'Checking your feet every single day for cuts or blisters',
+      'Keeping blood sugar levels within target range',
+      'Washing and drying feet carefully',
+      'Never walking barefoot, even indoors'
+    ],
+    products: [
+      {
+        name: 'Seamless Diabetic Socks',
+        description: 'Moisture-wicking, non-binding socks that reduce friction and pressure points.',
+        bestFor: 'Preventing foot irritation and ulcers.',
+        link: 'https://amzn.to/3ZE7fE3'
+      },
+      {
+        name: 'Extra Depth Orthopedic Shoes',
+        description: 'Shoes with a wide toe box and extra depth to accommodate orthotics and prevent pressure.',
+        bestFor: 'Safe daily walking for diabetic patients.',
+        link: 'https://amzn.to/42O8lS0'
+      }
+    ],
+    painType: ['Numbness', 'Burning', 'Tingling'],
+    affectedArea: ['Full Foot', 'Toes']
   }
 ];
 
