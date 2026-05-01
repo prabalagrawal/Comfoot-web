@@ -848,29 +848,29 @@ export const FootProblemQuiz: React.FC = () => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="bg-brand-orange text-white rounded-[2.5rem] p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6"
+                className="bg-brand-orange text-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6"
               >
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                  <div className="p-3 bg-white/20 rounded-xl shrink-0">
-                    <Zap className="w-5 h-5 md:w-6 md:h-6" />
+                  <div className="p-2 sm:p-3 bg-white/20 rounded-xl shrink-0">
+                    <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <h4 className="text-lg md:text-xl font-bold">Email Your Results</h4>
-                    <p className="text-white/70 text-xs md:text-sm">Get a copy sent to your inbox.</p>
+                    <h4 className="text-base sm:text-lg md:text-xl font-bold">Email Your Results</h4>
+                    <p className="text-white/70 text-[10px] sm:text-xs md:text-sm">Get a copy sent to your inbox.</p>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
+                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-2 sm:gap-3">
                   <input 
                     type="email" 
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full sm:w-64 px-5 py-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/20 transition-all text-sm"
+                    className="w-full sm:w-64 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/20 transition-all text-xs sm:text-sm"
                   />
                   <button 
                     onClick={sendEmailResults}
                     disabled={isSendingEmail || emailSent}
-                    className="w-full sm:w-auto px-8 py-4 bg-white text-brand-orange rounded-xl font-bold hover:bg-brand-beige transition-all disabled:opacity-50 text-sm uppercase tracking-widest"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-brand-orange rounded-xl font-bold hover:bg-brand-beige transition-all disabled:opacity-50 text-[10px] sm:text-sm uppercase tracking-widest active:scale-[0.98] transition-transform"
                   >
                     {isSendingEmail ? 'Sending' : emailSent ? 'Sent!' : 'Send'}
                   </button>
@@ -883,27 +883,27 @@ export const FootProblemQuiz: React.FC = () => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="bg-brand-brown text-brand-beige rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group"
+                className="bg-brand-brown text-brand-beige rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-10 md:p-16 shadow-2xl relative overflow-hidden group"
               >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+                <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-brand-orange/10 rounded-full -mr-24 sm:-mr-32 -mt-24 sm:-mt-32 blur-3xl" />
                 
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-brand-orange rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
-                      <Stethoscope className="w-8 h-8 text-white" />
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 sm:gap-8 relative z-10">
+                  <div className="flex items-center gap-4 sm:gap-5">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-brand-orange rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
+                      <Stethoscope className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-3xl font-display font-bold">Professional Consultation</h3>
-                      <p className="text-brand-beige/70 font-light max-w-md">While we provide guidance, professional diagnosis is key to long-term foot health.</p>
+                      <h3 className="text-xl sm:text-3xl font-display font-bold">Professional Consultation</h3>
+                      <p className="text-xs sm:text-base text-brand-beige/70 font-light max-w-sm">While we provide guidance, professional diagnosis is key to long-term foot health.</p>
                     </div>
                   </div>
                   
-                  <div className="flex flex-col md:flex-row gap-4">
+                  <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <button 
                       onClick={findNearbyPodiatrists}
-                      className="bg-white text-brand-brown px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto bg-white text-brand-brown px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
                     >
-                      <MapPin className="w-4 h-4" />
+                      <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       Find Podiatrists
                     </button>
                   </div>
@@ -1021,11 +1021,11 @@ export const FootProblemQuiz: React.FC = () => {
 
               {/* Conversion Features */}
               <div className="bg-brand-beige/80 backdrop-blur-sm rounded-[3rem] p-10 md:p-16 border border-brand-brown/10 space-y-12">
-                <div className="grid md:grid-cols-2 gap-12">
+                <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
                   {/* Email Guide */}
-                  <div className="space-y-6">
-                    <h4 className="text-2xl font-display font-bold text-brand-brown">Get Your Free Mini Foot Care Guide</h4>
-                    <p className="text-brand-taupe font-light">A structured PDF guide to help you manage your foot wellness at home.</p>
+                  <div className="space-y-4 sm:space-y-6">
+                    <h4 className="text-xl sm:text-2xl font-display font-bold text-brand-brown">Get Your Free Mini Foot Care Guide</h4>
+                    <p className="text-sm sm:text-base text-brand-taupe font-light">A structured PDF guide to help you manage your foot wellness at home.</p>
                     {!formSubmitted.email ? (
                       <form 
                         onSubmit={async (e) => { 
@@ -1049,33 +1049,33 @@ export const FootProblemQuiz: React.FC = () => {
                           placeholder="Enter your email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-brand-orange transition-colors"
+                          className="w-full bg-white border border-brand-brown/10 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 px-5 sm:px-6 text-xs sm:text-sm focus:outline-none focus:border-brand-orange transition-colors"
                         />
-                        <button type="submit" className="bg-brand-orange text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange/90 transition-all shadow-lg">
+                        <button type="submit" className="bg-brand-orange text-white py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange/90 transition-all shadow-lg active:scale-[0.98]">
                           Get Free Guide
                         </button>
                       </form>
                     ) : (
-                      <div className="flex items-center gap-3 text-brand-orange font-bold">
-                        <CheckCircle2 className="w-6 h-6" />
+                      <div className="flex items-center gap-3 text-brand-orange font-bold text-sm">
+                        <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
                         <span>Guide sent to your email!</span>
                       </div>
                     )}
                   </div>
 
                   {/* Product Links */}
-                  <div className="space-y-6">
-                    <h4 className="text-2xl font-display font-bold text-brand-brown">Send Me Product Links</h4>
-                    <p className="text-brand-taupe font-light">Receive direct links to recommended gear on WhatsApp.</p>
+                  <div className="space-y-4 sm:space-y-6">
+                    <h4 className="text-xl sm:text-2xl font-display font-bold text-brand-brown">Send Me Product Links</h4>
+                    <p className="text-sm sm:text-base text-brand-taupe font-light">Receive direct links to recommended gear on WhatsApp.</p>
                     {!formSubmitted.contact ? (
                       <form 
                         onSubmit={async (e) => { 
                           e.preventDefault(); 
                           try {
                             await fetch('/api/leads', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ type: 'product_links', value: contactInfo, resultId: getResult().id }),
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ type: 'product_links', value: contactInfo, resultId: getResult().id }),
                             });
                             setFormSubmitted(prev => ({ ...prev, contact: true })); 
                           } catch (err) {
@@ -1090,15 +1090,15 @@ export const FootProblemQuiz: React.FC = () => {
                           placeholder="Phone Number"
                           value={contactInfo}
                           onChange={(e) => setContactInfo(e.target.value)}
-                          className="w-full bg-white border border-brand-brown/10 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-brand-orange transition-colors"
+                          className="w-full bg-white border border-brand-brown/10 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 px-5 sm:px-6 text-xs sm:text-sm focus:outline-none focus:border-brand-orange transition-colors"
                         />
-                        <button type="submit" className="bg-brand-brown text-brand-beige py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange transition-all shadow-lg">
+                        <button type="submit" className="bg-brand-brown text-brand-beige py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange transition-all shadow-lg active:scale-[0.98]">
                           Send Me Links
                         </button>
                       </form>
                     ) : (
-                      <div className="flex items-center gap-3 text-brand-orange font-bold">
-                        <CheckCircle2 className="w-6 h-6" />
+                      <div className="flex items-center gap-3 text-brand-orange font-bold text-sm">
+                        <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
                         <span>Links are on the way!</span>
                       </div>
                     )}

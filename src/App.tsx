@@ -18,6 +18,7 @@ import {
   Share2,
   Check,
   ChevronLeft,
+  ChevronRight,
   LogOut,
   User as UserIcon,
   BookOpen,
@@ -51,6 +52,7 @@ import { MythBusters } from './components/MythBusters';
 import { AdminDashboard } from './components/AdminDashboard';
 import { FootJournal } from './components/FootJournal';
 import { ConditionComparison } from './components/ConditionComparison';
+import { Onboarding } from './components/Onboarding';
 import { Condition, Product, Symptom } from './types';
 
 // --- Data ---
@@ -858,7 +860,7 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
     <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${isScrolled ? 'py-4' : 'py-6 md:py-8'}`}>
       <div className={`absolute inset-0 transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'} bg-white/80 backdrop-blur-2xl border-b border-brand-brown/5 shadow-luxury`} />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 flex items-center justify-between">
         <a href="#home" className="group">
           <Logo isScrolled={isScrolled} />
         </a>
@@ -875,7 +877,7 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           {user ? (
             <button 
               onClick={handleLogout}
@@ -896,9 +898,9 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
 
           <button 
             onClick={() => setMobileMenuOpen(true)}
-            className="p-4 bg-brand-brown text-brand-beige rounded-2xl hover:bg-brand-orange transition-all lg:hidden shadow-xl"
+            className="p-3 md:p-4 bg-brand-brown text-brand-beige rounded-xl md:rounded-2xl hover:bg-brand-orange transition-all lg:hidden shadow-xl active:scale-95"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
       </div>
@@ -994,30 +996,30 @@ const ConditionCard: React.FC<{
         rotateY: 2,
         boxShadow: "0 50px 100px -20px rgba(45, 36, 30, 0.2)" 
       }}
-      className={`group relative overflow-hidden bg-white p-12 rounded-[4rem] border-2 transition-all duration-700 flex flex-col h-full ${
+      className={`group relative overflow-hidden bg-white p-6 sm:p-12 rounded-[2rem] sm:rounded-[4rem] border-2 transition-all duration-700 flex flex-col h-full ${
         isComparing ? 'border-brand-orange shadow-luxury' : 'border-brand-brown/5 shadow-soft hover:border-brand-orange/20'
       } perspective-1000`}
     >
       {/* Index Number - Editorial Detail */}
-      <div className="absolute top-12 right-12 text-6xl font-display font-black text-brand-brown/5 group-hover:text-brand-orange/10 transition-colors duration-700 select-none">
+      <div className="absolute top-6 sm:top-12 right-6 sm:right-12 text-4xl sm:text-6xl font-display font-black text-brand-brown/5 group-hover:text-brand-orange/10 transition-colors duration-700 select-none">
         0{condition.id}
       </div>
 
-      <div className="flex items-center gap-6 mb-10 relative z-10">
-        <div className={`w-20 h-20 rounded-[2.5rem] flex items-center justify-center transition-all duration-700 ${
+      <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-10 relative z-10">
+        <div className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center transition-all duration-700 ${
           isComparing ? 'bg-brand-orange text-white scale-110' : 'bg-brand-beige text-brand-orange group-hover:bg-brand-orange group-hover:text-white group-hover:rotate-12 group-hover:scale-110'
         } shadow-lg`}>
-          <Activity className="w-8 h-8" />
+          <Activity className="w-6 h-6 sm:w-8 sm:h-8" />
         </div>
       </div>
 
       <div className="relative z-10 flex flex-col h-full">
-        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-orange mb-3 group-hover:tracking-[0.6em] transition-all">Clinical Profile</span>
-        <h3 className="text-4xl md:text-5xl font-display font-bold text-brand-brown leading-[0.95] tracking-[-0.03em] mb-8 group-hover:text-brand-orange transition-colors">
+        <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.4em] text-brand-orange mb-2 sm:mb-3 group-hover:tracking-[0.6em] transition-all">Clinical Profile</span>
+        <h3 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-brand-brown leading-[1.1] sm:leading-[0.95] tracking-[-0.03em] mb-4 sm:mb-8 group-hover:text-brand-orange transition-colors">
           {condition.title}
         </h3>
 
-        <p className="text-lg text-brand-taupe/70 leading-relaxed font-light mb-12 border-l-2 border-brand-orange/20 pl-6 group-hover:border-brand-orange transition-colors">
+        <p className="text-sm sm:text-lg text-brand-taupe/70 leading-relaxed font-light mb-6 sm:mb-12 border-l-2 border-brand-orange/20 pl-4 sm:pl-6 group-hover:border-brand-orange transition-colors">
           {condition.shortDesc}
         </p>
         
@@ -1099,64 +1101,70 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="min-h-screen bg-brand-beige/30 pt-32 pb-20"
+      className="min-h-screen bg-brand-beige/30 pt-24 md:pt-32 pb-12 md:pb-20"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-12">
+        <div className="flex items-center gap-2 text-brand-brown/40 text-[10px] uppercase tracking-[0.2em] mb-4 overflow-x-auto whitespace-nowrap pb-2">
+          <button onClick={onBack} className="hover:text-brand-orange transition-colors">Home</button>
+          <ChevronRight className="w-3 h-3 shrink-0" />
+          <button onClick={onBack} className="hover:text-brand-orange transition-colors">Explore</button>
+          <ChevronRight className="w-3 h-3 shrink-0" />
+          <span className="text-brand-brown font-bold truncate">{condition.title}</span>
+        </div>
+
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-brand-brown hover:text-brand-orange transition-colors mb-12 group"
+          className="flex items-center gap-2 text-brand-brown hover:text-brand-orange transition-colors mb-8 md:mb-12 group"
         >
-          <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/20">
-            <ChevronLeft className="w-5 h-5" />
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/20">
+            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-widest">Back to Explore</span>
+          <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">Back to Explore</span>
         </button>
 
         {/* Full-width Header */}
-        <div className="mb-20">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-12 bg-brand-orange" />
-            <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[10px]">Clinical Protocol Profile</span>
+        <div className="mb-12 md:mb-20 px-2 sm:px-0">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <span className="h-px w-8 sm:w-12 bg-brand-orange" />
+            <span className="text-brand-orange font-bold uppercase tracking-[0.25em] text-[8px] sm:text-[10px]">Clinical Protocol Profile</span>
           </div>
-          <h1 className="text-5xl md:text-8xl font-display font-bold text-brand-brown mb-8 leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-8xl font-display font-bold text-brand-brown mb-6 sm:mb-8 leading-tight tracking-tight">
             {condition.title}
           </h1>
-          <p className="text-xl md:text-2xl leading-relaxed text-brand-taupe/70 font-light max-w-4xl">
+          <p className="text-base sm:text-xl md:text-2xl leading-relaxed text-brand-taupe/70 font-light max-w-4xl">
             {condition.fullDesc}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-16">
+        <div className="grid lg:grid-cols-12 gap-8 md:gap-16">
           {/* Main Content Area - Products (8 columns) */}
           <div className="lg:col-span-8 order-2 lg:order-1">
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange shadow-sm">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="flex items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-[1rem] sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange shadow-sm">
+                <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <h3 className="text-3xl font-display font-bold text-brand-brown">Curated Relief Gear</h3>
+              <h3 className="text-xl sm:text-3xl font-display font-bold text-brand-brown">Curated Relief Gear</h3>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
               {condition.products.map((product, i) => (
-                <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-brand-brown/5 shadow-soft hover:shadow-luxury hover:-translate-y-1 transition-all duration-500 group flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-brand-beige/50 flex items-center justify-center text-brand-brown font-bold text-xs uppercase tracking-widest">
+                <div key={i} className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-brand-brown/5 shadow-soft hover:shadow-luxury transition-all duration-500 group flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-4 sm:mb-6 text-brand-brown/40 font-bold text-[8px] sm:text-xs uppercase tracking-widest">
                       Item 0{i + 1}
-                    </div>
                   </div>
                   
-                  <h4 className="text-xl font-display font-bold text-brand-brown mb-3 group-hover:text-brand-orange transition-colors">{product.name}</h4>
-                  <p className="text-sm text-brand-taupe/70 mb-10 leading-relaxed flex-grow">{product.description}</p>
+                  <h4 className="text-lg sm:text-xl font-display font-bold text-brand-brown mb-2 sm:mb-3 group-hover:text-brand-orange transition-colors">{product.name}</h4>
+                  <p className="text-xs sm:text-sm text-brand-taupe/70 mb-8 sm:mb-10 leading-relaxed flex-grow">{product.description}</p>
                   
-                  <div className="mt-auto space-y-8">
+                  <div className="mt-auto space-y-6 sm:space-y-8">
                     <ProductRating productId={product.name} conditionId={condition.id} user={user} />
                     <a 
                       href={product.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-brand-brown text-white py-6 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-4 group/btn shadow-lg"
+                      className="w-full bg-brand-brown text-white py-4 sm:py-6 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-3 sm:gap-4 group/btn shadow-lg"
                     >
-                      Amazon Protocol Hub <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
+                      Amazon Protocol <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-2 transition-transform" />
                     </a>
                   </div>
                 </div>
@@ -1164,7 +1172,7 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
             </div>
 
             {/* Support Section */}
-            <div className="mt-16 bg-brand-brown p-12 rounded-[3.5rem] text-brand-beige shadow-luxury relative overflow-hidden group">
+            <div className="mt-12 md:mt-16 bg-brand-brown p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] text-brand-beige shadow-luxury relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full -mr-[300px] -mt-[300px] blur-[140px]" />
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center mb-8">
@@ -1349,7 +1357,7 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-brand-brown/60 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-brand-brown/60 backdrop-blur-md"
       onClick={onClose}
       role="presentation"
     >
@@ -1363,61 +1371,61 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="bg-brand-beige w-full max-w-6xl max-h-[92vh] overflow-y-auto md:overflow-hidden rounded-[2.5rem] shadow-2xl relative flex flex-col md:flex-row border border-white/20 focus:outline-none"
+        className="bg-brand-beige w-full max-w-6xl max-h-[96vh] md:max-h-[92vh] overflow-y-auto md:overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl relative flex flex-col md:flex-row border border-white/20 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button 
           onClick={onClose}
           aria-label="Close modal"
-          className="absolute top-6 right-6 p-3 bg-white/80 backdrop-blur-md text-brand-brown rounded-full shadow-lg hover:bg-brand-orange hover:text-white transition-all z-20 active:scale-90"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 sm:p-3 bg-white/80 backdrop-blur-md text-brand-brown rounded-full shadow-lg hover:bg-brand-orange hover:text-white transition-all z-20 active:scale-90"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Left Side: Editorial Content */}
-        <div className="flex-1 md:overflow-y-auto p-8 md:p-14 bg-white/40 custom-scrollbar">
+        <div className="flex-1 md:overflow-y-auto p-6 sm:p-8 md:p-14 bg-white/40 custom-scrollbar">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-8 bg-brand-orange/40" />
-              <span className="text-brand-orange font-bold uppercase tracking-[0.2em] text-[10px]">Condition Profile</span>
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <span className="h-px w-6 sm:w-8 bg-brand-orange/40" />
+              <span className="text-brand-orange font-bold uppercase tracking-[0.2em] text-[8px] sm:text-[10px]">Condition Profile</span>
             </div>
             
-            <h2 id="modal-title" className="text-4xl md:text-6xl font-display font-bold text-brand-brown mb-6 leading-tight">
+            <h2 id="modal-title" className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-brand-brown mb-4 sm:mb-6 leading-tight">
               {condition.title}
             </h2>
             
-            <p id="modal-description" className="text-xl leading-relaxed text-brand-taupe mb-12 font-light">
+            <p id="modal-description" className="text-base sm:text-xl leading-relaxed text-brand-taupe mb-8 sm:mb-12 font-light">
               {condition.fullDesc}
             </p>
  
-            <div className="space-y-12">
+            <div className="space-y-8 sm:space-y-12">
               <section>
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-4 flex items-center gap-2">
+                <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-3 sm:mb-4 flex items-center gap-2">
                   <Info className="w-4 h-4" /> The Science
                 </h3>
-                <p className="text-base leading-relaxed text-brand-taupe/90 bg-brand-orange/5 p-6 rounded-2xl border border-brand-orange/10">
+                <p className="text-sm sm:text-base leading-relaxed text-brand-taupe/90 bg-brand-orange/5 p-5 sm:p-6 rounded-xl sm:rounded-2xl border border-brand-orange/10">
                   {condition.whatIsIt}
                 </p>
               </section>
  
-              <div className="grid sm:grid-cols-2 gap-10">
+              <div className="grid sm:grid-cols-2 gap-8 sm:gap-10">
                 <section>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-4">Common Causes</h3>
-                  <ul className="space-y-3">
+                  <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-3 sm:mb-4">Common Causes</h3>
+                  <ul className="space-y-2 sm:space-y-3">
                     {condition.causes.map((cause, i) => (
-                      <li key={i} className="text-sm flex items-start gap-3 text-brand-taupe">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-1.5 shrink-0" />
+                      <li key={i} className="text-xs sm:text-sm flex items-start gap-3 text-brand-taupe">
+                        <div className="w-1 h-1 rounded-full bg-brand-orange mt-1.5 shrink-0" />
                         {cause}
                       </li>
                     ))}
                   </ul>
                 </section>
                 <section>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-4 flex items-center gap-2">
+                  <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-3 sm:mb-4 flex items-center gap-2">
                     Key Symptoms <HelpCircle className="w-3 h-3 opacity-50" />
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 sm:space-y-3">
                     {condition.symptoms.map((symptom, i) => (
                       <SymptomItem key={i} symptom={symptom} />
                     ))}
@@ -1426,10 +1434,10 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
               </div>
  
               <section>
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-4">Self-Care Protocols</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-brand-orange mb-3 sm:mb-4">Self-Care Protocols</h3>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {condition.diySupport.map((tip, i) => (
-                    <span key={i} className="bg-white px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider text-brand-orange border border-brand-orange/10 shadow-sm">
+                    <span key={i} className="bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[8px] sm:text-[11px] font-bold uppercase tracking-wider text-brand-orange border border-brand-orange/10 shadow-sm">
                       {tip}
                     </span>
                   ))}
@@ -1440,13 +1448,13 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         </div>
  
         {/* Right Side: Curated Products (Affiliate Section) */}
-        <div className="w-full md:w-[420px] bg-brand-beige p-8 md:p-10 md:overflow-y-auto border-l border-brand-brown/5 custom-scrollbar">
-          <div className="sticky top-0 bg-brand-beige z-10 pb-6 mb-6 border-bottom border-brand-brown/5">
-            <div className="flex items-center gap-2 mb-2">
-              <ShieldCheck className="text-brand-orange w-5 h-5" />
-              <h3 className="text-xl font-display font-bold text-brand-brown">Curated Support</h3>
+        <div className="w-full md:w-[420px] bg-brand-beige p-6 sm:p-8 md:p-10 md:overflow-y-auto border-t md:border-t-0 md:border-l border-brand-brown/5 custom-scrollbar">
+          <div className="sticky top-0 bg-brand-beige z-10 pb-4 sm:pb-6 mb-4 sm:mb-6 border-bottom border-brand-brown/5">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+              <ShieldCheck className="text-brand-orange w-4 h-4 sm:w-5 sm:h-5" />
+              <h3 className="text-lg sm:text-xl font-display font-bold text-brand-brown">Curated Support</h3>
             </div>
-            <p className="text-xs text-brand-taupe/70">Curated solutions for {condition.title}.</p>
+            <p className="text-[10px] sm:text-xs text-brand-taupe/70">Curated solutions for {condition.title}.</p>
           </div>
  
           <div className="space-y-6">
@@ -1961,6 +1969,7 @@ const revealVariants: any = {
 
 export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [showAdmin, setShowAdmin] = useState(false);
@@ -1975,6 +1984,11 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
+      
+      const onboardingCompleted = localStorage.getItem('onboarding_completed');
+      if (!onboardingCompleted) {
+        setShowOnboarding(true);
+      }
     }, 2500);
     return () => clearTimeout(timer);
   }, []);
@@ -2120,6 +2134,15 @@ export default function App() {
       <WalkingTrail />
 
       <AnimatePresence>
+        {showOnboarding && (
+          <Onboarding onComplete={() => {
+            localStorage.setItem('onboarding_completed', 'true');
+            setShowOnboarding(false);
+          }} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {selectedCondition && (
           <ConditionModal 
             condition={selectedCondition} 
@@ -2154,43 +2177,43 @@ export default function App() {
           <div className="absolute top-[20%] right-[10%] w-[30%] h-[40%] bg-brand-brown/5 rounded-full blur-[100px]" />
         </div>
  
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid lg:grid-cols-2 gap-20 lg:gap-32 items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-12 w-full grid lg:grid-cols-2 gap-12 lg:gap-32 items-center relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-center lg:text-left flex flex-col items-center lg:items-start"
+            className="text-center lg:text-left flex flex-col items-center lg:items-start pt-10 lg:pt-0"
           >
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="inline-flex items-center gap-3 px-6 py-2 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.4em] mb-8 md:mb-12 border border-white/10"
+              className="inline-flex items-center gap-3 px-5 py-2 bg-brand-brown text-brand-beige rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mb-6 md:mb-12 border border-white/10"
             >
               Walking Reinvisioned • 2026
             </motion.div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-8 leading-[1] tracking-[-0.04em] font-display font-black text-brand-brown">
-              WALKING <br />
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 leading-[1.1] md:leading-[1] tracking-[-0.04em] font-display font-black text-brand-brown">
+              COMFOOT: <br />
               <span className="text-brand-orange inline-block italic font-bold">REINVISIONED<span className="text-brand-brown">.</span></span>
             </h1>
             
-            <p className="text-base md:text-lg lg:text-xl mb-10 text-brand-taupe/60 leading-relaxed max-w-lg mx-auto lg:mx-0 tracking-tight font-light">
+            <p className="text-sm md:text-lg lg:text-xl mb-8 md:mb-10 text-brand-taupe/60 leading-relaxed max-w-md md:max-w-lg mx-auto lg:mx-0 tracking-tight font-light">
               Science-first diagnostics for the urban explorer. Specialized care for heel pain, flat feet, and diabetic health.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto px-4 sm:px-0">
               <motion.a
                 whileHover={{ scale: 1.02, backgroundColor: "#2D241E" }}
                 whileTap={{ scale: 0.98 }}
                 href="#quiz"
-                className="w-full sm:w-auto px-12 py-6 bg-brand-orange text-white rounded-2xl text-[12px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center"
+                className="w-full sm:w-auto px-10 py-5 bg-brand-orange text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center"
               >
                 Start Analysis
               </motion.a>
               <motion.a 
                 whileHover={{ x: 5 }}
                 href="#about"
-                className="group flex items-center gap-3 text-brand-brown font-bold text-[10px] uppercase tracking-[0.2em]"
+                className="group flex items-center gap-3 text-brand-brown font-bold text-[9px] md:text-[10px] uppercase tracking-[0.2em] py-4"
               >
                 Our Philosophy
                 <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:bg-brand-brown group-hover:text-white transition-all">
@@ -2243,109 +2266,107 @@ export default function App() {
       </header>
 
       {/* Why Comfoot - Bento Grid Section */}
-      <section className="py-40 bg-brand-beige/50 relative overflow-hidden">
-        <div className="section-padding relative z-10">
-          <div className="grid lg:grid-cols-12 gap-8">
+      <section className="py-24 md:py-40 bg-brand-beige/50 relative overflow-hidden">
+        <div className="section-padding relative z-10 px-4 md:px-12">
+          <div className="grid lg:grid-cols-12 gap-6 md:gap-8">
             {/* Featured Mission Bento - 2026 Style */}
-            <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-12 md:p-24 rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[600px]">
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full -mr-[300px] -mt-[300px] blur-[140px] group-hover:scale-125 transition-transform duration-1000" />
+            <div className="lg:col-span-8 bg-brand-brown text-brand-beige p-8 md:p-24 rounded-[2.5rem] md:rounded-[4rem] flex flex-col justify-between relative overflow-hidden group shadow-luxury min-h-[450px] md:min-h-[600px]">
+              <div className="absolute top-0 right-0 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-brand-orange/10 rounded-full -mr-[200px] md:-mr-[300px] -mt-[200px] md:-mt-[300px] blur-[100px] md:blur-[140px] group-hover:scale-125 transition-transform duration-1000" />
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] mb-12 border border-white/10 italic text-white/40">
+                <div className="inline-flex items-center gap-3 px-4 md:px-6 py-1.5 md:py-2 bg-white/5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-8 md:mb-12 border border-white/10 italic text-white/40">
                   Mission Statement • Edition 2.6
                 </div>
-                <h2 className="text-5xl md:text-7xl font-display font-bold mb-8 leading-[1] tracking-[-0.04em]">
+                <h2 className="text-3xl sm:text-4xl md:text-7xl font-display font-bold mb-6 md:mb-8 leading-[1.1] md:leading-[1] tracking-[-0.04em]">
                   Where Comfort <br />
                   <span className="text-brand-orange italic font-light drop-shadow-2xl">meets your soul.</span>
                 </h2>
-                <p className="text-lg md:text-xl opacity-60 max-w-xl leading-relaxed font-light font-sans mt-6">
+                <p className="text-base md:text-xl opacity-60 max-w-xl leading-relaxed font-light font-sans mt-4 md:mt-6">
                   We combine clinical precision with soulful lifestyle integration to help you reclaim every step in India's unique urban terrain.
                 </p>
               </div>
               
-              <div className="mt-16 flex flex-wrap gap-12 relative z-10">
-                <div className="flex flex-col gap-2">
-                  <span className="text-4xl font-display font-bold text-brand-orange">1.2M+</span>
-                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Steps Analyzed</span>
+              <div className="mt-10 md:mt-16 flex flex-wrap gap-8 md:gap-12 relative z-10">
+                <div className="flex flex-col gap-1 md:gap-2">
+                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-orange">1.2M+</span>
+                  <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Steps Analyzed</span>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <span className="text-4xl font-display font-bold text-brand-gold">500+</span>
-                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Clinical Patterns</span>
+                <div className="flex flex-col gap-1 md:gap-2">
+                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-gold">500+</span>
+                  <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Clinical Patterns</span>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <span className="text-4xl font-display font-bold text-white">150+</span>
-                  <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Product Updates</span>
+                <div className="flex flex-col gap-1 md:gap-2">
+                  <span className="text-3xl md:text-4xl font-display font-bold text-white">150+</span>
+                  <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Updates</span>
                 </div>
               </div>
             </div>
 
             {/* Side Column - Editorial Accents (Shopify 2026 Style) */}
-            <div className="lg:col-span-4 flex flex-col gap-8">
+            <div className="lg:col-span-4 flex flex-col gap-6 md:gap-8">
               <motion.div 
-                whileHover={{ y: -10, boxShadow: "0 40px 80px -15px rgba(216, 116, 42, 0.15)" }}
-                className="flex-1 bg-brand-orange text-white p-12 rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[300px] shadow-luxury transition-all duration-500"
+                whileHover={{ y: -5, boxShadow: "0 40px 80px -15px rgba(216, 116, 42, 0.15)" }}
+                className="flex-1 bg-brand-orange text-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[250px] md:min-h-[300px] shadow-luxury transition-all duration-500"
               >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
                 <div className="relative z-10">
-                  <div className="p-4 bg-white/20 rounded-2xl w-fit mb-12 backdrop-blur-md">
-                    <ShieldCheck className="w-8 h-8" />
+                  <div className="p-3 md:p-4 bg-white/20 rounded-xl md:rounded-2xl w-fit mb-8 md:mb-12 backdrop-blur-md">
+                    <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" />
                   </div>
-                  <h3 className="text-4xl font-display font-bold leading-[1] mb-6 tracking-[-0.03em]">Clinical <br />Foundation.</h3>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold leading-[1] mb-4 md:mb-6 tracking-[-0.03em]">Clinical <br />Foundation.</h3>
                   <p className="text-white/80 font-light leading-relaxed text-sm">
                     Every data point is validated against certified orthopedics and global kinetic standards.
                   </p>
                 </div>
-                <div className="relative z-10 text-[9px] uppercase font-bold tracking-[0.4em] opacity-40">Standard 2.6 Verified</div>
               </motion.div>
 
               <motion.div 
-                whileHover={{ y: -10, boxShadow: "0 40px 80px -15px rgba(232, 165, 82, 0.15)" }}
-                className="flex-1 bg-brand-gold text-white p-12 rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[300px] shadow-luxury transition-all duration-500"
+                whileHover={{ y: -5, boxShadow: "0 40px 80px -15px rgba(232, 165, 82, 0.15)" }}
+                className="flex-1 bg-brand-gold text-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[4rem] group relative overflow-hidden flex flex-col justify-between min-h-[250px] md:min-h-[300px] shadow-luxury transition-all duration-500"
               >
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full -ml-32 -mb-32 blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
                 <div className="relative z-10">
-                  <div className="p-4 bg-white/20 rounded-2xl w-fit mb-12 backdrop-blur-md">
-                    <Zap className="w-8 h-8" />
+                  <div className="p-3 md:p-4 bg-white/20 rounded-xl md:rounded-2xl w-fit mb-8 md:mb-12 backdrop-blur-md">
+                    <Zap className="w-6 h-6 md:w-8 md:h-8" />
                   </div>
-                  <h3 className="text-4xl font-display font-bold leading-[1] mb-6 tracking-[-0.03em]">Rapid <br />Intervention.</h3>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold leading-[1] mb-4 md:mb-6 tracking-[-0.03em]">Rapid <br />Intervention.</h3>
                   <p className="text-white/80 font-light leading-relaxed text-sm">
                     Direct access to immediate DIY protocols for acute plantar and heel discomfort.
                   </p>
                 </div>
-                <div className="relative z-10 text-[9px] uppercase font-bold tracking-[0.4em] opacity-40 italic">Active Recovery</div>
               </motion.div>
             </div>
 
-            <div className="lg:col-span-12 bg-white p-12 md:p-24 rounded-[4rem] border border-brand-brown/5 shadow-soft flex flex-col lg:flex-row gap-20 items-center group relative overflow-hidden">
+            <div className="lg:col-span-12 bg-white p-8 md:p-24 rounded-[2.5rem] md:rounded-[4rem] border border-brand-brown/5 shadow-soft flex flex-col lg:flex-row gap-12 lg:gap-20 items-center group relative overflow-hidden">
                <div className="absolute top-0 right-0 w-96 h-96 bg-brand-beige rounded-full -mr-48 -mt-48 blur-3xl opacity-50" />
                <div className="flex-1 relative z-10">
-                <div className="flex items-center gap-4 mb-8">
-                  <span className="w-12 h-px bg-brand-orange" />
-                  <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[10px]">Curated Gear</span>
+                <div className="flex items-center gap-4 mb-6 md:mb-8">
+                  <span className="w-8 md:w-12 h-px bg-brand-orange" />
+                  <span className="text-brand-orange font-bold uppercase tracking-[0.3em] text-[9px] md:text-[10px]">Curated Gear</span>
                 </div>
-                <h3 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-brand-brown mb-8 leading-[1] tracking-tighter">
+                <h3 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-brand-brown mb-6 md:mb-8 leading-[1.1] md:leading-[1] tracking-tighter">
                   Handpicked <br />Science-First <span className="text-brand-gold italic font-medium">Solutions.</span>
                 </h3>
-                <p className="text-lg md:text-xl text-brand-taupe/60 leading-relaxed font-light max-w-2xl mb-12">
+                <p className="text-sm md:text-xl text-brand-taupe/60 leading-relaxed font-light max-w-2xl mb-8 md:mb-12">
                   We meticulously research every footcare product in the Indian market to bring you only the most effective tools.
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-2 md:gap-4">
                   {['Custom Insoles', 'Electric Massagers', 'Compression Sleeves', 'Arch Supports'].map(tag => (
-                    <span key={tag} className="px-8 py-4 bg-brand-beige rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] text-brand-brown border border-brand-brown/5 hover:bg-brand-orange hover:text-white hover:border-brand-orange transition-all cursor-default">
+                    <span key={tag} className="px-4 md:px-8 py-2 md:py-4 bg-brand-beige rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-brand-brown border border-brand-brown/5 hover:bg-brand-orange hover:text-white transition-all cursor-default">
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="w-full lg:w-96 aspect-square bg-brand-beige rounded-[3.5rem] flex items-center justify-center relative group overflow-hidden border border-brand-brown/5 shadow-inner">
+              <div className="w-full lg:w-96 aspect-square bg-brand-beige rounded-[2.5rem] md:rounded-[3.5rem] flex items-center justify-center relative group overflow-hidden border border-brand-brown/5 shadow-inner">
                 <div className="absolute inset-0 bg-brand-orange/5 group-hover:bg-brand-orange/10 transition-all duration-700" />
                 <motion.div
                   animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 6, repeat: Infinity }}
                 >
-                  <ExternalLink className="w-24 h-24 text-brand-orange group-hover:scale-110 transition-transform duration-700" />
+                  <ExternalLink className="w-16 h-16 md:w-24 md:h-24 text-brand-orange group-hover:scale-110 transition-transform duration-700" />
                 </motion.div>
-                <div className="absolute bottom-10 inset-x-0 text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">Marketplace Portal</span>
+                <div className="absolute bottom-6 md:bottom-10 inset-x-0 text-center">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">Marketplace Portal</span>
                 </div>
               </div>
             </div>

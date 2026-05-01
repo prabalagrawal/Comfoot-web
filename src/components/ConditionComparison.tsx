@@ -42,25 +42,25 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
         className="bg-brand-beige w-full max-w-7xl h-[90vh] overflow-hidden rounded-[3rem] shadow-2xl relative flex flex-col"
       >
         {/* Header */}
-        <div className="p-8 md:p-12 border-b border-brand-brown/5 flex justify-between items-center bg-white/50 backdrop-blur-sm">
+        <div className="p-6 md:p-12 border-b border-brand-brown/5 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-20">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="h-px w-8 bg-brand-orange" />
-              <span className="text-brand-orange font-bold uppercase tracking-[0.2em] text-[10px]">Comparison Tool</span>
+            <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+              <span className="h-px w-6 md:w-8 bg-brand-orange" />
+              <span className="text-brand-orange font-bold uppercase tracking-[0.2em] text-[8px] md:text-[10px]">Comparison Tool</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-brand-brown">Condition Comparison</h2>
+            <h2 className="text-2xl md:text-4xl font-display font-bold text-brand-brown">Condition Comparison</h2>
           </div>
           <button 
             onClick={onClose}
-            className="p-4 hover:bg-brand-brown/5 rounded-full transition-all group"
+            className="p-3 md:p-4 hover:bg-brand-brown/5 rounded-full transition-all group"
           >
-            <X className="w-6 h-6 text-brand-taupe group-hover:rotate-90 transition-transform duration-300" />
+            <X className="w-5 h-5 md:w-6 md:h-6 text-brand-taupe group-hover:rotate-90 transition-transform duration-300" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar p-8 md:p-12 bg-white/20">
-          <div className={`grid gap-12 min-w-[900px]`} style={{ gridTemplateColumns: `repeat(${conditions.length}, 1fr)` }}>
+        <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar p-6 md:p-12 bg-white/20">
+          <div className={`grid gap-8 md:gap-12 min-w-[750px] md:min-w-[900px]`} style={{ gridTemplateColumns: `repeat(${conditions.length}, 1fr)` }}>
             {conditions.map((condition, idx) => (
               <motion.div 
                 key={condition.id}
