@@ -56,138 +56,140 @@ interface Product {
 const QUESTIONS: Question[] = [
   {
     id: 1,
-    text: "Where is your primary point of discomfort?",
+    text: "Where is the core of your discomfort?",
     icon: <MapPin className="w-6 h-6" />,
     options: [
-      { id: 'q1-1', text: "Heel (Bottom or back)", scores: { heel: 4, achilles: 1 } },
-      { id: 'q1-2', text: "Arch (Middle of the foot)", scores: { flat: 4, fatigue: 1 } },
-      { id: 'q1-3', text: "Big Toe Base (Bunion area)", scores: { bunion: 5 } },
-      { id: 'q1-4', text: "Ball of the Foot (Forefoot)", scores: { fatigue: 2, flat: 1 } },
-      { id: 'q1-5', text: "Numbness/Tingling throughout", scores: { diabetic: 5, fatigue: 1 } },
+      { id: 'q1-1', text: "Heel (Sharp pain underneath or at the back)", scores: { heel: 4, achilles: 1, heel_spurs: 3 } },
+      { id: 'q1-2', text: "Arch (Deep ache in the middle of the foot)", scores: { flat: 4, plantar: 2 } },
+      { id: 'q1-3', text: "All of the ball / Forefoot area", scores: { metatarsalgia: 5, morton: 2 } },
+      { id: 'q1-4', text: "Specifically between the 3rd and 4th toes", scores: { morton: 5 } },
+      { id: 'q1-5', text: "Big toe joint (Inner edge protrusion)", scores: { bunion: 5 } },
+      { id: 'q1-6', text: "Distributed numbness or burning sensation", scores: { diabetic: 5, neuropathy: 4 } },
     ]
   },
   {
     id: 2,
-    text: "When is the pain most intense?",
+    text: "When do you feel the 'threshold' pain most?",
     icon: <Clock className="w-6 h-6" />,
     options: [
-      { id: 'q2-1', text: "First steps after waking up", scores: { heel: 5, achilles: 2 } },
-      { id: 'q2-2', text: "After standing for several hours", scores: { fatigue: 5, flat: 1 } },
-      { id: 'q2-3', text: "During or immediately after exercise", scores: { achilles: 5, flat: 2 } },
-      { id: 'q2-4', text: "While resting or at night", scores: { diabetic: 5, fatigue: 1 } },
-      { id: 'q2-5', text: "Only when wearing specific shoes", scores: { bunion: 4, flat: 1 } },
+      { id: 'q2-1', text: "First steps in the morning (intense stabbing)", scores: { heel: 5, plantar: 4 } },
+      { id: 'q2-2', text: "After sitting for a while, then standing", scores: { heel: 4, plantar: 3 } },
+      { id: 'q2-3', text: "Gradually worsening towards evening", scores: { fatigue: 5, flat: 2 } },
+      { id: 'q2-4', text: "During high-impact activity (running/jumping)", scores: { achilles: 5, metatarsalgia: 4 } },
+      { id: 'q2-5', text: "Constant pain even while off your feet", scores: { complex: 4, diabetic: 3 } },
     ]
   },
   {
     id: 3,
-    text: "How would you describe the sensation?",
+    text: "What is the primary character of the pain?",
     icon: <Zap className="w-6 h-6" />,
     options: [
-      { id: 'q3-1', text: "Sharp, stabbing pain", scores: { heel: 4, achilles: 1 } },
-      { id: 'q3-2', text: "Dull, heavy ache", scores: { fatigue: 4, flat: 2 } },
-      { id: 'q3-3', text: "Burning or electric-like", scores: { diabetic: 5 } },
-      { id: 'q3-4', text: "Tightness or stiffness", scores: { achilles: 4, heel: 1 } },
-      { id: 'q3-5', text: "Skin cracking or peeling", scores: { dry_cracked: 6 } },
+      { id: 'q3-1', text: "Sharp, like walking on a 'nail' or 'pebble'", scores: { heel: 5, heel_spurs: 4, morton: 4 } },
+      { id: 'q3-2', text: "Dull, heavy aching like muscle fatigue", scores: { fatigue: 5, flat: 3 } },
+      { id: 'q3-3', text: "Electric, tingling, or burning sensation", scores: { diabetic: 5, morton: 3 } },
+      { id: 'q3-4', text: "Stiff and tight (hard to flex the foot)", scores: { achilles: 5, plantar: 2 } },
+      { id: 'q3-5', text: "Itchy and tender with skin splitting", scores: { dry_cracked: 6 } },
     ]
   },
   {
     id: 4,
-    text: "How do your shoes typically wear out?",
+    text: "Examine your most-worn shoes. What do you see?",
     icon: <Footprints className="w-6 h-6" />,
     options: [
-      { id: 'q4-1', text: "Leaning inward (Inside edge)", scores: { flat: 5, fatigue: 1 } },
-      { id: 'q4-2', text: "Leaning outward (Outside edge)", scores: { neutral: 2, heel: 1 } },
-      { id: 'q4-3', text: "Heel area is completely worn", scores: { heel: 4, fatigue: 1 } },
-      { id: 'q4-4', text: "Even wear across the sole", scores: { neutral: 5 } },
+      { id: 'q4-1', text: "Inside edge is flattened (Inward collapse)", scores: { flat: 5, fatigue: 2 } },
+      { id: 'q4-2', text: "Outside edge is more worn down", scores: { neutral: 2, stress: 3 } },
+      { id: 'q4-3', text: "Worn heavily at the very center of the heel", scores: { heel: 4, heel_spurs: 2 } },
+      { id: 'q4-4', text: "Wear is even across the whole sole", scores: { neutral: 5 } },
     ]
   },
   {
     id: 5,
-    text: "How many hours do you spend on your feet daily?",
+    text: "Describe your typical daily movement load.",
     icon: <Activity className="w-6 h-6" />,
     options: [
-      { id: 'q5-1', text: "Less than 2 hours", scores: { neutral: 4 } },
-      { id: 'q5-2', text: "2–5 hours", scores: { neutral: 1, fatigue: 3 } },
-      { id: 'q5-3', text: "5–8 hours", scores: { fatigue: 4, heel: 1, flat: 1 } },
-      { id: 'q5-4', text: "More than 8 hours", scores: { fatigue: 5, heel: 2, flat: 2 } },
+      { id: 'q5-1', text: "Mostly sedentary (Desk-based office work)", scores: { neutral: 3, stiffness: 2 } },
+      { id: 'q5-2', text: "Moderate (Commuting + light walking)", scores: { neutral: 1, fatigue: 2 } },
+      { id: 'q5-3', text: "Intense standing (Retail/Healthcare/Teaching)", scores: { fatigue: 5, flat: 2, heel: 2 } },
+      { id: 'q5-4', text: "Performance load (Running/Training/Athletics)", scores: { achilles: 4, heel: 2, metatarsalgia: 3 } },
     ]
   },
   {
     id: 6,
-    text: "Do you notice any visible swelling?",
+    text: "Are there any visible changes to the foot shape?",
     icon: <ShieldAlert className="w-6 h-6" />,
     options: [
-      { id: 'q6-1', text: "Yes, around the ankles", scores: { diabetic: 2, fatigue: 4 } },
-      { id: 'q6-2', text: "Yes, at the back of the heel", scores: { achilles: 5 } },
-      { id: 'q6-3', text: "Yes, at the big toe joint", scores: { bunion: 5 } },
-      { id: 'q6-4', text: "No, but skin looks hard/cracked", scores: { dry_cracked: 5 } },
-      { id: 'q6-5', text: "No visible swelling", scores: { neutral: 3 } },
+      { id: 'q6-1', text: "Big toe joint is bulging or red", scores: { bunion: 6 } },
+      { id: 'q6-2', text: "Toe(s) are curling downward (Hammer shape)", scores: { hammertoes: 6 } },
+      { id: 'q6-3', text: "Generalized swelling around the ankle", scores: { diabetic: 2, fatigue: 4, inflammation: 3 } },
+      { id: 'q6-4', text: "Skin is thick, yellowed, and has fissures", scores: { dry_cracked: 6 } },
+      { id: 'q6-5', text: "No visible changes in shape or skin", scores: { neutral: 3 } },
     ]
   },
   {
     id: 7,
-    text: "Do you have any of these conditions?",
+    text: "Do you have any systemic health conditions?",
     icon: <Stethoscope className="w-6 h-6" />,
     options: [
-      { id: 'q7-1', text: "Diabetes or High Blood Sugar", scores: { diabetic: 6 } },
-      { id: 'q7-2', text: "Arthritis or Joint Pain", scores: { bunion: 3, fatigue: 3 } },
-      { id: 'q7-3', text: "Poor Circulation (Cold feet)", scores: { diabetic: 4, fatigue: 3 } },
-      { id: 'q7-4', text: "None of the above", scores: { neutral: 3 } },
+      { id: 'q7-1', text: "Diabetes (Type 1 or 2)", scores: { diabetic: 7 } },
+      { id: 'q7-2', text: "Rheumatoid or Osteoarthritis", scores: { bunion: 3, complex: 3, fatigue: 2 } },
+      { id: 'q7-3', text: "Poor circulation or heart conditions", scores: { diabetic: 4, fatigue: 4 } },
+      { id: 'q7-4', text: "No chronic health conditions", scores: { neutral: 3 } },
     ]
   },
   {
     id: 8,
-    text: "What surface do you walk on most often?",
+    text: "What is your primary walking surface?",
     icon: <MapPin className="w-6 h-6" />,
     options: [
-      { id: 'q8-1', text: "Concrete or Hard Tiled Floors", scores: { fatigue: 5, heel: 2 } },
-      { id: 'q8-2', text: "Carpet or Soft Office Floors", scores: { neutral: 3 } },
-      { id: 'q8-3', text: "Uneven Outdoor Terrain", scores: { achilles: 4, flat: 1 } },
-      { id: 'q8-4', text: "A mix of various surfaces", scores: { fatigue: 3 } },
+      { id: 'q8-1', text: "Concrete, Marbles, or Hard Tiled floors", scores: { fatigue: 5, heel: 3, metatarsalgia: 2 } },
+      { id: 'q8-2', text: "Soft carpets or gym flooring", scores: { neutral: 3 } },
+      { id: 'q8-3', text: "Uneven terrain (Trails/Gravel/Grass)", scores: { achilles: 4, flat: 2 } },
+      { id: 'q8-4', text: "Indoors without shoes usually", scores: { flat: 3, heel: 2 } },
     ]
   },
   {
     id: 9,
-    text: "Have you had a foot injury in the last year?",
-    icon: <ShieldAlert className="w-6 h-6" />,
+    text: "Touch the area of pain. Does it feel tender?",
+    icon: <Sparkles className="w-6 h-6" />,
     options: [
-      { id: 'q9-1', text: "Yes, a recent sprain or strain", scores: { complex: 5, achilles: 1 } },
-      { id: 'q9-2', text: "Yes, a fracture or surgery", scores: { complex: 6 } },
-      { id: 'q9-3', text: "No significant injuries", scores: { neutral: 3 } },
+      { id: 'q9-1', text: "Extremely tender to direct pressure", scores: { heel_spurs: 5, bunion: 4 } },
+      { id: 'q9-2', text: "Painful when squeezing the whole foot", scores: { morton: 5, complex: 2 } },
+      { id: 'q9-3', text: "Feels better with massage/pressure", scores: { fatigue: 4, flat: 1 } },
+      { id: 'q9-4', text: "No tenderness when touched", scores: { neutral: 3, diabetic: 2 } },
     ]
   },
   {
     id: 10,
-    text: "What does your foot arch look like?",
+    text: "What is the visual profile of your arch?",
     icon: <Footprints className="w-6 h-6" />,
     options: [
-      { id: 'q10-1', text: "High Arch (Visible gap)", scores: { neutral: 3, achilles: 1 } },
-      { id: 'q10-2', text: "Low/Flat Arch (Touches floor)", scores: { flat: 6, fatigue: 3 } },
-      { id: 'q10-3', text: "Normal/Neutral Arch", scores: { neutral: 5 } },
-      { id: 'q10-4', text: "I'm not sure", scores: { neutral: 1 } },
+      { id: 'q10-1', text: "High Arch (Clear tunnel underneath)", scores: { neutral: 1, achilles: 2, stress: 3 } },
+      { id: 'q10-2', text: "Low/Flat (Sole fully contacts floor)", scores: { flat: 6, fatigue: 4 } },
+      { id: 'q10-3', text: "Normal Arch profile", scores: { neutral: 5 } },
+      { id: 'q10-4', text: "Variable (Changes when I stand up)", scores: { flat: 4, neutral: 2 } },
     ]
   },
   {
     id: 11,
-    text: "What is your primary footwear?",
+    text: "What is your 'Go-To' footwear?",
     icon: <Zap className="w-6 h-6" />,
     options: [
-      { id: 'q11-1', text: "Supportive Sneakers", scores: { neutral: 4 } },
-      { id: 'q11-2', text: "Flat Shoes (Flats, Vans, etc.)", scores: { flat: 4, heel: 3, dry_cracked: 1 } },
-      { id: 'q11-3', text: "Heels or Narrow Dress Shoes", scores: { bunion: 5, fatigue: 3 } },
-      { id: 'q11-4', text: "Open-backed sandals or slippers", scores: { dry_cracked: 5, neutral: 1 } },
-      { id: 'q11-5', text: "Safety Boots or Heavy Shoes", scores: { fatigue: 5, heel: 1 } },
+      { id: 'q11-1', text: "Supportive Performance Sneakers", scores: { neutral: 4 } },
+      { id: 'q11-2', text: "Thin Flats (Converse, Vans, Ballet flats)", scores: { flat: 5, heel: 4 } },
+      { id: 'q11-3', text: "Heels or Narrow Pointed shoes", scores: { bunion: 6, morton: 5, metatarsalgia: 4 } },
+      { id: 'q11-4', text: "Open Sandals or Barefoot at home", scores: { dry_cracked: 5, flat: 3 } },
+      { id: 'q11-5', text: "Standard Work Boots / Formal Shoes", scores: { fatigue: 5, heel: 2 } },
     ]
   },
   {
     id: 12,
-    text: "Does the pain improve with rest?",
+    text: "How does the pain behave after 20 mins of rest?",
     icon: <Clock className="w-6 h-6" />,
     options: [
-      { id: 'q12-1', text: "Yes, almost immediately", scores: { fatigue: 5 } },
-      { id: 'q12-2', text: "Yes, but takes several hours", scores: { heel: 3, achilles: 3 } },
-      { id: 'q12-3', text: "No, the pain persists", scores: { diabetic: 4, complex: 3 } },
-      { id: 'q12-4', text: "It actually feels worse after rest", scores: { heel: 5, achilles: 3 } },
+      { id: 'q12-1', text: "Disappears completely", scores: { fatigue: 6 } },
+      { id: 'q12-2', text: "Continues as a dull background ache", scores: { achilles: 3, flat: 3 } },
+      { id: 'q12-3', text: "Does not change at all", scores: { complex: 4, diabetic: 3 } },
+      { id: 'q12-4', text: "Actually stiffens up and feels worse later", scores: { heel: 6, plantar: 5, achilles: 4 } },
     ]
   }
 ];
@@ -195,322 +197,396 @@ const QUESTIONS: Question[] = [
 const RESULTS: Record<string, Result> = {
   flat: {
     id: 'flat',
-    title: "Flat Feet / Overpronation Risk",
-    explanation: "Your answers suggest that your arches may not be getting enough support, causing the foot to roll inward (overpronation). This can lead to strain in the ankles, knees, and even the lower back as your body compensates for the lack of a stable base. This is particularly common in individuals who stand for long hours or have a genetic predisposition.",
+    title: "Flat Feet / Overpronation Impact",
+    explanation: "Your answers indicate that your arches may not be providing the necessary structural support, leading to overpronation (inward rolling). This misalignment can cause chain-reaction pain in your ankles, knees, and lower back.",
     causes: [
-      "Genetic foot structure (inherited flat feet)",
-      "Weakened tendons due to age or repetitive strain",
-      "Prolonged standing on hard, unyielding surfaces",
-      "Improper footwear lacking structural arch support",
-      "Recent weight gain or pregnancy increasing pressure"
+      "Inherited structural foot defects",
+      "Aging or injury causing tendon wear",
+      "Prolonged standing on unyielding surfaces",
+      "Pregnancy or sudden weight changes"
     ],
     tips: [
-      "Try arch strengthening exercises like towel curls and marble pickups",
-      "Avoid extremely flat footwear like flip-flops or worn-out sneakers",
-      "Use proper arch support when standing long hours at work",
-      "Choose shoes with firm mid-soles and a supportive heel counter",
-      "Incorporate calf stretches to reduce tension on the plantar fascia"
+      "Switch to footwear with rigid mid-soles",
+      "Perform arch-activation exercises daily",
+      "Avoid barefoot walking on hard tiles",
+      "Replace worn-out shoes that lean inward"
     ],
     products: [
       {
         name: "Frido Rigid Arch Support Insole",
-        description: "Rigid orthotic insoles designed to provide maximum support for collapsed arches and prevent overpronation.",
-        bestFor: "Flat Feet & Severe Overpronation",
+        description: "Best-in-class semi-rigid orthotic designed to lift collapsed arches and stabilize the foot.",
+        bestFor: "Best Fit: Flat Feet & Structural Support",
         link: "https://amzn.in/d/066diPwp"
       },
       {
-        name: "Boldfit Arch Support Inserts",
-        description: "Comfortable and durable arch support inserts that help reduce foot fatigue and maintain alignment.",
-        bestFor: "Arch Strain & Daily Comfort",
+        name: "Boldfit Arch Support",
+        description: "Comfortable silicone/gel support inserts for rapid fatigue relief during long hours.",
+        bestFor: "Daily Comfort & Low Impact",
         link: "https://amzn.in/d/0bgzXhjD"
       }
     ]
   },
   heel: {
     id: 'heel',
-    title: "Heel Pain / Plantar Fasciitis Risk",
-    explanation: "Your answers suggest that the heel area of your foot may be experiencing significant strain. This is commonly associated with irritation of the plantar fascia, a thick band of tissue that supports the arch. The sharp pain in the morning is a classic indicator of this condition.",
+    title: "Plantar Fasciitis / Acute Heel Pain",
+    explanation: "The stabbing sensation during your first morning steps is a strong indicator of Plantar Fasciitis—inflammation of the ligament connecting your heel to your toes. Your foot likely tightens overnight, and 're-tears' upon the first step.",
     causes: [
-      "Long hours of static standing or walking on hard floors",
+      "Excessive strain from running or jumping",
       "Tight calf muscles pulling on the heel bone",
-      "Lack of adequate arch support in primary footwear",
-      "Sudden increase in physical activity or high-impact exercise",
-      "Inappropriate footwear for your specific foot type"
+      "Worn-out footwear with zero heel cushioning",
+      "Sudden increase in walking distance"
     ],
     tips: [
-      "Stretching the calf and plantar fascia before getting out of bed",
-      "Rolling a frozen water bottle under the foot for 15 minutes daily",
-      "Using supportive footwear with deep heel cups",
-      "Taking short 'movement breaks' if standing for long hours",
-      "Applying ice to the heel area after a long day"
+      "Roll a frozen bottle under your arch for 10 mins nightly",
+      "Perform wall-stretches for your calves before bed",
+      "Wear supportive slippers indoors; avoid being barefoot",
+      "Use heel cups to absorb initial shock during walking"
     ],
     products: [
       {
         name: "Frido Plantar Insole",
-        description: "Premium orthotic insoles designed specifically for plantar fasciitis relief with targeted heel cushioning.",
-        bestFor: "Heel Spurs & Plantar Fasciitis",
+        description: "Clinically contoured insoles with a deep heel cradle and medical-grade EVA cushioning.",
+        bestFor: "Best Fit: Plantar Fasciitis & Heel Spurs",
         link: "https://amzn.to/4rZCbsz"
       },
       {
-        name: "Plantar Fasciitis Night Splint",
-        description: "Soft, comfortable compression sock that keeps the foot in a gentle stretch overnight to reduce morning pain.",
-        bestFor: "Chronic Heel Pain & Morning Stiffness",
-        link: "https://amzn.to/4b0AXHN"
+        name: "Foot Massager Roller",
+        description: "Ergonomic wooden roller for myofascial release of the plantar ligament.",
+        bestFor: "Essential Recovery Tool",
+        link: "https://amzn.to/4aFri8e"
       }
     ]
   },
   fatigue: {
     id: 'fatigue',
-    title: "Standing Job Foot Fatigue",
-    explanation: "Long hours on your feet can lead to muscle exhaustion and poor circulation. Even with healthy feet, static standing puts constant pressure on the same points, leading to that 'heavy' or aching feeling. Your symptoms are typical for those in retail, healthcare, or hospitality.",
+    title: "Work-Related Muscle Fatigue",
+    explanation: "Standing on hard floors for 6+ hours causes 'static load' where blood pools in the lower extremities and muscles become oxygen-starved. This leads to that heavy, dull ache you experience in the evening.",
     causes: [
-      "Static standing for over 4-6 hours daily",
-      "Hard, unyielding floor surfaces like concrete or tile",
-      "Poorly fitted or heavy work boots/shoes",
-      "Lack of movement or weight shifting during the day",
-      "Inadequate cushioning in current footwear"
+      "Static standing in retail/healthcare environments",
+      "Hard surface impact without energy-return",
+      "Poorly fitted, heavy work boots",
+      "Lack of weight-shifting movement"
     ],
     tips: [
-      "Shift your weight frequently from one foot to the other",
-      "Elevate your feet above heart level at the end of the day",
-      "Use anti-fatigue mats at your primary workstation if possible",
-      "Perform simple ankle circles and toe wiggles during breaks",
-      "Consider compression socks to improve blood flow"
+      "Elevate your feet above heart level for 15 mins daily",
+      "Invest in 'Energy-Return' specialized insoles",
+      "Compression socks are highly recommended for circulation",
+      "Take micro-breaks to perform ankle circles"
     ],
     products: [
       {
-        name: "Anti-Fatigue Comfort Insoles",
-        description: "Dual-layer foam technology that returns energy and reduces muscle vibration during long shifts.",
-        bestFor: "Long Work Shifts & Standing Jobs",
-        link: "https://amzn.to/4rZCbsz"
+        name: "Doctor Extra Soft Sports Shoes",
+        description: "Maximum cushioning footwear designed for those standing on their feet all day.",
+        bestFor: "Best Fit: Standing Jobs & Urban Commute",
+        link: "https://amzn.to/3OCx4R9"
       },
       {
-        name: "Graduated Compression Socks",
-        description: "Improves blood flow and prevents swelling during long hours of standing or sitting.",
-        bestFor: "Circulation & Leg Fatigue",
+        name: "Compression Support Sleeves",
+        description: "Improves lymphatic drainage and reduces evening swelling.",
+        bestFor: "Commonly Used: Soreness & Swelling",
         link: "https://amzn.to/4b0AXHN"
-      }
-    ]
-  },
-  neutral: {
-    id: 'neutral',
-    title: "Neutral / Low Risk",
-    explanation: "Your feet seem to be in good health! You likely have a neutral gait, which means your weight is distributed evenly across the foot. Maintaining this balance is key to long-term mobility and preventing future issues.",
-    causes: [
-      "Balanced foot structure and mechanics",
-      "Proper footwear choices for your activity level",
-      "Good muscle flexibility and strength",
-      "Appropriate activity levels without excessive strain"
-    ],
-    tips: [
-      "Continue wearing supportive shoes for high-impact activities",
-      "Replace athletic shoes every 300-500 miles or 6 months",
-      "Maintain a consistent stretching routine for lower limbs",
-      "Stay hydrated to maintain healthy connective tissues",
-      "Listen to your body and rest if you feel unusual discomfort"
-    ],
-    products: [
-      {
-        name: "Daily Wellness Insoles",
-        description: "Lightweight cushioning to maintain comfort and prevent future issues during daily activities.",
-        bestFor: "General Comfort & Maintenance",
-        link: "https://amzn.in/d/0gh0wRDf"
-      },
-      {
-        name: "Foot Massage Roller",
-        description: "A simple tool to release tension and maintain flexibility in the foot muscles after a long day.",
-        bestFor: "Recovery & Wellness",
-        link: "https://amzn.to/4aFri8e"
-      }
-    ]
-  },
-  mixed: {
-    id: 'mixed',
-    title: "Overlapping Foot Concerns",
-    explanation: "Your results indicate a combination of symptoms. You may be experiencing both arch strain and general fatigue, or a mix of heel sensitivity and structural misalignment. This is common when one issue leads to compensatory movements that strain other areas.",
-    causes: [
-      "Multiple contributing factors (e.g., flat feet + long standing hours)",
-      "Compensatory movements due to initial discomfort",
-      "Lack of specialized support for complex foot mechanics",
-      "Transitioning to new activity levels without proper gear"
-    ],
-    tips: [
-      "Focus on versatile support options that address both arch and heel",
-      "Rotate your footwear daily to change pressure points",
-      "Incorporate full-foot stretching and strengthening exercises",
-      "Consult a specialist for a professional gait assessment"
-    ],
-    products: [
-      {
-        name: "All-Day Performance Insoles",
-        description: "A hybrid design combining high-impact heel cushioning with adaptive arch support for mixed symptoms.",
-        bestFor: "Mixed Symptoms & Versatile Daily Use",
-        link: "https://amzn.to/4rZCbsz"
-      },
-      {
-        name: "Foot Recovery Kit",
-        description: "Includes a massage ball, resistance band, and compression sleeves for total foot care and recovery.",
-        bestFor: "Comprehensive Recovery & Relief",
-        link: "https://amzn.to/4aFri8e"
       }
     ]
   },
   bunion: {
     id: 'bunion',
-    title: "Bunion / Hallux Valgus Risk",
-    explanation: "Your answers suggest a high likelihood of bunion formation or aggravation. This is often caused by the big toe joint being pushed out of alignment, frequently due to narrow footwear or inherited foot structure.",
+    title: "Bunion Management (Hallux Valgus)",
+    explanation: "Your results suggest the big toe joint is being pushed out of alignment. This is often progressive and exacerbated by footwear that squeezes the forefoot, leading to a visible 'bump' and joint inflammation.",
     causes: [
-      "Narrow or tight-fitting shoes (especially high heels)",
-      "Genetic predisposition to joint misalignment",
-      "Foot stress or repetitive injuries to the toe joint",
-      "Arthritis in the big toe joint"
+      "Years of wearing narrow or pointed footwear",
+      "Genetic ligament laxity",
+      "Arthritic joint changes",
+      "Repetitive stress on the forefoot"
     ],
     tips: [
-      "Switch to shoes with a wide toe box to allow toes to spread",
-      "Use bunion pads to reduce friction and pressure on the joint",
-      "Try toe spacers during rest periods to encourage alignment",
-      "Apply ice to the joint after long periods of standing or walking"
+      "Immediately switch to shoes with a extra-wide toe box",
+      "Use silicone separators to reduce friction between toes",
+      "Icing the joint after activity can reduce redness",
+      "Night splints may help slow progression of the angle"
     ],
     products: [
       {
-        name: "Frido Orthotics Bunion Corrector",
-        description: "Advanced bunion corrector designed for effective toe realignment and pressure relief.",
-        bestFor: "Hallux Valgus correction and pain relief",
+        name: "Frido Bunion Corrector",
+        description: "Adjustable orthopedic brace to maintain proper toe alignment during sleep or rest.",
+        bestFor: "Best Fit: Nightly Correction",
         link: "https://amzn.to/4sW7nZN"
       },
       {
-        name: "AGEasy Antara Bunion Corrector",
-        description: "Comfortable bunion aid that helps in toe separation and alignment.",
-        bestFor: "Daily wear and gradual correction",
-        link: "https://amzn.to/4eHwhc4"
+        name: "Silicone Toe Separators",
+        description: "Soft gel separators that divide the 1st and 2nd toes to relieve joint pressure.",
+        bestFor: "Daily Wear & Friction Relief",
+        link: "https://amzn.to/4cKDWDM"
       }
     ]
   },
   diabetic: {
     id: 'diabetic',
-    title: "Diabetic Foot Sensitivity",
-    explanation: "Your symptoms of numbness or tingling are common indicators of diabetic neuropathy or circulation issues. This requires specialized care to prevent injuries that you might not feel due to reduced sensation.",
+    title: "Diabetic Foot & Neuropathy Care",
+    explanation: "This is a sensitive category. Numbness or tingling suggests your nerves may be affected by circulation or glucose levels. Protecting your feet from undetected injuries is the highest priority.",
     causes: [
-      "High blood sugar levels affecting nerve health",
-      "Peripheral neuropathy (nerve damage)",
-      "Poor circulation (peripheral artery disease)",
-      "Pressure points in standard shoes causing undetected sores"
+      "Peripheral neuropathy from blood sugar levels",
+      "Reduced signal of pain, heat, or cold",
+      "Compromised circulation in lower limbs"
     ],
     tips: [
-      "Perform daily foot inspections with a mirror to check for cuts or sores",
-      "Never walk barefoot, even indoors, to avoid accidental injury",
-      "Use seamless, non-binding socks designed for sensitive feet",
-      "Keep skin moisturized but ensure the area between toes stays dry",
-      "Schedule regular check-ups with a podiatrist for professional screening"
+      "Use a mirror to check the bottom of your feet daily for cuts",
+      "Always wear moisture-wicking, non-binding socks",
+      "Never walk barefoot, even for a few steps",
+      "Wash feet in lukewarm water; never use hot water"
     ],
     products: [
-      {
-        name: "Kitcoz Foot Cream Roll on",
-        description: "Convenient roll-on foot cream specifically formulated for intensive moisturizing of diabetic feet.",
-        bestFor: "Moisturizing and skin integrity maintenance",
-        link: "https://amzn.to/4mSq9zN"
-      },
       {
         name: "Fixderma Foobetik Cream",
-        description: "Expertly formulated cream for diabetic foot care, preventing dryness and infection.",
-        bestFor: "Comprehensive diabetic foot skin health",
+        description: "Intensive moisturizing cream specifically formulated for diabetic skin to prevent cracks.",
+        bestFor: "Best Fit: Diabetic Skin Health",
         link: "https://amzn.to/4cNsg3o"
-      }
-    ]
-  },
-  achilles: {
-    id: 'achilles',
-    title: "Achilles Tendinitis Risk",
-    explanation: "The pain at the back of your heel suggests strain on the Achilles tendon. This is often an overuse injury from sudden increases in activity or tight calf muscles pulling on the tendon.",
-    causes: [
-      "Sudden increase in exercise intensity or duration",
-      "Tight calf muscles putting excessive strain on the tendon",
-      "Improper or worn-out footwear lacking heel stability",
-      "Bone spurs on the heel bone (Haglund's deformity)"
-    ],
-    tips: [
-      "Rest and avoid high-impact activities like running or jumping",
-      "Perform gentle eccentric calf stretches (heel drops)",
-      "Use heel lifts in your shoes to reduce tension on the tendon",
-      "Apply ice to the back of the heel for 15-20 minutes after activity",
-      "Consider a supportive sleeve to stabilize the tendon area"
-    ],
-    products: [
-      {
-        name: "Powerstep UltraFlexx Foot Rocker",
-        description: "Ergonomic foot rocker that helps stretch the Achilles tendon and calf muscles effectively.",
-        bestFor: "Tendon stretching and flexibility",
-        link: "https://amzn.to/3ODWFsW"
       },
       {
-        name: "FOVERA Foot & Calf Stretcher Belt",
-        description: "Designed for safe and controlled stretching of the lower leg muscles and Achilles tendon.",
-        bestFor: "Relieving tendon tightness",
-        link: "https://amzn.to/4cuNSCK"
+        name: "Kitcoz Foot Cream Roll-on",
+        description: "Easy application moisture barrier to prevent diabetic heel fissures.",
+        bestFor: "Essential Skin Protection",
+        link: "https://amzn.to/4mSq9zN"
       }
     ]
   },
   dry_cracked: {
     id: 'dry_cracked',
-    title: "Dry & Cracked Heels",
-    explanation: "Your assessment suggests that the skin around your heels has become severely dry and thickened, leading to painful cracks or fissures. This is often caused by a combination of friction, pressure, and lack of adequate moisture.",
+    title: "Cracked Heel Fissures",
+    explanation: "Hardened skin around the heel has lost its elasticity and is splitting under your body weight. This is more than a cosmetic issue; deep cracks can bleed and become infected.",
     causes: [
-      "Prolonged standing on hard floors without cushioned socks",
-      "Wearing open-backed shoes like sandals or flip-flops",
-      "Low moisture levels in the skin due to environment or metabolic factors",
-      "Cold, dry weather depleting natural skin oils",
-      "Frequent use of harsh soaps that strip moisture"
+      "Open-back shoes causing skin to expand sideways",
+      "Lack of essential lipid moisture in the skin",
+      "Extreme dry weather or hot showers"
     ],
     tips: [
-      "Apply a thick, urea-based heel balm twice daily",
-      "Wear moisturizing gel-lined heel socks overnight to lock in cream",
-      "After soaking feet, gently use a pumice stone to remove dead skin",
-      "Drink plenty of water to support skin hydration from within",
-      "Choose closed-back shoes to reduce friction and skin hardening"
+      "Apply urea-based creams twice a day",
+      "Exfoliate GENTLY after a 15-minute soak",
+      "Wear cotton socks after applying cream to lock in moisture",
+      "Avoid wearing flip-flops for long periods"
     ],
     products: [
       {
-        name: "Bodywise Urea Foot Cream Roll",
-        description: "Targeted roll-on application that softens hard calluses and repairs deep heel fissures.",
-        bestFor: "Cracked Heel Repair & Softening",
+        name: "Bodywise Urea Cream",
+        description: "10%+ Urea concentration to chemically dissolve hard skin and heal cracks.",
+        bestFor: "Best Fit: Severely Cracked Heels",
         link: "https://amzn.to/3OMQ5jH"
       },
       {
-        name: "Tifanso Moisturizing Heel Socks",
-        description: "Comfortable socks with therapy gel linings that soften hard, dry, and cracked heels while you sleep.",
-        bestFor: "Overnight Intensive Hydration",
+        name: "Gel-Lined Heel Socks",
+        description: "Overnight therapy socks that provide a moist healing environment.",
+        bestFor: "Intensive Overnight Repair",
         link: "https://amzn.to/4t1fFQ9"
+      }
+    ]
+  },
+  achilles: {
+    id: 'achilles',
+    title: "Achilles Tendinitis Protection",
+    explanation: "The pain at the back of your leg signifies the Achilles tendon is under excessive tension. This is an 'overuse' signal from your body, often due to tight calves or sudden activity spikes.",
+    causes: [
+      "Sudden increase in running distance or speed",
+      "Tight calf muscles pulling on the tendon attachment",
+      "High-impact landing without proper heel support"
+    ],
+    tips: [
+      "Rest is mandatory; avoid 'pushing through' this pain",
+      "Gently stretch your calves using a wall or belt",
+      "Use a slight heel lift to take the tension off the tendon",
+      "Apply ice to the back of the ankle after activity"
+    ],
+    products: [
+      {
+        name: "Powerstep Foot Rocker",
+        description: "Allows for safe, controlled eccentric stretching of the Achilles/Calf complex.",
+        bestFor: "Best Fit: Recovery & Flexibility",
+        link: "https://amzn.to/3ODWFsW"
+      },
+      {
+        name: "Ankle Support Sleeve",
+        description: "Medical compression to stabilize the joint and reduce tendon vibration.",
+        bestFor: "Commonly Used: Stability & Relief",
+        link: "https://amzn.to/4cwfpnl"
+      }
+    ]
+  },
+  metatarsalgia: {
+    id: 'metatarsalgia',
+    title: "Metatarsalgia / Ball-of-Foot Pain",
+    explanation: "Inflammation is occurring at the heads of your metatarsal bones (just behind your toes). It often feels like you are walking on a fold in your sock or a small stone.",
+    causes: [
+      "High-impact activity on hard surfaces",
+      "Wearing shoes with high heels or zero forefoot cushioning",
+      "High arch structure concentrating weight on the forefoot",
+      "Excess body weight putting pressure on the ball of the foot"
+    ],
+    tips: [
+      "Avoid walking barefoot on hard floors",
+      "Switch to shoes with a rocker bottom or thick forefoot cushioning",
+      "Use metatarsal pads to 'lift' the transverse arch",
+      "Ice the ball of the foot after long days"
+    ],
+    products: [
+      {
+        name: "Ball of Foot Gel Cushions",
+        description: "Targeted gel padding that offloads pressure from the painful metatarsal heads.",
+        bestFor: "Best Fit: Forefoot Pain & Burning",
+        link: "https://amzn.to/4w1Vq7I"
+      },
+      {
+        name: "Metatarsal Pad Inserts",
+        description: "Felt or gel pads that redistribute weight away from the sensitive ball of the foot.",
+        bestFor: "Structural Pressure Relief",
+        link: "https://amzn.to/48wakJc"
+      }
+    ]
+  },
+  morton: {
+    id: 'morton',
+    title: "Morton's Neuroma Signal",
+    explanation: "The localized tingling or 'electric' sensation between your 3rd and 4th toes suggests a nerve is being compressed by the surrounding bones. This is highly influenced by shoe width.",
+    causes: [
+      "Narrow-toe shoes squeezing the foot bones together",
+      "High-heeled shoes shifting all weight to the forefoot",
+      "Repetitive impact from running or jumping"
+    ],
+    tips: [
+      "Wear shoes that are wide enough to let your toes wiggle",
+      "Avoid high heels over 2 inches entirely for now",
+      "Arch support helps create space between the bones in your forefoot",
+      "Consult a doctor if numbness persists longer than a week"
+    ],
+    products: [
+      {
+        name: "Wide Toe Box Athletic Shoes",
+        description: "Shoes designed to allow natural toe splay, preventing bone-on-nerve compression.",
+        bestFor: "Best Fit: Neuroma & Compression Relief",
+        link: "https://amzn.to/3OCx4R9"
+      },
+      {
+        name: "Gel Toe Separators",
+        description: "Soft spacers that gently increase the distance between your metatarsals.",
+        bestFor: "Commonly Used: Nerve Decompression",
+        link: "https://amzn.to/3QCGZqw"
+      }
+    ]
+  },
+  hammertoes: {
+    id: 'hammertoes',
+    title: "Hammertoe Deformity",
+    explanation: "One or more of your toes are curling into a fixed 'V' shape. This is usually caused by an imbalance in the muscles and tendons that keep your toes straight.",
+    causes: [
+      "Ill-fitting shoes that are too short",
+      "Underlying nerve or muscle damage",
+      "Genetic predisposition"
+    ],
+    tips: [
+      "Wear shoes with a deep and wide toe box",
+      "Use toe crest pads to support the underneath of the curl",
+      "Perform toe exercises like picking up marbles or towels",
+      "Avoid shoes that narrow at the tip"
+    ],
+    products: [
+      {
+        name: "Toe Hallux Valgus Support",
+        description: "Supportive braces for managing toe posture and improving alignment.",
+        bestFor: "Best Fit: Toe Realignment",
+        link: "https://amzn.to/4sXa2m3"
+      },
+      {
+        name: "Comfort Toe Crest Pads",
+        description: "Reduces pressure on the tips of hammered toes and eliminates friction.",
+        bestFor: "Daily Comfort & Relief",
+        link: "https://amzn.to/4unQ5Gg"
+      }
+    ]
+  },
+  neutral: {
+    id: 'neutral',
+    title: "Neutral Maintenance & Wellness",
+    explanation: "Great news! Your feet appear to be functioning within a healthy range. Maintaining this balance through proper care is the best way to ensure lifelong mobility.",
+    causes: [
+      "Balanced gait and mechanics",
+      "Proper footwear selection",
+      "Good overall lower-body flexibility"
+    ],
+    tips: [
+      "Replace your primary shoes every 6-8 months",
+      "Continue with regular lower body stretching",
+      "Don't ignore minor aches if they persist for more than 48 hours",
+      "Invest in a foot massager for recovery after long days"
+    ],
+    products: [
+      {
+        name: "Daily Wellness Massager",
+        description: "Simple yet effective tool for maintaining blood flow and muscle flexibility.",
+        bestFor: "Best Fit: Prevention & Relaxation",
+        link: "https://amzn.to/4aFri8e"
+      },
+      {
+        name: "Premium Comfort Insoles",
+        description: "Universal cushioning to add comfort to standard footwear.",
+        bestFor: "Everyday Support",
+        link: "https://amzn.in/d/0gh0wRDf"
       }
     ]
   },
   complex: {
     id: 'complex',
-    title: "Complex Foot Patterns Detected",
-    explanation: "Your assessment shows significant indicators for multiple foot conditions. When symptoms overlap this strongly, it often indicates complex biomechanical factors that require a professional evaluation to address the root cause.",
+    title: "Complex Multi-Zone Strain",
+    explanation: "Your symptoms across multiple areas suggest that one structural issue may be causing compensatory pain elsewhere. This 'chained' effect requires a professional assessment.",
     causes: [
-      "Interconnected structural issues (e.g., high arches + Achilles strain)",
-      "Advanced compensatory strain from long-term misalignment",
-      "Chronic inflammation in multiple zones of the foot",
-      "Complex gait abnormalities requiring professional analysis"
+      "Concurrent conditions (e.g., Flat feet + Bunion)",
+      "High compensatory load from chronic misalignment",
+      "Recent change in biomechanics (injury/new shoes)"
     ],
     tips: [
-      "Schedule a consultation with a Podiatrist for a full assessment",
-      "Bring your most-worn shoes to your appointment for wear pattern analysis",
-      "Avoid self-diagnosing complex overlaps which can lead to improper care",
-      "Limit high-impact activities until you have a professional evaluation"
+      "Consult a Podiatrist for a 3D gait analysis",
+      "Switch to high-stability footwear immediately",
+      "Bring your most worn shoes to a specialist to analyze wear",
+      "Record your pain patterns in the Comfoot Journal for your doctor"
     ],
     products: [
       {
-        name: "Custom Orthotic Consultation",
-        description: "Professional gait analysis and custom-molded inserts tailored to your unique foot structure.",
-        bestFor: "Complex & Multiple Conditions",
-        link: "https://www.apma.org/findapodiatrist"
+        name: "Ultimate Orthotic Bundle",
+        description: "Comprehensive support for the entire foot platform, from heel to ball.",
+        bestFor: "Best Fit: Multi-Symptom Relief",
+        link: "https://amzn.to/4rZCbsz"
       },
       {
-        name: "Frido Ultimate Support Bundle",
-        description: "A comprehensive set including high-stability insoles and recovery tools for multi-zone relief.",
-        bestFor: "Total Foot Support & Recovery",
+        name: "Professional Podiatry Locator",
+        description: "Finding a specialist is the most important next step for complex overlaps.",
+        bestFor: "Essential Expert Care",
+        link: "https://www.apma.org/findapodiatrist"
+      }
+    ]
+  },
+  mixed: {
+    id: 'mixed',
+    title: "Mixed Symptom Profile",
+    explanation: "You have strong indicators for more than one condition. This 'mixed' result is very common when a primary issue (like flat feet) starts affecting the heel or ball of the foot.",
+    causes: [
+      "Transitioning conditions",
+      "Inconsistent footwear support",
+      "Mixed activity surfaces"
+    ],
+    tips: [
+      "Choose a 'hybrid' insole that offers both arch and heel support",
+      "Rotate between two different pairs of supportive shoes",
+      "Focus on whole-foot recovery drills",
+      "Pay attention to which activity triggers which symptom"
+    ],
+    products: [
+      {
+        name: "All-Day Performance Insole",
+        description: "The most versatile support system for those with changing or mixed symptoms.",
+        bestFor: "Best Fit: Versatile Daily Support",
         link: "https://amzn.to/4rZCbsz"
+      },
+      {
+        name: "Recovery & Alignment Kit",
+        description: "A set of tools including separators and massagers for total foot wellness.",
+        bestFor: "Commonly Used: Complete Relief",
+        link: "https://amzn.to/4aFri8e"
       }
     ]
   }
@@ -558,10 +634,10 @@ export const FootProblemQuiz: React.FC = () => {
     };
     setScores(newScores);
 
-    if (step < 12) {
+    if (step < QUESTIONS.length) {
       setStep(step + 1);
     } else {
-      setStep(13);
+      setStep(QUESTIONS.length + 1);
       saveResultToFirebase(newScores, newAnswers);
       saveResultToPostgres(newScores, newAnswers);
     }
@@ -696,7 +772,7 @@ export const FootProblemQuiz: React.FC = () => {
   };
 
   const currentQuestion = QUESTIONS[step - 1];
-  const progress = (step / 12) * 100;
+  const progress = (step / QUESTIONS.length) * 100;
 
   return (
     <section id="quiz" className="bg-brand-beige py-24 px-6" aria-labelledby="quiz-title">
@@ -711,30 +787,49 @@ export const FootProblemQuiz: React.FC = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               className="text-center px-4"
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-brand-orange/10 rounded-[2rem] mb-8">
-                <Footprints className="w-8 h-8 md:w-10 md:h-10 text-brand-orange" />
+              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-brand-orange/10 rounded-[2rem] mb-8 relative group">
+                <motion.div
+                  animate={{ 
+                    y: [0, -8, 0],
+                    rotate: [0, -5, 5, 0]
+                  }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <Footprints className="w-8 h-8 md:w-10 md:h-10 text-brand-orange" />
+                </motion.div>
+                <motion.div 
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.1, 0.3, 0.1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="absolute inset-0 bg-brand-orange rounded-full blur-xl -z-10"
+                />
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-brand-brown mb-6 md:mb-8 leading-[1.1] tracking-tight">
-                Find Your Foot Problem in 60 Seconds
+                Find Your Foot Solution in 60 Seconds
               </h2>
               <p className="text-lg md:text-xl text-brand-taupe/70 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
-                Answer a few quick questions to understand what your feet might be experiencing.
+                Answer a few precisely crafted questions to receive an expert-guided insight into your foot health.
               </p>
               <p className="text-[10px] sm:text-xs text-brand-taupe/60 max-w-lg mx-auto mb-10 italic uppercase tracking-wider">
-                Educational insights only. Not medical advice.
+                This diagnostic uses clinical data patterns for educational awareness.
               </p>
-              <button
+              <motion.button
                 onClick={handleStart}
-                aria-label="Start the foot problem finder quiz"
-                className="group relative inline-flex items-center gap-3 bg-brand-brown text-white px-10 py-5 sm:px-12 sm:py-6 rounded-2xl font-bold text-sm sm:text-lg hover:bg-brand-orange transition-all duration-300 shadow-xl hover:shadow-brand-orange/20 active:scale-95"
+                aria-label="Start the foot diagnostic quiz"
+                whileHover={{ scale: 1.05, backgroundColor: "#E87C2E" }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative inline-flex items-center gap-3 bg-brand-brown text-white px-10 py-5 sm:px-12 sm:py-6 rounded-2xl font-bold text-sm sm:text-lg transition-all duration-300 shadow-xl hover:shadow-brand-orange/20"
               >
                 Start Diagnostic
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </motion.button>
             </motion.div>
           )}
 
-          {step >= 1 && step <= 12 && (
+          {step >= 1 && step <= QUESTIONS.length && (
             <motion.div
               key={`question-${step}`}
               initial={{ opacity: 0, x: 20 }}
@@ -753,7 +848,7 @@ export const FootProblemQuiz: React.FC = () => {
               <div className="mb-8 md:mb-12">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-[10px] font-bold text-brand-orange uppercase tracking-[0.2em]">
-                    Question {step} of 12
+                    Question {step} of {QUESTIONS.length}
                   </span>
                   <span className="text-[10px] font-bold text-brand-taupe uppercase tracking-widest opacity-40">
                     {Math.round(progress)}%
@@ -808,15 +903,23 @@ export const FootProblemQuiz: React.FC = () => {
                       hidden: { opacity: 0, y: 10 },
                       visible: { opacity: 1, y: 0 }
                     }}
-                    whileHover={{ scale: 1.01, x: 4 }}
+                    whileHover={{ 
+                      scale: 1.01, 
+                      x: 8, 
+                      backgroundColor: "rgba(216, 116, 42, 0.05)",
+                      borderColor: "rgba(216, 116, 42, 0.2)"
+                    }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleAnswer(option)}
                     aria-label={`Select option: ${option.text}`}
-                    className="group flex items-center justify-between p-5 sm:p-6 md:p-8 rounded-2xl border-2 border-brand-beige hover:border-brand-orange hover:bg-brand-orange/5 transition-all duration-300 text-left active:scale-[0.98]"
+                    className="group flex items-center justify-between p-5 sm:p-6 md:p-8 rounded-2xl border-2 border-brand-beige transition-all duration-300 text-left active:scale-[0.98]"
                   >
-                    <span className="text-base sm:text-lg md:text-xl font-medium text-brand-brown group-hover:text-brand-orange transition-colors">
-                      {option.text}
-                    </span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-2 h-2 rounded-full bg-brand-brown/10 group-hover:bg-brand-orange transition-colors" />
+                      <span className="text-base sm:text-lg md:text-xl font-medium text-brand-brown group-hover:text-brand-orange transition-colors">
+                        {option.text}
+                      </span>
+                    </div>
                     <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-brand-beige group-hover:border-brand-orange flex items-center justify-center transition-all shrink-0 ml-4">
                       <div className="w-2.5 h-2.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
@@ -867,13 +970,15 @@ export const FootProblemQuiz: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full sm:w-64 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/20 transition-all text-xs sm:text-sm"
                   />
-                  <button 
+                  <motion.button 
                     onClick={sendEmailResults}
                     disabled={isSendingEmail || emailSent}
-                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-brand-orange rounded-xl font-bold hover:bg-brand-beige transition-all disabled:opacity-50 text-[10px] sm:text-sm uppercase tracking-widest active:scale-[0.98] transition-transform"
+                    whileHover={!isSendingEmail && !emailSent ? { scale: 1.05, backgroundColor: "#F7F5F0" } : {}}
+                    whileTap={!isSendingEmail && !emailSent ? { scale: 0.95 } : {}}
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-brand-orange rounded-xl font-bold transition-all disabled:opacity-50 text-[10px] sm:text-sm uppercase tracking-widest"
                   >
                     {isSendingEmail ? 'Sending' : emailSent ? 'Sent!' : 'Send'}
-                  </button>
+                  </motion.button>
                 </div>
               </motion.div>
               {/* Gemini Deep Analysis Section */}
@@ -899,13 +1004,15 @@ export const FootProblemQuiz: React.FC = () => {
                   </div>
                   
                   <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <button 
+                    <motion.button 
                       onClick={findNearbyPodiatrists}
-                      className="w-full sm:w-auto bg-white text-brand-brown px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange hover:text-white transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.05, backgroundColor: "#D8742A", color: "#FFFFFF" }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full sm:w-auto bg-white text-brand-brown px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs transition-all shadow-xl flex items-center justify-center gap-2"
                     >
                       <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       Find Podiatrists
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </motion.div>
@@ -1004,16 +1111,18 @@ export const FootProblemQuiz: React.FC = () => {
                       <p className="text-sm md:text-base text-brand-taupe/90 mb-8 flex-grow leading-relaxed font-light">
                         {product.description}
                       </p>
-                      <a 
+                      <motion.a 
                         href={product.link}
                         target="_blank"
                         rel="noopener noreferrer"
+                        whileHover={{ scale: 1.02, backgroundColor: "#D8742A" }}
+                        whileTap={{ scale: 0.98 }}
                         aria-label={`Check support options for ${product.name}`}
-                        className="w-full inline-flex items-center justify-center gap-3 bg-brand-brown text-brand-beige py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-orange transition-all duration-300 shadow-lg active:scale-95"
+                        className="w-full inline-flex items-center justify-center gap-3 bg-brand-brown text-brand-beige py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-lg"
                       >
                         Check Support Options
                         <ArrowRight className="w-4 h-4" />
-                      </a>
+                      </motion.a>
                     </motion.div>
                   ))}
                 </div>
@@ -1051,9 +1160,14 @@ export const FootProblemQuiz: React.FC = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           className="w-full bg-white border border-brand-brown/10 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 px-5 sm:px-6 text-xs sm:text-sm focus:outline-none focus:border-brand-orange transition-colors"
                         />
-                        <button type="submit" className="bg-brand-orange text-white py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange/90 transition-all shadow-lg active:scale-[0.98]">
+                        <motion.button 
+                          type="submit" 
+                          whileHover={{ scale: 1.02, backgroundColor: "#B65A1A" }}
+                          whileTap={{ scale: 0.98 }}
+                          className="bg-brand-orange text-white py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs transition-all shadow-lg"
+                        >
                           Get Free Guide
-                        </button>
+                        </motion.button>
                       </form>
                     ) : (
                       <div className="flex items-center gap-3 text-brand-orange font-bold text-sm">
@@ -1092,9 +1206,14 @@ export const FootProblemQuiz: React.FC = () => {
                           onChange={(e) => setContactInfo(e.target.value)}
                           className="w-full bg-white border border-brand-brown/10 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 px-5 sm:px-6 text-xs sm:text-sm focus:outline-none focus:border-brand-orange transition-colors"
                         />
-                        <button type="submit" className="bg-brand-brown text-brand-beige py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-brand-orange transition-all shadow-lg active:scale-[0.98]">
+                        <motion.button 
+                          type="submit" 
+                          whileHover={{ scale: 1.02, backgroundColor: "#2D1D13" }}
+                          whileTap={{ scale: 0.98 }}
+                          className="bg-brand-brown text-brand-beige py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-xs transition-all shadow-lg"
+                        >
                           Send Me Links
-                        </button>
+                        </motion.button>
                       </form>
                     ) : (
                       <div className="flex items-center gap-3 text-brand-orange font-bold text-sm">
@@ -1136,15 +1255,17 @@ export const FootProblemQuiz: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                  <button 
+                  <motion.button 
                     onClick={handleShare}
-                    className="flex items-center gap-3 text-brand-brown font-bold uppercase tracking-widest text-xs hover:text-brand-orange transition-colors"
+                    whileHover={{ scale: 1.05, color: "#D8742A" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-3 text-brand-brown font-bold uppercase tracking-widest text-xs transition-colors"
                   >
                     <Activity className="w-4 h-4" />
                     Share My Results
-                  </button>
+                  </motion.button>
                   {auth.currentUser && (
-                    <button 
+                    <motion.button 
                       onClick={async () => {
                         const result = getResult();
                         try {
@@ -1162,19 +1283,23 @@ export const FootProblemQuiz: React.FC = () => {
                           console.error("Failed to save to journal", err);
                         }
                       }}
-                      className="flex items-center gap-3 text-brand-orange font-bold uppercase tracking-widest text-xs hover:text-brand-brown transition-colors"
+                      whileHover={{ scale: 1.05, color: "#2D1D13" }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-3 text-brand-orange font-bold uppercase tracking-widest text-xs transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                       Save to Journal
-                    </button>
+                    </motion.button>
                   )}
-                  <button
+                  <motion.button
                     onClick={handleRestart}
-                    className="flex items-center gap-3 text-brand-taupe hover:text-brand-brown font-bold uppercase tracking-widest text-xs transition-colors"
+                    whileHover={{ scale: 1.05, color: "#2D1D13" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-3 text-brand-taupe font-bold uppercase tracking-widest text-xs transition-colors"
                   >
                     <RotateCcw className="w-4 h-4" />
                     Restart Quiz
-                  </button>
+                  </motion.button>
                 </div>
                 <div className="text-center mt-8">
                   <p className="text-[9px] text-brand-taupe/40 uppercase tracking-[0.2em] font-bold">

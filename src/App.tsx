@@ -29,22 +29,46 @@ import { auth, googleProvider, FirebaseUser, db, handleFirestoreError } from './
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 
-const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean, className?: string }) => (
-  <div className={`flex items-center gap-4 ${className}`}>
-    <div className={`bg-brand-brown rounded-[1.2rem] flex items-center justify-center shadow-luxury transition-all duration-700 ${isScrolled ? 'w-10 h-10' : 'w-12 h-12'}`}>
-      <Footprints className="text-brand-orange w-3/5 h-3/5" />
+const Logo = ({ isScrolled, className = "" }: { isScrolled?: boolean; className?: string }) => (
+  <motion.div 
+    whileHover="hover"
+    className={`flex items-center gap-4 cursor-pointer ${className}`}
+  >
+    <div className={`bg-brand-brown rounded-[1.2rem] flex items-center justify-center shadow-luxury transition-all duration-700 relative overflow-hidden group ${isScrolled ? 'w-10 h-10' : 'w-12 h-12'}`}>
+      <motion.div
+        variants={{
+          hover: {
+            y: [-2, 2, -2],
+            transition: {
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }
+        }}
+      >
+        <Footprints className="text-brand-orange w-3/5 h-3/5" />
+      </motion.div>
+      {/* Decorative pulse effect on hover */}
+      <motion.div 
+        variants={{
+          hover: { opacity: 0.2, scale: 1.5 }
+        }}
+        initial={{ opacity: 0, scale: 1 }}
+        className="absolute inset-0 bg-brand-orange rounded-full blur-xl -z-10"
+      />
     </div>
     <div className="flex flex-col leading-[0.8]">
       <span className={`font-display font-black text-brand-brown transition-all duration-700 tracking-[-0.05em] ${isScrolled ? 'text-lg' : 'text-xl md:text-2xl'}`}>
         Com<span className="text-brand-orange">foot</span>
       </span>
       {!isScrolled && (
-        <span className="text-[7px] font-bold uppercase tracking-[0.2em] text-brand-taupe/40 mt-1 ml-0.5">
+        <span className="text-[7px] font-bold uppercase tracking-[0.2em] text-brand-taupe/40 mt-1 ml-0.5 whitespace-nowrap">
           Where Comfort meets your Soul
         </span>
       )}
     </div>
-  </div>
+  </motion.div>
 );
 
 import { FootProblemQuiz } from './components/FootProblemQuiz';
@@ -86,19 +110,19 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Frido Plantar Insole',
         description: 'Premium orthotic insoles designed specifically for plantar fasciitis relief with deep heel cushioning and arch support.',
-        bestFor: 'Daily wear in walking or sports shoes.',
+        bestFor: 'Best Fit: Daily wear in walking or sports shoes.',
         link: 'https://amzn.to/4rZCbsz'
       },
       {
         name: 'Medial Arch Support',
         description: 'Targeted support for the medial arch to redistribute pressure and reduce strain on the plantar fascia ligament.',
-        bestFor: 'Correcting overpronation and arch fatigue.',
+        bestFor: 'Commonly Used: Correcting overpronation and arch fatigue.',
         link: 'https://amzn.to/4kJD5XT'
       },
       {
         name: 'Foot Massager and Roller',
         description: 'Ergonomically shaped roller for deep tissue massage to break up scar tissue and increase blood flow.',
-        bestFor: 'Morning and evening recovery sessions.',
+        bestFor: 'Best Fit: Morning and evening recovery sessions.',
         link: 'https://amzn.to/4aFri8e'
       }
     ],
@@ -133,19 +157,19 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Frido Rigid Arch Support Insole',
         description: 'Rigid orthotic insoles designed to provide maximum support for collapsed arches and improve foot alignment.',
-        bestFor: 'Daily wear in sports or formal shoes.',
+        bestFor: 'Best Fit: Daily wear in sports or formal shoes.',
         link: 'https://amzn.in/d/066diPwp'
       },
       {
         name: 'Boldfit Arch Support',
         description: 'Comfortable and durable arch support inserts that help reduce foot fatigue and pain.',
-        bestFor: 'Active lifestyles and long hours of standing.',
+        bestFor: 'Commonly Used: Active lifestyles and long hours of standing.',
         link: 'https://amzn.in/d/0bgzXhjD'
       },
       {
         name: 'Flat Foot Arch Support',
         description: 'Targeted support for the medial arch to redistribute pressure and reduce strain.',
-        bestFor: 'Correcting overpronation.',
+        bestFor: 'Best Fit: Correcting overpronation.',
         link: 'https://amzn.in/d/01TLGUJ3'
       }
     ],
@@ -180,37 +204,37 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Frido Orthotics Bunion Corrector',
         description: 'Advanced bunion corrector designed for effective toe realignment and pressure relief.',
-        bestFor: 'Hallux Valgus correction and pain relief.',
+        bestFor: 'Best Fit: Hallux Valgus correction and pain relief.',
         link: 'https://amzn.to/4sW7nZN'
       },
       {
         name: 'AGEasy Antara Bunion Corrector',
         description: 'Comfortable bunion aid that helps in toe separation and alignment.',
-        bestFor: 'Daily wear and gradual correction.',
+        bestFor: 'Commonly Used: Daily wear and gradual correction.',
         link: 'https://amzn.to/4eHwhc4'
       },
       {
         name: 'Wonder Care Silicone Toe Separators',
         description: 'Soft silicone separators that gently divide toes to reduce bunion pain.',
-        bestFor: 'Friction reduction and toe spacing.',
+        bestFor: 'Best Fit: Friction reduction and toe spacing.',
         link: 'https://amzn.to/4cKDWDM'
       },
       {
         name: 'Gel Big toe Bunion Guard',
         description: 'Protective gel guard that shields the bunion from shoe pressure and rubbing.',
-        bestFor: 'External protection and immediate relief.',
+        bestFor: 'Commonly Used: External protection and immediate relief.',
         link: 'https://amzn.to/4sZinpg'
       },
       {
         name: 'Zebrooc Bunions Gel Toe Separators',
         description: 'Multi-functional gel separators for bunion relief and toe stretching.',
-        bestFor: 'Comprehensive toe care.',
+        bestFor: 'Commonly Used: Comprehensive toe care.',
         link: 'https://amzn.to/4tCJZ4I'
       },
       {
         name: 'BowieMall Toe Hallux Valgus',
         description: 'Supportive brace for managing hallux valgus and improving toe posture.',
-        bestFor: 'Toe alignment and joint support.',
+        bestFor: 'Best Fit: Toe alignment and joint support.',
         link: 'https://amzn.to/4sXa2m3'
       }
     ],
@@ -245,37 +269,37 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Kitcoz Foot Cream Roll on',
         description: 'Convenient roll-on foot cream specifically formulated for intensive moisturizing of diabetic feet.',
-        bestFor: 'Moisturizing and skin integrity maintenance.',
+        bestFor: 'Best Fit: Moisturizing and skin integrity maintenance.',
         link: 'https://amzn.to/4mSq9zN'
       },
       {
         name: 'BraceAbility Neuropathy Sock',
         description: 'Specialized socks designed to provide comfort and protection for feet affected by neuropathy.',
-        bestFor: 'Neuropathy symptoms and foot protection.',
+        bestFor: 'Commonly Used: Neuropathy symptoms and foot protection.',
         link: 'https://amzn.to/4mSVlz0'
       },
       {
         name: 'Fixderma Foobetik Cream',
         description: 'Expertly formulated cream for diabetic foot care, preventing dryness and infection.',
-        bestFor: 'Comprehensive diabetic foot skin health.',
+        bestFor: 'Best Fit: Comprehensive diabetic foot skin health.',
         link: 'https://amzn.to/4cNsg3o'
       },
       {
         name: 'ortho joy extra soft slippers',
         description: 'Ultra-soft therapeutic slippers providing superior cushioning for sensitive diabetic feet.',
-        bestFor: 'Indoor comfort and pressure reduction.',
+        bestFor: 'Best Fit: Indoor comfort and pressure reduction.',
         link: 'https://amzn.to/41Z8cGe'
       },
       {
         name: 'Doctorhealth soft Men\'s massage flip flop',
         description: 'Soft and comfortable flip flops with massage points to stimulate circulation.',
-        bestFor: 'Lightweight summer wear and circulation support.',
+        bestFor: 'Commonly Used: Lightweight summer wear and circulation support.',
         link: 'https://amzn.to/4twZfQu'
       },
       {
         name: 'DOCTOR EXTRA SOFT Men\'s Sports Shoes',
         description: 'Cushioned sports shoes designed specifically for those needing extra soft footbeds.',
-        bestFor: 'Active lifestyle and impact protection.',
+        bestFor: 'Best Fit: Active lifestyle and impact protection.',
         link: 'https://amzn.to/3OCx4R9'
       }
     ],
@@ -310,43 +334,43 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Powerstep UltraFlexx Foot Rocker',
         description: 'Ergonomic foot rocker that helps stretch the Achilles tendon and calf muscles effectively.',
-        bestFor: 'Tendon stretching and flexibility.',
+        bestFor: 'Best Fit: Tendon stretching and flexibility.',
         link: 'https://amzn.to/3ODWFsW'
       },
       {
         name: 'FOVERA Foot & Calf Stretcher Belt',
         description: 'Designed for safe and controlled stretching of the lower leg muscles and Achilles tendon.',
-        bestFor: 'Relieving tendon tightness.',
+        bestFor: 'Commonly Used: Relieving tendon tightness.',
         link: 'https://amzn.to/4cuNSCK'
       },
       {
         name: 'Sorgen Ankle support for pain relief',
         description: 'Compression ankle sleeve providing stability and relief for Achilles pain.',
-        bestFor: 'Stability and inflammation reduction.',
+        bestFor: 'Best Fit: Stability and inflammation reduction.',
         link: 'https://amzn.to/4cwfpnl'
       },
       {
         name: 'Adjustable Orthopedic Heel Lift',
         description: 'Customizable heel lifts to reduce tension on the Achilles tendon during daily activities.',
-        bestFor: 'Immediate strain reduction.',
+        bestFor: 'Commonly Used: Immediate strain reduction.',
         link: 'https://amzn.to/3QqI2d3'
       },
       {
         name: 'Dr.Ortho Pain Relief Gel Insoles',
         description: 'Soft gel insoles that absorb shock and provide comfort to the heel area.',
-        bestFor: 'Shock absorption and daily comfort.',
+        bestFor: 'Commonly Used: Shock absorption and daily comfort.',
         link: 'https://amzn.to/4eI1BYf'
       },
       {
         name: 'Aegon Foot Stretcher Strap',
         description: 'Versatile strap for deep and effective stretching of the foot and Achilles.',
-        bestFor: 'Intensive stretching sessions.',
+        bestFor: 'Commonly Used: Intensive stretching sessions.',
         link: 'https://amzn.to/41QcPm1'
       },
       {
         name: 'Achilles Heel Compression Padded Sleeve Socks',
         description: 'Padded compression socks that target the Achilles area for maximum support.',
-        bestFor: 'Dedicated tendon compression and protection.',
+        bestFor: 'Best Fit: Dedicated tendon compression and protection.',
         link: 'https://amzn.to/4u7bnYr'
       }
     ],
@@ -383,31 +407,31 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Bodywise Urea Foot Cream Roll',
         description: 'Easy-to-apply roll-on with urea to soften thick skin and repair deep cracks.',
-        bestFor: 'Convenient application and intensive repair.',
+        bestFor: 'Best Fit: Convenient application and intensive repair.',
         link: 'https://amzn.to/3OMQ5jH'
       },
       {
         name: 'Foottex Cracked Heel Cream',
         description: 'Potent formula designed to heal dry and cracked heels effectively.',
-        bestFor: 'Deeply moisturizing severe fissures.',
+        bestFor: 'Commonly Used: Deeply moisturizing severe fissures.',
         link: 'https://amzn.to/4sZoQAp'
       },
       {
         name: 'Fixderma Footbetik Cream',
         description: 'Dermatologist-recommended cream for intensive hydration and skin repair.',
-        bestFor: 'Ultra-dry skin and persistent cracking.',
+        bestFor: 'Best Fit: Ultra-dry skin and persistent cracking.',
         link: 'https://amzn.to/4cNsg3o'
       },
       {
         name: 'Tifanso Moisturizing Heel Socks',
         description: 'Gel-lined socks that lock in moisture and soften hard heels while you sleep.',
-        bestFor: 'Overnight intensive treatment.',
+        bestFor: 'Best Fit: Overnight intensive treatment.',
         link: 'https://amzn.to/4t1fFQ9'
       },
       {
         name: 'Krack Heel Repair Cream',
         description: 'A classic and trusted solution for soothing and healing cracked skin.',
-        bestFor: 'Quick relief and budget-friendly care.',
+        bestFor: 'Commonly Used: Quick relief and budget-friendly care.',
         link: 'https://amzn.to/4mN00lQ'
       }
     ],
@@ -441,25 +465,25 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Herbal Detox Foot Pads',
         description: 'Natural detox patches infused with herbal extracts to help soothe nerve pain and improve circulation.',
-        bestFor: 'Nightly recovery and detoxification.',
+        bestFor: 'Commonly Used: Nightly recovery and detoxification.',
         link: 'https://amzn.to/4mZP3gZ'
       },
       {
         name: 'Digolex Gel Pads',
         description: 'Advanced metatarsal gel cushions designed to offload pressure from the neuroma site.',
-        bestFor: 'Impact absorption and nerve relief.',
+        bestFor: 'Best Fit: Impact absorption and nerve relief.',
         link: 'https://amzn.to/4w1Vq7I'
       },
       {
         name: 'Fomibobri Ball of Foot Cushions',
         description: 'Ultra-soft cushions that provide a therapeutic barrier for the metatarsal heads.',
-        bestFor: 'Walking comfort and friction reduction.',
+        bestFor: 'Commonly Used: Walking comfort and friction reduction.',
         link: 'https://amzn.to/4unQ5Gg'
       },
       {
         name: 'Wonder Care Silicone Toe Separators',
         description: 'Medical-grade silicone separators that help realign toes and reduce pressure on the interdigital nerve.',
-        bestFor: 'Toe alignment and space correction.',
+        bestFor: 'Best Fit: Toe alignment and space correction.',
         link: 'https://amzn.to/3QCGZqw'
       }
     ],
@@ -494,25 +518,25 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Relieve Heel Pain for Heel Spur',
         description: 'Specialized orthotic inserts designed to cradle the heel and offload pressure from bony spurs.',
-        bestFor: 'Acute heel pain management.',
+        bestFor: 'Best Fit: Acute heel pain management.',
         link: 'https://amzn.to/4ucazSa'
       },
       {
         name: 'Purastep Silicone Gel Pads',
         description: 'Dual-density silicone pads that provide intensive shock absorption for the heel strike.',
-        bestFor: 'Long durations of standing.',
+        bestFor: 'Commonly Used: Long durations of standing.',
         link: 'https://amzn.to/4d1B9GN'
       },
       {
         name: 'Dr. Scholl\'s Orthotics Insole',
         description: 'Clinically proven insoles for heavy-duty support and relief from heel spur discomfort.',
-        bestFor: 'Reliable daily arch and heel support.',
+        bestFor: 'Best Fit: Reliable daily arch and heel support.',
         link: 'https://amzn.to/3QxvKj9'
       },
       {
         name: 'Heel Cup Sleeve',
         description: 'Compression sleeves with integrated heel cups to provide stable support and cushioning.',
-        bestFor: 'Active movement and stability.',
+        bestFor: 'Commonly Used: Active movement and stability.',
         link: 'https://amzn.to/4eSNrDJ'
       }
     ],
@@ -548,25 +572,25 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Heavy Duty Support Metatarsal Pain Relief Insole',
         description: 'Rigid orthotics engineered for maximum weight distribution away from the metatarsal heads.',
-        bestFor: 'High-impact pressure relief.',
+        bestFor: 'Best Fit: High-impact pressure relief.',
         link: 'https://amzn.to/4eSNrDJ'
       },
       {
         name: 'Metatarsal Pad',
         description: 'Classic felt metatarsal pads that lift the transverse arch to relieve burning pain.',
-        bestFor: 'Direct offloading of the ball of the foot.',
+        bestFor: 'Best Fit: Direct offloading of the ball of the foot.',
         link: 'https://amzn.to/48wakJc'
       },
       {
         name: 'Metatarsal Gel Sleeves',
         description: 'Elastic sleeves with integrated gel cushions for a secure and comfortable fit.',
-        bestFor: 'Versatile daily use in any shoe.',
+        bestFor: 'Commonly Used: Versatile daily use in any shoe.',
         link: 'https://amzn.to/4tGDwFL'
       },
       {
         name: 'Footlogics Metatarsalgic Orthotic Insole',
         description: 'Podiatrist-designed insoles targeting metatarsal pain with a built-in metatarsal raise.',
-        bestFor: 'Structural correction and long-term relief.',
+        bestFor: 'Best Fit: Structural correction and long-term relief.',
         link: 'https://amzn.to/4cFvK9k'
       }
     ],
@@ -601,19 +625,19 @@ const CONDITIONS: Condition[] = [
       {
         name: 'Anzailala 2pcs Hammer Toe Corrector',
         description: 'Soft and adjustable splints that gently pull the hammered toe into a neutral position.',
-        bestFor: 'Flexible hammertoe correction.',
+        bestFor: 'Best Fit: Flexible hammertoe correction.',
         link: 'https://amzn.to/4uoOmk2'
       },
       {
         name: 'Wonder Care Silicone Toe Separator',
         description: 'Big toe corrector and separator patches designed for post-surgical or preventative care.',
-        bestFor: 'Joint alignment and pressure relief.',
+        bestFor: 'Commonly Used: Joint alignment and pressure relief.',
         link: 'https://amzn.to/4w2rlow'
       },
       {
         name: 'Foot Alignment Socks',
         description: 'Therapeutic socks with separated toe spacers to stretch and realign contracted toes.',
-        bestFor: 'Overnight rest and active stretching.',
+        bestFor: 'Best Fit: Overnight rest and active stretching.',
         link: 'https://amzn.to/4tDqkBz'
       }
     ],
@@ -879,29 +903,35 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
 
         <div className="flex items-center gap-2 md:gap-4">
           {user ? (
-            <button 
+            <motion.button 
               onClick={handleLogout}
-              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-orange transition-all shadow-xl active:scale-95"
+              whileHover={{ scale: 1.05, backgroundColor: "#E87C2E" }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.3em] transition-all shadow-xl"
             >
               <LogOut className="w-3.5 h-3.5" />
               Sign Out
-            </button>
+            </motion.button>
           ) : (
-            <button 
+            <motion.button 
               onClick={handleLogin}
-              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-orange text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-brown transition-all shadow-xl shadow-brand-orange/20 active:scale-95"
+              whileHover={{ scale: 1.05, backgroundColor: "#2D1D13" }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden sm:flex items-center gap-3 px-6 py-3 bg-brand-orange text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] transition-all shadow-xl shadow-brand-orange/20"
             >
-              <UserIcon className="w-3.5 h-3.5 transition-transform group-hover:scale-110" />
+              <UserIcon className="w-3.5 h-3.5" />
               Access
-            </button>
+            </motion.button>
           )}
 
-          <button 
+          <motion.button 
             onClick={() => setMobileMenuOpen(true)}
-            className="p-3 md:p-4 bg-brand-brown text-brand-beige rounded-xl md:rounded-2xl hover:bg-brand-orange transition-all lg:hidden shadow-xl active:scale-95"
+            whileHover={{ scale: 1.1, backgroundColor: "#E87C2E" }}
+            whileTap={{ scale: 0.9 }}
+            className="p-3 md:p-4 bg-brand-brown text-brand-beige rounded-xl md:rounded-2xl transition-all lg:hidden shadow-xl"
           >
             <Menu className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -1025,8 +1055,10 @@ const ConditionCard: React.FC<{
         
         <div className="mt-auto flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-3">
-            <button 
+            <motion.button 
               onClick={onToggleCompare}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className={`flex items-center justify-center gap-3 py-5 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all ${
                 isComparing 
                   ? 'bg-brand-orange text-white shadow-lg' 
@@ -1035,25 +1067,29 @@ const ConditionCard: React.FC<{
             >
               {isComparing ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
               {isComparing ? 'Selected' : 'Compare'}
-            </button>
+            </motion.button>
             
-            <button 
+            <motion.button 
               onClick={onQuickView}
-              className="flex items-center justify-center py-5 bg-brand-beige text-brand-taupe rounded-2xl hover:bg-brand-gold hover:text-white transition-all shadow-sm"
+              whileHover={{ scale: 1.02, backgroundColor: "#E8A552", color: "#FFFFFF" }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center justify-center py-5 bg-brand-beige text-brand-taupe rounded-2xl transition-all shadow-sm"
               title="Quick Analytics"
             >
               <BookOpen className="w-5 h-5" />
-            </button>
+            </motion.button>
           </div>
           
-          <button 
+          <motion.button 
             onClick={onLearnMore}
-            className="group/btn relative overflow-hidden bg-brand-brown text-brand-beige py-6 rounded-2xl text-[12px] font-bold uppercase tracking-[0.4em] shadow-xl hover:shadow-brand-orange/30 transition-all active:scale-95 text-center flex items-center justify-center gap-3"
+            whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(232, 124, 46, 0.3)" }}
+            whileTap={{ scale: 0.98 }}
+            className="group/btn relative overflow-hidden bg-brand-brown text-brand-beige py-6 rounded-2xl text-[12px] font-bold uppercase tracking-[0.4em] shadow-xl transition-all text-center flex items-center justify-center gap-3"
           >
             <div className="absolute inset-0 bg-brand-orange translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Full Protocol</span>
             <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-2 transition-transform" />
-          </button>
+          </motion.button>
         </div>
       </div>
     </motion.div>
@@ -1112,15 +1148,17 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
           <span className="text-brand-brown font-bold truncate">{condition.title}</span>
         </div>
 
-        <button 
+        <motion.button 
           onClick={onBack}
+          whileHover={{ x: -10 }}
+          whileTap={{ scale: 0.95 }}
           className="flex items-center gap-2 text-brand-brown hover:text-brand-orange transition-colors mb-8 md:mb-12 group"
         >
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/20">
             <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
           </div>
           <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">Back to Explore</span>
-        </button>
+        </motion.button>
 
         {/* Full-width Header */}
         <div className="mb-12 md:mb-20 px-2 sm:px-0">
@@ -1158,14 +1196,16 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
                   
                   <div className="mt-auto space-y-6 sm:space-y-8">
                     <ProductRating productId={product.name} conditionId={condition.id} user={user} />
-                    <a 
+                    <motion.a 
                       href={product.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-brand-brown text-white py-4 sm:py-6 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[9px] sm:text-[10px] hover:bg-brand-orange transition-all flex items-center justify-center gap-3 sm:gap-4 group/btn shadow-lg"
+                      whileHover={{ scale: 1.02, backgroundColor: "#E87C2E" }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-brand-brown text-white py-4 sm:py-6 rounded-xl sm:rounded-2xl font-bold uppercase tracking-widest text-[9px] sm:text-[10px] transition-all flex items-center justify-center gap-3 sm:gap-4 group/btn shadow-lg"
                     >
                       Amazon Protocol <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-2 transition-transform" />
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
               ))}
@@ -1181,9 +1221,14 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
                 <h3 className="text-4xl font-display font-bold mb-6">Need more clarity?</h3>
                 <p className="text-lg opacity-70 mb-10 leading-relaxed font-light max-w-2xl">If these interventions don't yield results within 14 days, a clinical consultation is advised. Revisit our framework for next steps.</p>
                 <div className="flex flex-wrap gap-6">
-                  <a href="#framework" className="bg-brand-orange text-white px-10 py-5 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:text-brand-orange transition-all shadow-xl shadow-brand-orange/20">
+                  <motion.a 
+                    href="#framework" 
+                    whileHover={{ scale: 1.05, backgroundColor: "#F7F5F0", color: "#E87C2E" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-brand-orange text-white px-10 py-5 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-xl shadow-brand-orange/20"
+                  >
                     Explore Framework
-                  </a>
+                  </motion.a>
                 </div>
               </div>
             </div>
@@ -1244,14 +1289,25 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
                     </ul>
                   </section>
 
-                <section className="bg-brand-brown text-brand-beige p-10 rounded-[3rem]">
-                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-brand-orange mb-8 underline decoration-brand-orange/30 underline-offset-8">Bio-Hacking Steps</h3>
+                <section className="bg-brand-brown text-brand-beige p-10 rounded-[3rem] relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full -mr-16 -mt-16 blur-2xl" />
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-brand-orange mb-8 underline decoration-brand-orange/30 underline-offset-8 flex items-center gap-2">
+                    <Zap className="w-3.5 h-3.5" /> Bio-Hacking Steps
+                  </h3>
                   <div className="space-y-4">
                     {condition.diySupport.map((tip, i) => (
-                      <div key={i} className="flex items-start gap-4 p-5 bg-white/5 rounded-2xl">
-                        <CheckCircle2 className="w-5 h-5 text-brand-orange shrink-0" />
+                      <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="flex items-start gap-4 p-5 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors border border-white/5"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-brand-orange/20 flex items-center justify-center shrink-0">
+                          <CheckCircle2 className="w-4 h-4 text-brand-orange" />
+                        </div>
                         <span className="text-[12px] font-light leading-relaxed">{tip}</span>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </section>
@@ -1301,21 +1357,25 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       </div>
       
       <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-orange bg-brand-orange/5 w-fit px-4 py-1.5 rounded-full border border-brand-orange/10">
-        Best For: {product.bestFor}
+        {product.bestFor}
       </div>
       
       <div className="mt-auto flex gap-3">
-        <a 
+        <motion.a 
           href={product.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 bg-brand-brown text-brand-beige text-center py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
+          whileHover={{ scale: 1.02, backgroundColor: "#E87C2E" }}
+          whileTap={{ scale: 0.98 }}
+          className="flex-1 bg-brand-brown text-brand-beige text-center py-4 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg"
         >
           View Details <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </a>
-        <button
+        </motion.a>
+        <motion.button
           onClick={handleShare}
-          className="px-6 bg-brand-beige text-brand-brown rounded-2xl hover:bg-brand-brown hover:text-brand-beige transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+          whileHover={{ scale: 1.05, backgroundColor: "#2D1D13", color: "#F7F5F0" }}
+          whileTap={{ scale: 0.95 }}
+          className="px-6 bg-brand-beige text-brand-brown rounded-2xl transition-all shadow-md flex items-center justify-center gap-2"
           title="Share Product"
         >
           {copied ? (
@@ -1329,7 +1389,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
               <span className="text-xs font-bold uppercase tracking-widest">Share</span>
             </>
           )}
-        </button>
+        </motion.button>
       </div>
     </motion.div>
   );
@@ -1726,54 +1786,75 @@ const LoadingScreen = () => (
     initial={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-    className="fixed inset-0 z-[200] bg-brand-beige flex flex-col items-center justify-center"
+    className="fixed inset-0 z-[200] bg-brand-beige flex flex-col items-center justify-center p-8 text-center"
   >
-    <div className="relative mb-8">
+    <div className="relative mb-12">
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="w-40 h-40 bg-brand-brown rounded-[3rem] flex items-center justify-center shadow-luxury"
+        initial={{ rotate: -10, scale: 0.8, opacity: 0 }}
+        animate={{ rotate: 0, scale: 1, opacity: 1 }}
+        transition={{ duration: 1.2, ease: [0.34, 1.56, 0.64, 1] }}
+        className="w-48 h-48 bg-brand-brown rounded-[3.5rem] flex items-center justify-center shadow-luxury p-8"
       >
-        <Footprints className="w-20 h-20 text-brand-orange" />
+        <motion.div
+          animate={{ 
+            y: [-4, 4, -4],
+            rotate: [-2, 2, -2]
+          }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Footprints className="w-24 h-24 text-brand-orange" />
+        </motion.div>
       </motion.div>
       <motion.div 
-        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute inset-0 bg-brand-orange/30 blur-3xl rounded-full -z-10"
+        animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 3, repeat: Infinity }}
+        className="absolute inset-0 bg-brand-orange/40 blur-[80px] rounded-full -z-10"
+      />
+      {/* Decorative scanning line */}
+      <motion.div 
+        animate={{ top: ["0%", "100%", "0%"] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        className="absolute left-0 right-0 h-1 bg-brand-orange/40 blur-sm z-30 pointer-events-none"
       />
     </div>
     
-    <div className="overflow-hidden flex flex-col items-center">
+    <div className="overflow-hidden flex flex-col items-center max-w-sm">
       <motion.div
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 1 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
       >
-        <h2 className="text-4xl font-display font-black text-brand-brown tracking-tighter">
+        <h2 className="text-5xl font-display font-black text-brand-brown tracking-tighter mb-2">
           COM<span className="text-brand-orange">FOOT</span>
         </h2>
       </motion.div>
       <motion.div 
         initial={{ width: 0 }}
         animate={{ width: "100%" }}
-        transition={{ delay: 0.8, duration: 1.5, ease: "easeInOut" }}
-        className="h-0.5 bg-brand-brown/10 mt-4 rounded-full relative overflow-hidden w-48"
+        transition={{ delay: 0.6, duration: 1.2, ease: "easeInOut" }}
+        className="h-1 bg-brand-brown/5 mt-4 rounded-full relative overflow-hidden w-64"
       >
         <motion.div 
           animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-brand-orange w-1/2"
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-brand-orange w-1/3"
         />
       </motion.div>
-      <motion.span 
+      <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 1.2 }}
-        className="text-[10px] font-bold uppercase tracking-[0.5em] text-brand-brown mt-6"
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="flex flex-col items-center gap-3 mt-8"
       >
-        where comfort meets your Soul
-      </motion.span>
+         <div className="flex gap-4">
+           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0 }}><Activity className="w-5 h-5 text-brand-orange" /></motion.div>
+           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}><Zap className="w-5 h-5 text-brand-gold" /></motion.div>
+           <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}><ShieldCheck className="w-5 h-5 text-brand-brown" /></motion.div>
+         </div>
+         <span className="text-[10px] font-bold uppercase tracking-[0.6em] text-brand-brown/40">
+           Calibrating your movement
+         </span>
+      </motion.div>
     </div>
   </motion.div>
 );
@@ -1799,53 +1880,80 @@ const WalkingFeet = ({ className }: { className?: string }) => {
     <div className={`flex gap-16 ${className}`}>
       <motion.div
         animate={{
-          y: [0, -20, 0],
-          opacity: [0.3, 0.6, 0.3]
+          y: [0, -25, 0],
+          x: [0, 5, 0],
+          rotate: [0, -5, 0],
+          opacity: [0.3, 0.8, 0.3],
+          scale: [1, 1.1, 1]
         }}
         transition={{
-          duration: 3,
+          duration: 2.5,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: [0.45, 0, 0.55, 1]
         }}
       >
-        <Footprints className="w-12 h-12 text-brand-orange/20" />
+        <Footprints className="w-14 h-14 text-brand-orange/30 drop-shadow-2xl" />
       </motion.div>
       <motion.div
         animate={{
-          y: [0, -20, 0],
-          opacity: [0.3, 0.6, 0.3]
+          y: [0, -25, 0],
+          x: [0, -5, 0],
+          rotate: [0, 5, 0],
+          opacity: [0.3, 0.8, 0.3],
+          scale: [1, 1.1, 1]
         }}
         transition={{
-          duration: 3,
+          duration: 2.5,
           repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1.5
+          ease: [0.45, 0, 0.55, 1],
+          delay: 1.25
         }}
       >
-        <Footprints className="w-12 h-12 text-brand-orange/20" />
+        <Footprints className="w-14 h-14 text-brand-orange/30 drop-shadow-2xl -scale-x-100" />
       </motion.div>
     </div>
   );
 };
 
 const ViewSkeleton = () => (
-  <div className="min-h-screen pt-32 section-padding space-y-12">
-    <div className="flex flex-col md:flex-row gap-12 items-center">
-      <div className="flex-1 space-y-6">
-        <Skeleton className="h-12 w-3/4" />
-        <Skeleton className="h-24 w-full" />
-        <div className="flex gap-4">
-          <Skeleton className="h-14 w-40 rounded-full" />
-          <Skeleton className="h-14 w-40 rounded-full" />
+  <div className="min-h-screen pt-32 section-padding space-y-16 animate-in fade-in duration-1000">
+    <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+      <div className="flex-1 space-y-8 w-full">
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-3/4" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-4/6" />
+        </div>
+        <div className="flex flex-wrap gap-4 pt-4">
+          <Skeleton className="h-16 w-48 rounded-2xl" />
+          <Skeleton className="h-16 w-48 rounded-2xl" />
         </div>
       </div>
-      <div className="flex-1 w-full">
-        <Skeleton className="aspect-square md:aspect-video rounded-[3rem]" />
+      <div className="flex-1 w-full relative">
+        <Skeleton className="aspect-[4/5] rounded-[4rem] shadow-luxury" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-10">
+           <motion.div
+             animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+             transition={{ duration: 2, repeat: Infinity }}
+           >
+             <Activity className="w-32 h-32 text-brand-brown" />
+           </motion.div>
+        </div>
       </div>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
       {[...Array(3)].map((_, i) => (
-        <Skeleton key={i} className="h-64" />
+        <div key={i} className="space-y-6 p-8 bg-white rounded-[3rem] border border-brand-brown/5">
+          <Skeleton className="w-16 h-16 rounded-2xl" />
+          <Skeleton className="h-8 w-3/4" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-12 w-full rounded-2xl" />
+        </div>
       ))}
     </div>
   </div>
@@ -2203,22 +2311,26 @@ export default function App() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto px-4 sm:px-0">
               <motion.a
-                whileHover={{ scale: 1.02, backgroundColor: "#2D241E" }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05, backgroundColor: "#2D241E" }}
+                whileTap={{ scale: 0.95 }}
                 href="#quiz"
                 className="w-full sm:w-auto px-10 py-5 bg-brand-orange text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center"
               >
                 Start Analysis
               </motion.a>
               <motion.a 
-                whileHover={{ x: 5 }}
+                whileHover={{ x: 10 }}
+                whileTap={{ scale: 0.95 }}
                 href="#about"
                 className="group flex items-center gap-3 text-brand-brown font-bold text-[9px] md:text-[10px] uppercase tracking-[0.2em] py-4"
               >
                 Our Philosophy
-                <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:bg-brand-brown group-hover:text-white transition-all">
+                <motion.div 
+                  whileHover={{ backgroundColor: "#2D1D13", color: "#FFFFFF" }}
+                  className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center transition-all"
+                >
                   <ArrowRight className="w-4 h-4" />
-                </div>
+                </motion.div>
               </motion.a>
             </div>
           </motion.div>
