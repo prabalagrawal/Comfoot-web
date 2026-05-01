@@ -1850,27 +1850,28 @@ const HeroVisual = () => {
         {/* Main Editorial Image */}
         <motion.div
           whileHover={{ scale: 1.01 }}
-          transition={{ duration: 0.4 }}
-          className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-white/40 z-20"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative aspect-[16/10] lg:aspect-[4/5] rounded-[3rem] overflow-hidden shadow-luxury border border-white/40 z-20"
         >
           <LazyImage 
-            src="https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?auto=format&fit=crop&q=80&w=1200" 
-            alt="Editorial Foot Health"
-            imgClassName="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=1600" 
+            alt="Lifestyle Orthopaedic Wellness"
+            imgClassName="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-brown/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-brown/80 via-brand-brown/10 to-transparent" />
           
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1 }}
-            className="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-white"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="absolute bottom-8 left-8 md:bottom-12 md:left-12 text-white max-w-sm"
           >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-6 md:w-8 h-px bg-brand-orange" />
-              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em]">Our Philosophy</span>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-10 h-[2px] bg-brand-orange" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.45em] text-brand-beige">Design Philosophy</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-display font-medium">Where Comfort meets your soul.</h3>
+            <h3 className="text-3xl md:text-4xl font-display font-medium leading-tight">Bridging <span className="italic text-brand-orange block">lifestyle & wellness.</span></h3>
+            <p className="mt-4 text-sm text-brand-beige/60 font-light leading-relaxed hidden md:block">Experience the perfect balance of anatomical support and high-end aesthetic design.</p>
           </motion.div>
         </motion.div>
 
@@ -1884,12 +1885,15 @@ const HeroVisual = () => {
           initial={{ opacity: 0, x: 20, y: 20 }}
           animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="absolute -bottom-6 -right-6 w-32 h-44 md:w-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-2xl border-2 border-white z-30 hidden sm:block"
+          className="absolute -bottom-6 -right-6 w-32 h-44 md:w-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-2xl border-4 border-white z-30 hidden sm:block"
         >
           <LazyImage 
-            src="https://images.unsplash.com/photo-1560343060-c140a58e920c?auto=format&fit=crop&q=80&w=800" 
-            alt="Product Detail"
+            src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&q=80&w=800" 
+            alt="Anatomical Support Detail"
           />
+          <div className="absolute top-2 right-2 bg-brand-orange text-white text-[8px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow-lg">
+            Science
+          </div>
         </motion.div>
 
         {/* Floaters - Simplified */}
