@@ -1219,15 +1219,15 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
                   <HelpCircle className="w-8 h-8 text-brand-orange" />
                 </div>
                 <h3 className="text-4xl font-display font-bold mb-6">Need more clarity?</h3>
-                <p className="text-lg opacity-70 mb-10 leading-relaxed font-light max-w-2xl">If these interventions don't yield results within 14 days, a clinical consultation is advised. Revisit our framework for next steps.</p>
+                <p className="text-lg opacity-70 mb-10 leading-relaxed font-light max-w-2xl">If these interventions don't yield results within a few weeks, a clinical consultation is advised. Revisit our framework for next steps.</p>
                 <div className="flex flex-wrap gap-6">
                   <motion.a 
-                    href="#framework" 
+                    href="#quiz" 
                     whileHover={{ scale: 1.05, backgroundColor: "#F7F5F0", color: "#E87C2E" }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-brand-orange text-white px-10 py-5 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-xl shadow-brand-orange/20"
                   >
-                    Explore Framework
+                    Start Assessment
                   </motion.a>
                 </div>
               </div>
@@ -2298,11 +2298,11 @@ export default function App() {
               transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
               className="inline-flex items-center gap-3 px-5 py-2 bg-brand-brown text-brand-beige rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mb-6 md:mb-12 border border-white/10"
             >
-              Walking Reinvisioned • 2026
+              Walking Reimagined • Elite
             </motion.div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 leading-[1.1] md:leading-[1] tracking-[-0.04em] font-display font-black text-brand-brown">
               COMFOOT: <br />
-              <span className="text-brand-orange inline-block italic font-bold">REINVISIONED<span className="text-brand-brown">.</span></span>
+              <span className="text-brand-orange inline-block italic font-bold">where comfort meets your soul<span className="text-brand-brown">.</span></span>
             </h1>
             
             <p className="text-sm md:text-lg lg:text-xl mb-8 md:mb-10 text-brand-taupe/60 leading-relaxed max-w-md md:max-w-lg mx-auto lg:mx-0 tracking-tight font-light">
@@ -2399,15 +2399,15 @@ export default function App() {
               
               <div className="mt-10 md:mt-16 flex flex-wrap gap-8 md:gap-12 relative z-10">
                 <div className="flex flex-col gap-1 md:gap-2">
-                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-orange">1.2M+</span>
+                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-orange">Global</span>
                   <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Steps Analyzed</span>
                 </div>
                 <div className="flex flex-col gap-1 md:gap-2">
-                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-gold">500+</span>
+                  <span className="text-3xl md:text-4xl font-display font-bold text-brand-gold">Pro</span>
                   <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Clinical Patterns</span>
                 </div>
                 <div className="flex flex-col gap-1 md:gap-2">
-                  <span className="text-3xl md:text-4xl font-display font-bold text-white">150+</span>
+                  <span className="text-3xl md:text-4xl font-display font-bold text-white">Latest</span>
                   <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Updates</span>
                 </div>
               </div>
@@ -2501,10 +2501,11 @@ export default function App() {
               <span className="text-brand-orange font-bold uppercase tracking-[0.6em] text-[10px]">User Stories</span>
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-black leading-[1] tracking-[-0.04em] mb-8">
-              REAL RELIEF, <br />
-              <span className="text-brand-orange italic font-bold">REAL PEOPLE<span className="text-brand-beige">.</span></span>
+              RELIEF FOR <br />
+              <span className="text-brand-orange italic font-bold">EVERYONE<span className="text-brand-beige">.</span></span>
             </h2>
-            <p className="text-base md:text-lg opacity-60 max-w-2xl mx-auto font-light leading-relaxed">Join thousands who have reclaimed their mobility with our structured protocols.</p>
+            <p className="text-base md:text-lg opacity-60 max-w-2xl mx-auto font-light leading-relaxed">Join many who have reclaimed their mobility with our structured protocols.</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-brand-orange/40 mt-6 italic">These are sample reviews based on common clinical feedback</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
@@ -2978,7 +2979,7 @@ export default function App() {
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-16 border-t border-brand-brown/5 gap-8">
             <div className="flex items-center gap-8 text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">
-              <span>© {new Date().getFullYear()} Comfoot Labs</span>
+              <span>© Comfoot Labs</span>
               <span className="hidden md:block italic">Where Comfort meets your soul</span>
               <button onClick={() => setShowAdmin(true)} className="hover:text-brand-brown transition-colors">Access Console</button>
             </div>

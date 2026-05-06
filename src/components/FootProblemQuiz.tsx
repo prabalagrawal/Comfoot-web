@@ -808,7 +808,7 @@ export const FootProblemQuiz: React.FC = () => {
                 />
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-brand-brown mb-6 md:mb-8 leading-[1.1] tracking-tight">
-                Find Your Foot Solution in 60 Seconds
+                Find Your Foot Solution Instantly
               </h2>
               <p className="text-lg md:text-xl text-brand-taupe/70 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
                 Answer a few precisely crafted questions to receive an expert-guided insight into your foot health.

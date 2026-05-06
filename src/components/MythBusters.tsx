@@ -194,7 +194,7 @@ export const MythBusters: React.FC = () => {
             viewport={{ once: true }}
             className="inline-flex items-center gap-4 px-6 py-2 bg-brand-brown text-brand-beige rounded-full text-[10px] font-bold uppercase tracking-[0.6em] mb-12"
           >
-            Education First • 01
+            Clinical Essentials
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -204,7 +204,7 @@ export const MythBusters: React.FC = () => {
             className="text-5xl md:text-7xl font-display font-black text-brand-brown mb-8 tracking-[-0.04em] leading-tight"
           >
             FOOT HEALTH <br />
-            <span className="text-brand-orange italic font-bold">MYTH BUSTERS<span className="text-brand-brown">.</span></span>
+            <span className="text-brand-orange italic font-bold">REVEALED<span className="text-brand-brown">.</span></span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -213,7 +213,7 @@ export const MythBusters: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="text-base md:text-lg text-brand-taupe/60 max-w-2xl mx-auto font-light leading-relaxed px-4 md:px-0"
           >
-            Deciphering common misconceptions with clinical clarity for the urban walker.
+            Insights for the urban walker.
           </motion.p>
         </div>
 
@@ -244,7 +244,7 @@ export const MythBusters: React.FC = () => {
               href="#quiz"
               className="inline-flex items-center gap-3 bg-brand-orange text-white px-10 py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-brand-orange/90 transition-all shadow-xl hover:shadow-brand-orange/20 active:scale-95"
             >
-              Check Your Foot Type <ArrowRight className="w-5 h-5" />
+              Start Your Assessment <ArrowRight className="w-5 h-5" />
             </a>
           </div>
         </motion.div>
