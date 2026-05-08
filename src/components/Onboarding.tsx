@@ -119,16 +119,16 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                 {currentStep < steps.length - 1 ? (
                   <button 
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-8 py-4 bg-brand-brown text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all group"
+                    className="flex items-center gap-3 px-8 py-4 bg-brand-brown text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-orange transition-all group"
                   >
-                    Next <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Next <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
                   </button>
                 ) : (
                   <button 
                     onClick={onComplete}
-                    className="flex items-center gap-2 px-10 py-4 bg-brand-orange text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-brand-orange/20 hover:scale-105 active:scale-95 transition-all"
+                    className="group flex items-center gap-3 px-10 py-4 bg-brand-orange text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-brand-orange/20 hover:scale-105 active:scale-95 transition-all"
                   >
-                    Get Started <ArrowRight className="w-4 h-4" />
+                    Get Started <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
                   </button>
                 )}
               </div>

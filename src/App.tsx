@@ -844,7 +844,7 @@ const ProductRating: React.FC<{ productId: string; conditionId: string; user: Fi
   );
 };
 
-const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
+const Navbar: React.FC<{ user: FirebaseUser | null; onLogoClick?: () => void }> = ({ user, onLogoClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -885,9 +885,28 @@ const Navbar: React.FC<{ user: FirebaseUser | null }> = ({ user }) => {
       <div className={`absolute inset-0 transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'} bg-white/80 backdrop-blur-2xl border-b border-brand-brown/5 shadow-luxury`} />
       
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 flex items-center justify-between">
-        <a href="#home" className="group">
-          <Logo isScrolled={isScrolled} />
-        </a>
+        <div 
+          onClick={onLogoClick} 
+          className="group cursor-pointer flex items-center gap-2"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && onLogoClick?.()}
+        >
+          <AnimatePresence mode="wait">
+            {onLogoClick && (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                className="lg:hidden"
+              >
+                <ChevronLeft className="w-6 h-6 text-brand-brown group-hover:text-brand-orange transition-colors" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <Logo isScrolled={isScrolled} className={onLogoClick ? "hidden lg:flex" : "flex"} />
+          <Logo isScrolled={isScrolled} className={onLogoClick ? "flex lg:hidden scale-75 origin-left" : "hidden"} />
+        </div>
 
         <div className="hidden lg:flex items-center gap-1 p-1 bg-brand-brown/5 rounded-full backdrop-blur-xl border border-brand-brown/5 shadow-soft">
           {navLinks.map((link) => (
@@ -1152,12 +1171,15 @@ const ConditionDetailView: React.FC<{ condition: Condition; user: FirebaseUser |
           onClick={onBack}
           whileHover={{ x: -10 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 text-brand-brown hover:text-brand-orange transition-colors mb-8 md:mb-12 group"
+          className="flex items-center gap-3 text-brand-brown hover:text-brand-orange transition-all duration-300 mb-8 md:mb-12 group"
         >
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/20">
-            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:border-brand-orange/30 group-hover:bg-brand-orange/5 transition-all">
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-1 transition-transform" />
           </div>
-          <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">Back to Explore</span>
+          <div className="flex flex-col items-start leading-tight">
+            <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] opacity-40">Previous</span>
+            <span className="text-sm md:text-base font-display font-bold">Back to Explore</span>
+          </div>
         </motion.button>
 
         {/* Full-width Header */}
@@ -1434,13 +1456,14 @@ const ConditionModal: React.FC<{ condition: Condition; user: FirebaseUser | null
         className="bg-brand-beige w-full max-w-6xl max-h-[96vh] md:max-h-[92vh] overflow-y-auto md:overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl relative flex flex-col md:flex-row border border-white/20 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+        {/* Close Button / Back Action */}
         <button 
           onClick={onClose}
           aria-label="Close modal"
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 sm:p-3 bg-white/80 backdrop-blur-md text-brand-brown rounded-full shadow-lg hover:bg-brand-orange hover:text-white transition-all z-20 active:scale-90"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 group/close z-20 flex items-center gap-3 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl hover:bg-brand-brown hover:text-white transition-all duration-300"
         >
-          <X className="w-5 h-5" />
+          <span className="text-[10px] font-bold uppercase tracking-widest hidden md:block">Dismiss</span>
+          <X className="w-5 h-5 group-hover/close:rotate-90 transition-transform" />
         </button>
 
         {/* Left Side: Editorial Content */}
@@ -2180,7 +2203,13 @@ export default function App() {
   if (view === 'detail' && selectedCondition) {
     return (
       <div className="min-h-screen bg-brand-beige/50">
-        <Navbar user={user} />
+        <Navbar 
+          user={user} 
+          onLogoClick={() => {
+            setView('home');
+            setSelectedCondition(null);
+          }} 
+        />
         <ConditionDetailView 
           condition={selectedCondition} 
           user={user}
@@ -2237,7 +2266,14 @@ export default function App() {
         <div className="absolute bottom-[10%] left-[10%] w-[20%] h-[20%] bg-brand-brown/10 rounded-full blur-[80px] animate-bounce-slow" />
       </div>
 
-      <Navbar user={user} />
+      <Navbar 
+        user={user} 
+        onLogoClick={() => {
+          setView('home');
+          setSelectedCondition(null);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
       <ScrollProgressFootprints />
       <WalkingTrail />
 
@@ -2314,9 +2350,10 @@ export default function App() {
                 whileHover={{ scale: 1.05, backgroundColor: "#2D241E" }}
                 whileTap={{ scale: 0.95 }}
                 href="#quiz"
-                className="w-full sm:w-auto px-10 py-5 bg-brand-orange text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center"
+                className="group w-full sm:w-auto px-10 py-5 bg-brand-orange text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.4em] shadow-xl shadow-brand-orange/20 transition-all text-center flex items-center justify-center gap-3"
               >
                 Start Analysis
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
               </motion.a>
               <motion.a 
                 whileHover={{ x: 10 }}
@@ -2325,12 +2362,9 @@ export default function App() {
                 className="group flex items-center gap-3 text-brand-brown font-bold text-[9px] md:text-[10px] uppercase tracking-[0.2em] py-4"
               >
                 Our Philosophy
-                <motion.div 
-                  whileHover={{ backgroundColor: "#2D1D13", color: "#FFFFFF" }}
-                  className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center transition-all"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </motion.div>
+                <div className="w-10 h-10 rounded-full border border-brand-brown/10 flex items-center justify-center group-hover:bg-brand-brown group-hover:text-white transition-all transform group-hover:scale-110">
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </motion.a>
             </div>
           </motion.div>
@@ -2981,7 +3015,13 @@ export default function App() {
             <div className="flex items-center gap-8 text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/40">
               <span>© Comfoot Labs</span>
               <span className="hidden md:block italic">Where Comfort meets your soul</span>
-              <button onClick={() => setShowAdmin(true)} className="hover:text-brand-brown transition-colors">Access Console</button>
+              <button 
+                onClick={() => setShowAdmin(true)} 
+                className="hover:text-brand-brown transition-colors flex items-center gap-2 group/console"
+              >
+                Access Console
+                <ArrowRight className="w-2.5 h-2.5 group-hover/console:translate-x-0.5 transition-transform" />
+              </button>
             </div>
             <div className="flex gap-8 text-[9px] font-bold uppercase tracking-[0.4em] text-brand-taupe/60">
               <a href="#" className="hover:text-brand-orange transition-colors">Privacy Charter</a>

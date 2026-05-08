@@ -52,9 +52,10 @@ export const ConditionComparison: React.FC<ConditionComparisonProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-3 md:p-4 hover:bg-brand-brown/5 rounded-full transition-all group"
+            className="flex items-center gap-3 px-4 md:px-6 py-2 md:py-3 bg-brand-brown/5 hover:bg-brand-brown hover:text-brand-beige rounded-2xl transition-all group"
           >
-            <X className="w-5 h-5 md:w-6 md:h-6 text-brand-taupe group-hover:rotate-90 transition-transform duration-300" />
+            <span className="text-[10px] font-bold uppercase tracking-widest hidden sm:block">Exit Comparison</span>
+            <X className="w-4 h-4 md:w-5 md:h-5 text-brand-taupe group-hover:text-brand-beige group-hover:rotate-90 transition-all duration-300" />
           </button>
         </div>
 

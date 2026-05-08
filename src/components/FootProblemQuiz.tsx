@@ -824,7 +824,7 @@ export const FootProblemQuiz: React.FC = () => {
                 className="group relative inline-flex items-center gap-3 bg-brand-brown text-white px-10 py-5 sm:px-12 sm:py-6 rounded-2xl font-bold text-sm sm:text-lg transition-all duration-300 shadow-xl hover:shadow-brand-orange/20"
               >
                 Start Diagnostic
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
               </motion.button>
             </motion.div>
           )}
